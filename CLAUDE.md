@@ -4,20 +4,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Quick Start:**
 - Run tests: `npm test` (32 tests, all passing)
+- Web app: `npm run dev` (React frontend) + `npm run api:dev` (API backend)
 - Generate from DB: `npm run generate -- --type FRACTION_ADDITION --output worksheet.pdf`
 - Generate from markdown: `npx tsx generate-worksheet-pdf.ts <worksheet.md>`
 - **CRITICAL**: Always run `npm test` before modifying `generate-worksheet-pdf.ts`
 
 ## Project Overview
 
-This is a maths tutoring project for generating printable PDF worksheets with fraction and algebra problems and their solutions. The project uses a reusable markdown-to-PDF converter that reads worksheet definitions from markdown files and generates professionally formatted PDFs with proper fraction notation and algebraic expressions.
+This is a maths tutoring project for generating printable PDF worksheets with fraction and algebra problems and their solutions. The project provides both a **web-based interface** and **CLI tools** for creating worksheets.
 
 **Key Features:**
+- **Web UI (v2)**: React + Tailwind frontend with Express API backend for browsing and printing worksheets
 - **870 problems** in PostgreSQL database (5 types: fraction add/sub/reduce, algebra collecting/multiplication)
 - **On-demand generation** from database with custom difficulty mix and tag filtering
 - 29 markdown worksheets as backup/archive
 - Comprehensive Jest test suite with 32 tests covering all critical functions
 - Support for fractions, mixed numbers, and algebraic expressions
+
+**Interfaces:**
+- **Web App**: Browser-based UI for browsing categories, viewing worksheets, and printing (`npm run dev`)
+- **CLI**: Command-line tool for batch generation (`npm run generate`)
+- **Legacy PDF**: Direct markdown-to-PDF conversion (`npx tsx generate-worksheet-pdf.ts`)
 
 ## Generating Worksheets from Database (Recommended)
 
@@ -198,6 +205,197 @@ The project uses Jest with TypeScript for comprehensive test coverage:
 - Multi-term expression bug (e.g., "2a + 3b + 4a" rendering all terms)
 - Mixed number parsing (e.g., "1 5/6" captured completely)
 - Column ordering (left 1-15, then right 16-30)
+
+## React Frontend & API Backend (v2)
+
+The project includes a web-based interface for browsing and printing worksheets directly from the browser.
+
+### Architecture Overview
+
+**Monorepo Structure:**
+```
+maths-tutor/
+├── apps/
+│   └── web/                    # React frontend (Vite + TypeScript + Tailwind)
+│       ├── src/
+│       │   ├── components/     # Reusable React components
+│       │   ├── types/          # TypeScript type definitions
+│       │   ├── utils/          # Utility functions
+│       │   └── App.tsx         # Main application
+│       ├── index.html
+│       ├── vite.config.ts
+│       └── tailwind.config.js
+├── packages/
+│   └── api/                    # Express API backend
+│       ├── src/
+│       │   ├── routes/         # API route handlers
+│       │   ├── services/       # Database business logic
+│       │   └── index.ts        # Express server
+│       ├── package.json
+│       └── tsconfig.json
+├── src/                        # CLI tools & shared code
+├── prisma/                     # Database schema (shared)
+└── package.json                # Root workspace config
+```
+
+### Running the Web App
+
+**Start Development Servers:**
+```bash
+# Start React frontend (http://localhost:5173)
+npm run dev
+
+# Start API backend (http://localhost:3001)
+npm run api:dev
+
+# Or start both in separate terminals
+```
+
+**Build for Production:**
+```bash
+# Build React app
+npm run build
+
+# Build API
+npm run api:build
+npm run api:start
+```
+
+### API Endpoints
+
+The Express API serves problems from the PostgreSQL database:
+
+**GET /api/categories**
+- Returns all problem types with counts and display names
+- Example response:
+```json
+[
+  {"type": "FRACTION_ADDITION", "count": 210, "displayName": "Fraction Addition"},
+  {"type": "ALGEBRA_COLLECTING_TERMS", "count": 150, "displayName": "Collecting Like Terms"}
+]
+```
+
+**GET /api/problems**
+- Query problems with filters
+- Query parameters:
+  - `type`: ProblemType (e.g., `FRACTION_ADDITION`)
+  - `difficulty`: Comma-separated Difficulty values (e.g., `EASY,MEDIUM`)
+  - `tags`: Comma-separated tags (e.g., `unlike-denominators`)
+  - `limit`: Number of problems (default: 30)
+  - `seed`: String for reproducible shuffling
+- Example:
+```bash
+curl "http://localhost:3001/api/problems?type=FRACTION_ADDITION&difficulty=EASY,MEDIUM&tags=unlike-denominators&limit=10"
+```
+
+**GET /api/tags/:type**
+- Returns available tags for a problem type
+- Example: `/api/tags/FRACTION_ADDITION` → `["unlike-denominators", "set-1", ...]`
+
+**GET /health**
+- Health check endpoint
+
+### Frontend Components
+
+**Core UI Components:**
+- `Fraction` - Renders fractions with proper stacked notation (numerator/denominator)
+- `MixedNumber` - Renders mixed numbers (whole number + fraction)
+- `MainCategory` - Category button with expand/collapse
+
+**Utility Functions:**
+- `parseFraction(str)` - Parses "a/b" into numerator/denominator
+- `parseMixedNumber(str)` - Parses "w a/b" into whole, numerator, denominator
+- `renderMathExpression(expr)` - Tokenizes and renders math expressions with fractions
+- `classNames(...)` - Utility for conditional CSS classes
+
+**Key Features:**
+- Browser-based printing with print-specific CSS
+- Gradient background (teal-50 to blue-100)
+- Sidebar navigation (categories → subcategories → worksheets)
+- Proper fraction alignment and rendering
+- STIX Two Math font for mathematical notation
+
+### API Service Layer
+
+**Location:** `packages/api/src/services/problems.service.ts`
+
+**Functions:**
+- `getCategories()` - Fetches problem type counts from database
+- `getProblems(filters)` - Queries problems with optional filtering
+- `getTagsForType(type)` - Returns unique tags for a problem type
+- `seedShuffle(array, seed)` - Deterministic shuffling using Fisher-Yates
+
+**Features:**
+- Prisma ORM for type-safe database queries
+- Seed-based reproducible problem selection
+- Tag filtering with `hasSome` array operator
+- Difficulty filtering with `in` operator
+
+### Prisma Configuration Notes
+
+**Custom Client Location:**
+- Generator output: `../generated/prisma` (not default `node_modules/@prisma/client`)
+- All imports must use: `import { ... } from '../../../../generated/prisma'`
+- Prisma client singleton: `src/db/prisma.ts`
+
+**Database Connection:**
+- Currently Prisma 6.19.0 (requires `url` in schema.prisma)
+- Future Prisma 7: URL moves to `prisma.config.ts` only
+- Connection configured via `.env` file: `DATABASE_URL`
+
+### Tech Stack
+
+| Layer | Technology | Version |
+|-------|------------|---------|
+| Frontend | React | 18 |
+| Build Tool | Vite | 5+ |
+| Styling | Tailwind CSS | 3.4 |
+| Icons | Lucide React | - |
+| Backend | Express.js | 4.18 |
+| Database | PostgreSQL | 16 |
+| ORM | Prisma | 6.19 |
+| Language | TypeScript | 5.3+ |
+
+### CORS Configuration
+
+API configured for local development:
+- Origin: `http://localhost:5173` (Vite dev server)
+- Credentials: enabled
+- Can be configured via `FRONTEND_URL` environment variable
+
+### Deployment Considerations
+
+**Environment Variables:**
+```bash
+# API
+DATABASE_URL=postgresql://user:password@localhost:5432/maths_tutor_dev
+API_PORT=3001
+FRONTEND_URL=http://localhost:5173
+NODE_ENV=development
+
+# Frontend
+VITE_API_URL=http://localhost:3001
+```
+
+**Production Setup:**
+1. Build frontend: `npm run build` → `apps/web/dist/`
+2. Build API: `npm run api:build` → `packages/api/dist/`
+3. Serve static files from `apps/web/dist/`
+4. Run API: `npm run api:start`
+
+### Current Status (Phase 4 Complete)
+
+**✅ Completed:**
+- Phase 1: Project setup (Vite + React + TypeScript + Tailwind)
+- Phase 2: Core UI components (Fraction, MixedNumber, MathExpression)
+- Phase 3: Layout & navigation (Sidebar, Categories, Worksheets)
+- Phase 4: API backend (Express + Prisma + 3 endpoints)
+
+**⏳ Next Phase:**
+- Phase 5: Frontend-API integration (replace static data with API calls)
+- Phase 6: Print functionality (browser printing with CSS)
+- Phase 7: Advanced features (filtering, seed support, answer toggle)
+- Phase 8: Polish & testing
 
 ## Available Worksheets
 
@@ -1319,6 +1517,114 @@ Contains:
    - Database configuration
    - Schema creation
    - Initial migration
+
+---
+
+## Recent Session Changes (2025-12-16)
+
+**Session Summary**: Implemented React Frontend v2 (Phases 1-4) - Created web-based UI for browsing worksheets and Express API backend to serve problems from PostgreSQL database.
+
+### Phase 1-3: React Frontend Setup (Completed 2025-12-15)
+
+**Monorepo Structure Created:**
+- Initialized `apps/web/` with Vite + React + TypeScript + Tailwind CSS
+- Configured npm workspaces in root `package.json`
+- Added Lucide React for icons
+- Implemented gradient background and responsive layout
+
+**Core Components Built:**
+- `Fraction.tsx` - Renders fractions with stacked numerator/denominator
+- `MixedNumber.tsx` - Renders mixed numbers (whole + fraction)
+- `MainCategory.tsx` - Expandable category navigation button
+- Math rendering utilities: `parseFraction()`, `parseMixedNumber()`, `renderMathExpression()`
+
+**Layout & Navigation:**
+- Full sidebar navigation with category expansion
+- Worksheet list view
+- Worksheet detail view with print button
+- Print-specific CSS for clean browser printing
+- STIX Two Math font integration
+
+### Phase 4: API Backend Setup (Completed 2025-12-16)
+
+**Express API Created:**
+- Structure: `packages/api/src/` with routes, services, index
+- TypeScript configuration with strict mode
+- Hot reload with `tsx watch`
+
+**Endpoints Implemented:**
+1. `GET /api/categories` - Returns problem types with counts and display names
+2. `GET /api/problems` - Query with filters (type, difficulty, tags, limit, seed)
+3. `GET /api/tags/:type` - Returns available tags for problem type
+4. `GET /health` - Health check endpoint
+
+**Service Layer:**
+- `problems.service.ts` - Database logic with Prisma
+- Seed-based deterministic shuffling (Fisher-Yates algorithm)
+- Tag filtering with array operators
+- Difficulty filtering support
+
+**Configuration & Middleware:**
+- CORS enabled for `http://localhost:5173`
+- Error handling middleware
+- Request logging
+- Environment variable support (API_PORT, FRONTEND_URL)
+
+**Prisma Integration:**
+- Fixed imports to use custom client location (`generated/prisma`)
+- Singleton pattern via `src/db/prisma.ts`
+- All endpoints tested and working with 870 problems from database
+
+**Scripts Added:**
+- `npm run api:dev` - Start API with hot reload
+- `npm run api:build` - Build for production
+- `npm run api:start` - Run production build
+
+**Testing:**
+- All 3 endpoints verified working
+- Complex queries tested (difficulty + tag filtering)
+- Seed-based shuffling validated
+- PostgreSQL connection confirmed
+
+### Tech Stack
+
+| Component | Technology | Version |
+|-----------|------------|---------|
+| Frontend | React + Vite + TypeScript | 18 / 5+ / 5.3 |
+| Styling | Tailwind CSS | 3.4 |
+| Backend | Express.js + TypeScript | 4.18 / 5.3 |
+| Database | PostgreSQL + Prisma | 16 / 6.19 |
+| Icons | Lucide React | Latest |
+
+### Files Created
+
+**Frontend (`apps/web/src/`):**
+- `App.tsx` - Main application with routing logic
+- `components/Fraction.tsx` - Fraction rendering component
+- `components/MixedNumber.tsx` - Mixed number rendering component
+- `components/MainCategory.tsx` - Category navigation component
+- `types/index.ts` - TypeScript type definitions
+- `utils/utils.ts` - Utility functions
+
+**Backend (`packages/api/src/`):**
+- `index.ts` - Express server entry point
+- `routes/problems.routes.ts` - API route handlers
+- `services/problems.service.ts` - Database business logic
+
+**Configuration:**
+- `packages/api/package.json` - API dependencies
+- `packages/api/tsconfig.json` - TypeScript config for API
+
+### Documentation
+- Added comprehensive "React Frontend & API Backend (v2)" section to CLAUDE.md
+- Documented all API endpoints with examples
+- Documented frontend components and utilities
+- Included deployment considerations and environment variables
+
+### Current Status
+- ✅ Phase 1-4 Complete: React UI + API Backend operational
+- ⏳ Next Phase 5: Frontend-API Integration (replace static data with API calls)
+- Remaining: Phases 6-8 (Print functionality, advanced features, polish)
 
 ---
 

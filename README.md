@@ -19,8 +19,11 @@ npm install
 # Start PostgreSQL
 brew services start postgresql@16
 
-# Run React web UI
+# Start React web UI (http://localhost:5173)
 npm run dev
+
+# Start API backend (http://localhost:3001) - in separate terminal
+npm run api:dev
 
 # Generate worksheet via CLI
 npm run generate -- --type FRACTION_ADDITION --output worksheet.pdf
@@ -31,6 +34,7 @@ npm run generate -- --type FRACTION_ADDITION --output worksheet.pdf
 ```
 maths-tutor/
 ├── apps/web/           # React frontend (Vite + Tailwind)
+├── packages/api/       # Express API backend
 ├── src/
 │   ├── cli/            # CLI worksheet generator
 │   ├── generators/     # Problem selection logic
@@ -88,8 +92,8 @@ npm run build
 ## Tech Stack
 
 - **Frontend**: React 18, Vite, TypeScript, Tailwind CSS
-- **Backend**: Node.js, Express (planned)
-- **Database**: PostgreSQL + Prisma
+- **Backend**: Express.js + TypeScript
+- **Database**: PostgreSQL 16 + Prisma 6.19
 - **PDF**: PDFKit
 
 ## License
