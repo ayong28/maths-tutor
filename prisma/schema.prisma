@@ -74,9 +74,9 @@ enum ProblemType {
 }
 
 enum Difficulty {
-  EASY   // Problems 1-10
+  EASY // Problems 1-10
   MEDIUM // Problems 11-20
-  HARD   // Problems 21-30
+  HARD // Problems 21-30
 }
 
 model WorksheetTemplate {
@@ -117,8 +117,8 @@ model GeneratedWorksheet {
 }
 
 model WorksheetProblem {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now()) // Audit timestamp
+  id          String             @id @default(cuid())
+  createdAt   DateTime           @default(now()) // Audit timestamp
   worksheetId String
   worksheet   GeneratedWorksheet @relation(fields: [worksheetId], references: [id], onDelete: Cascade)
   problemId   String
@@ -127,5 +127,5 @@ model WorksheetProblem {
 
   @@unique([worksheetId, position])
   @@index([worksheetId]) // FK index for joins
-  @@index([problemId])   // Reverse lookup index
+  @@index([problemId]) // Reverse lookup index
 }
