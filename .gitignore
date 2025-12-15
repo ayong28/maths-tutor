@@ -1,0 +1,14 @@
+node_modules
+.env
+.DS_Store
+
+# Generated files
+/generated/prisma
+*.pdf
+
+# IDE
+.idea/
+.vscode/
+
+# Resources (not needed in repo)
+vcaa-resource/

@@ -1,0 +1,131 @@
+// Prisma schema for maths-tutor worksheet generator
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Problem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Core content
+  question String
+  answer   String
+
+  // Categorization
+  type       ProblemType
+  difficulty Difficulty  @default(MEDIUM)
+  tags       String[]
+
+  // Source tracking (from markdown migration)
+  sourceWorksheet     String?
+  sourceProblemNumber Int?
+
+  // Metadata for filtering
+  hasVariables    Boolean @default(false)
+  hasFractions    Boolean @default(false)
+  hasMixedNumbers Boolean @default(false)
+  denominators    Int[] // Changed from String[] - numeric filtering
+  requiresLCD     Boolean @default(false)
+
+  worksheetProblems WorksheetProblem[]
+
+  // Composite indexes for common query patterns
+  @@index([type, difficulty])
+  @@index([type, difficulty, hasFractions])
+  @@index([type, difficulty, hasVariables])
+  @@index([type, difficulty, requiresLCD])
+  @@index([type, difficulty, hasMixedNumbers])
+  @@index([tags], type: Gin) // GIN index for array operations
+}
+
+enum ProblemType {
+  // Fractions (5 types)
+  FRACTION_ADDITION
+  FRACTION_SUBTRACTION
+  FRACTION_REDUCTION
+  FRACTION_MULTIPLICATION
+  FRACTION_DIVISION
+
+  // Algebra - Basic (7 types)
+  ALGEBRA_COLLECTING_TERMS
+  ALGEBRA_MULTIPLICATION
+  ALGEBRA_SUBSTITUTION
+  ALGEBRA_WORD_PROBLEMS
+  ALGEBRA_DISTRIBUTIVE_LAW
+  ALGEBRA_LINEAR_EQUATIONS_SIMPLE
+  ALGEBRA_LINEAR_EQUATIONS_COMPLEX
+
+  // Algebra - Advanced (2 types)
+  ALGEBRA_EXPANDING_BRACKETS
+  ALGEBRA_FACTORISING
+
+  // Graphing (2 types)
+  COORDINATES_PLOTTING
+  LINEAR_GRAPHING
+}
+
+enum Difficulty {
+  EASY   // Problems 1-10
+  MEDIUM // Problems 11-20
+  HARD   // Problems 21-30
+}
+
+model WorksheetTemplate {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name          String      @unique
+  displayTitle  String
+  problemType   ProblemType
+  totalProblems Int         @default(30)
+
+  // Typed difficulty mix (replaces Json)
+  easyCount   Int @default(10)
+  mediumCount Int @default(15)
+  hardCount   Int @default(5)
+
+  requiredTags String[]
+  excludedTags String[]
+  tips         String[]
+
+  generatedWorksheets GeneratedWorksheet[]
+}
+
+model GeneratedWorksheet {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  title      String
+  templateId String?
+  template   WorksheetTemplate? @relation(fields: [templateId], references: [id])
+  seed       String?
+  pdfPath    String?
+
+  problems WorksheetProblem[]
+
+  @@index([templateId]) // Index for template lookups
+}
+
+model WorksheetProblem {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now()) // Audit timestamp
+  worksheetId String
+  worksheet   GeneratedWorksheet @relation(fields: [worksheetId], references: [id], onDelete: Cascade)
+  problemId   String
+  problem     Problem            @relation(fields: [problemId], references: [id])
+  position    Int
+
+  @@unique([worksheetId, position])
+  @@index([worksheetId]) // FK index for joins
+  @@index([problemId])   // Reverse lookup index
+}
