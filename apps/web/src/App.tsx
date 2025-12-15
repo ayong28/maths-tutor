@@ -3,6 +3,7 @@ import { ChevronRight, Printer } from "lucide-react";
 import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
+import MainCategory from "./components/MainCategory";
 
 // Example worksheet data, now includes improper fractions and mixed numbers
 const WORKSHEETS = {
@@ -14,8 +15,8 @@ const WORKSHEETS = {
           "1/4 + 1/2 = ___",
           "2/3 + 3/5 = ___",
           "5/8 + 1/8 = ___",
-          "1/3 + 1/6 = ___"
-        ]
+          "1/3 + 1/6 = ___",
+        ],
       },
       {
         title: "Fraction Addition Worksheet 2",
@@ -23,8 +24,8 @@ const WORKSHEETS = {
           "1/5 + 2/5 = ___",
           "7/10 + 2/10 = ___",
           "4/7 + 3/7 = ___",
-          "1/9 + 4/9 = ___"
-        ]
+          "1/9 + 4/9 = ___",
+        ],
       },
       {
         title: "Improper Fractions & Mixed Numbers Addition",
@@ -34,9 +35,9 @@ const WORKSHEETS = {
           "3/2 + 1 1/2 = ___",
           "2 3/5 + 4/5 = ___",
           "5/3 + 8/3 = ___",
-          "1 1/4 + 2 1/2 = ___"
-        ]
-      }
+          "1 1/4 + 2 1/2 = ___",
+        ],
+      },
     ],
     Subtraction: [
       {
@@ -45,8 +46,8 @@ const WORKSHEETS = {
           "3/4 - 1/4 = ___",
           "5/6 - 1/3 = ___",
           "7/8 - 3/8 = ___",
-          "4/5 - 2/5 = ___"
-        ]
+          "4/5 - 2/5 = ___",
+        ],
       },
       {
         title: "Improper Fractions & Mixed Numbers Subtraction",
@@ -56,10 +57,10 @@ const WORKSHEETS = {
           "7/3 - 4/3 = ___",
           "2 3/5 - 4/5 = ___",
           "2 1/4 - 3/4 = ___",
-          "5 1/2 - 2 1/2 = ___"
-        ]
-      }
-    ]
+          "5 1/2 - 2 1/2 = ___",
+        ],
+      },
+    ],
   },
   Algebra: {
     Addition: [
@@ -69,9 +70,9 @@ const WORKSHEETS = {
           "x + 3x = ___",
           "2y + y = ___",
           "5a + 2a = ___",
-          "b + b + b = ___"
-        ]
-      }
+          "b + b + b = ___",
+        ],
+      },
     ],
     Subtraction: [
       {
@@ -80,15 +81,15 @@ const WORKSHEETS = {
           "5x - 2x = ___",
           "7y - y = ___",
           "9a - 3a = ___",
-          "4b - b = ___"
-        ]
-      }
-    ]
-  }
+          "4b - b = ___",
+        ],
+      },
+    ],
+  },
 };
 // ...existing code...
 type Category = keyof typeof WORKSHEETS;
-type SubCategory = keyof typeof WORKSHEETS[Category];
+type SubCategory = keyof (typeof WORKSHEETS)[Category];
 
 const categories = Object.keys(WORKSHEETS);
 
@@ -135,7 +136,11 @@ function renderMathExpression(expr: string) {
         const frac = parseFraction(cleanedToken);
         if (frac)
           return (
-            <Fraction key={idx} numerator={frac.numerator} denominator={frac.denominator} />
+            <Fraction
+              key={idx}
+              numerator={frac.numerator}
+              denominator={frac.denominator}
+            />
           );
         if (cleanedToken === "___")
           return (
@@ -157,24 +162,25 @@ function renderMathExpression(expr: string) {
   );
 }
 
-
+type Worksheet = { title: string; questions: string[] };
 
 const App = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null as string | null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null as string | null);
-  const [selectedWorksheet, setSelectedWorksheet] = useState(null as {title: string; questions: string[]} | null);
+  const [selectedCategory, setSelectedCategory] = useState(
+    null as string | null
+  );
+  const [selectedSubCategory, setSelectedSubCategory] = useState(
+    null as string | null
+  );
+  const [selectedWorksheet, setSelectedWorksheet] = useState(
+    null as Worksheet | null
+  );
 
   // For printing
   const handlePrint = () => {
     window.print();
   };
 
-  // Reset subcategory + worksheet when category is changed
-  const onSelectCategory = (cat: string) => {
-    setSelectedCategory(cat);
-    setSelectedSubCategory(null);
-    setSelectedWorksheet(null);
-  };
+
 
   // Reset worksheet when subcategory is changed
   const onSelectSubCategory = (subCat: string) => {
@@ -190,7 +196,9 @@ const App = () => {
   // Get worksheets for selected subcategory
   const worksheets =
     selectedCategory && selectedSubCategory
-      ? WORKSHEETS[selectedCategory as Category][selectedSubCategory as SubCategory]
+      ? WORKSHEETS[selectedCategory as Category][
+          selectedSubCategory as SubCategory
+        ]
       : [];
 
   return (
@@ -200,7 +208,9 @@ const App = () => {
         <h1 className="text-3xl font-bold text-blue-900 mb-2">
           Maths Tutoring Worksheets
         </h1>
-        <p className="text-blue-700">Select a topic and category to view printable worksheets.</p>
+        <p className="text-blue-700">
+          Select a topic and category to view printable worksheets.
+        </p>
       </header>
 
       {/* Main content area */}
@@ -208,42 +218,31 @@ const App = () => {
         {/* Sidebar: Categories & Subcategories */}
         <aside className="md:w-1/3 border-r border-blue-100 bg-blue-50 px-6 py-6 print:hidden">
           <div>
-            <h2 className="text-lg font-semibold text-blue-700 mb-4">
-              Topics
-            </h2>
+            <h2 className="text-lg font-semibold text-blue-700 mb-4">Topics</h2>
             <ul>
               {categories.map((cat) => (
                 <li key={cat} className="mb-2">
-                  <button
-                    className={classNames(
-                      "flex items-center px-3 py-2 w-full rounded-lg mb-1 font-medium transition",
-                      selectedCategory === cat
-                        ? "bg-blue-200 text-blue-900"
-                        : "hover:bg-blue-100 text-blue-700"
-                    )}
-                    onClick={() => onSelectCategory(cat)}
-                  >
-                    {cat}
-                    <ChevronRight className="ml-auto w-4 h-4" />
-                  </button>
+                  <MainCategory selectedCategory={selectedCategory} category={cat} setSelectedCategory={setSelectedCategory} setSelectedSubCategory={setSelectedSubCategory} setSelectedWorksheet={setSelectedWorksheet} />
                   {/* Subcategories */}
                   {selectedCategory === cat && (
                     <ul className="ml-4 mt-1">
-                      {Object.keys(WORKSHEETS[cat as Category]).map((subCat) => (
-                        <li key={subCat}>
-                          <button
-                            className={classNames(
-                              "flex items-center px-2 py-1 w-full rounded-md text-sm transition",
-                              selectedSubCategory === subCat
-                                ? "bg-blue-300 text-blue-900 font-semibold"
-                                : "hover:bg-blue-100 text-blue-700"
-                            )}
-                            onClick={() => onSelectSubCategory(subCat)}
-                          >
-                            {subCat}
-                          </button>
-                        </li>
-                      ))}
+                      {Object.keys(WORKSHEETS[cat as Category]).map(
+                        (subCat) => (
+                          <li key={subCat}>
+                            <button
+                              className={classNames(
+                                "flex items-center px-2 py-1 w-full rounded-md text-sm transition",
+                                selectedSubCategory === subCat
+                                  ? "bg-blue-300 text-blue-900 font-semibold"
+                                  : "hover:bg-blue-100 text-blue-700"
+                              )}
+                              onClick={() => onSelectSubCategory(subCat)}
+                            >
+                              {subCat}
+                            </button>
+                          </li>
+                        )
+                      )}
                     </ul>
                   )}
                 </li>
@@ -257,7 +256,9 @@ const App = () => {
           {selectedWorksheet ? (
             <div className="print:p-0">
               <div className="flex items-baseline justify-between mb-6 print:hidden">
-                <h2 className="text-2xl font-bold text-blue-900">{selectedWorksheet.title}</h2>
+                <h2 className="text-2xl font-bold text-blue-900">
+                  {selectedWorksheet.title}
+                </h2>
                 <button
                   onClick={handlePrint}
                   className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition"
@@ -274,7 +275,7 @@ const App = () => {
                 <ol className="space-y-4 text-lg text-blue-900 print:text-black">
                   {selectedWorksheet.questions.map((q, idx) => (
                     <li key={idx} className="mb-3">
-                      <span className='font-math text-blue-900 print:text-black'>
+                      <span className="font-math text-blue-900 print:text-black">
                         {selectedCategory === "Fractions"
                           ? renderMathExpression(q)
                           : q}
@@ -317,7 +318,9 @@ const App = () => {
                             onClick={() => setSelectedWorksheet(ws)}
                           >
                             <ChevronRight className="w-5 h-5 text-blue-400" />
-                            <span className="font-semibold text-blue-900">{ws.title}</span>
+                            <span className="font-semibold text-blue-900">
+                              {ws.title}
+                            </span>
                           </button>
                         </li>
                       ))}
@@ -331,7 +334,9 @@ const App = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center min-h-50 text-blue-500">
                   <span className="text-6xl mb-2">🧮</span>
-                  <p className="text-lg">Please select a topic and category to view worksheets.</p>
+                  <p className="text-lg">
+                    Please select a topic and category to view worksheets.
+                  </p>
                 </div>
               )}
             </>
