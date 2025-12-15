@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { ChevronRight, Printer } from "lucide-react";
+import { Fraction } from "./components/Fraction";
+import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
+import { MixedNumber } from "./components/MixedNumber";
 
 // Example worksheet data, now includes improper fractions and mixed numbers
 const WORKSHEETS = {
@@ -87,80 +90,7 @@ const WORKSHEETS = {
 type Category = keyof typeof WORKSHEETS;
 type SubCategory = keyof typeof WORKSHEETS[Category];
 
-// ...existing code...
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const categories = Object.keys(WORKSHEETS);
-
-// --- Fraction rendering helpers ---
-/**
- * Given a string like "2/3" returns {numerator: 2, denominator: 3}, or null if not a fraction.
- */
-function parseFraction(str: string) {
-  const fracMatch = String(str).match(/^(\d+)\s*\/\s*(\d+)$/);
-  if (fracMatch) return { numerator: fracMatch[1], denominator: fracMatch[2] };
-  return null;
-}
-
-/**
- * Given a string like "3 1/4" returns {whole: 3, numerator:1, denominator:4}, else null.
- */
-function parseMixedNumber(str: string) {
-  const mixMatch = String(str).match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
-  if (mixMatch) {
-    return {
-      whole: mixMatch[1],
-      numerator: mixMatch[2],
-      denominator: mixMatch[3]
-    };
-  }
-  return null;
-}
-
-/**
- * Render a simple fraction (proper, improper) in math notation, e.g. 3/4.
- * Improved: add `min-h-[1.2em]` and align numerators and denominators.
- */
-function Fraction({ numerator, denominator, className }: {numerator: string; denominator: string; className?: string; }) {
-  // Use baseline by default and center text with min-w/-h to ensure uniform height.
-  return (
-    <span
-      className={classNames(
-        "inline-flex flex-col items-center mx-0.5 min-w-[1.3em] min-h-[1.9em] justify-center align-middle",
-        className || ''
-      )}
-    >
-      <span className="border-b border-blue-600 px-0.5 leading-tight font-math text-lg">
-        {numerator}
-      </span>
-      <span className="leading-tight text-[85%] font-math">{denominator}</span>
-    </span>
-  );
-}
-
-/**
- * Render a mixed number: e.g. 1 3/4 as "1" + fraction.
- * The whole part and the fraction are baseline-aligned via flex.
- */
-function MixedNumber({ whole, numerator, denominator, className }: {numerator: string; denominator: string; className?: string; whole: string}) {
-  return (
-    <span
-      className={classNames(
-        "inline-flex flex-row items-center mx-0.5 min-h-[1.9em] align-middle justify-center",
-        className || ''
-      )}
-    >
-      <span
-        className="mr-0.5 font-math text-lg shrink-0 leading-tight min-w-[0.7em] text-right"
-      >
-        {whole}
-      </span>
-      <Fraction numerator={numerator} denominator={denominator} />
-    </span>
-  );
-}
 
 /**
  * Tokenize expression string to identify mixed numbers, fractions, operators, numbers, fill-ins, and variables.
@@ -227,9 +157,7 @@ function renderMathExpression(expr: string) {
   );
 }
 
-// To ensure numbers/letters differentiate as "math" font
-const mathFont =
-  'font-math text-blue-900 print:text-black';
+
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null as string | null);
@@ -323,7 +251,6 @@ const App = () => {
             </ul>
           </div>
         </aside>
-
         {/* Main: Worksheets List or Selected Worksheet */}
         <main className="flex-1 p-8 print:px-0 print:py-0">
           {/* Show worksheet */}
@@ -347,7 +274,7 @@ const App = () => {
                 <ol className="space-y-4 text-lg text-blue-900 print:text-black">
                   {selectedWorksheet.questions.map((q, idx) => (
                     <li key={idx} className="mb-3">
-                      <span className={mathFont}>
+                      <span className='font-math text-blue-900 print:text-black'>
                         {selectedCategory === "Fractions"
                           ? renderMathExpression(q)
                           : q}
