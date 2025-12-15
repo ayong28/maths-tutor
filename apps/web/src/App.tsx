@@ -4,6 +4,7 @@ import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
 import MainCategory from "./components/MainCategory";
+import type { Worksheet } from "@/types";
 
 // Example worksheet data, now includes improper fractions and mixed numbers
 const WORKSHEETS = {
@@ -162,8 +163,6 @@ function renderMathExpression(expr: string) {
   );
 }
 
-type Worksheet = { title: string; questions: string[] };
-
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(
     null as string | null
@@ -179,8 +178,6 @@ const App = () => {
   const handlePrint = () => {
     window.print();
   };
-
-
 
   // Reset worksheet when subcategory is changed
   const onSelectSubCategory = (subCat: string) => {
@@ -222,7 +219,13 @@ const App = () => {
             <ul>
               {categories.map((cat) => (
                 <li key={cat} className="mb-2">
-                  <MainCategory selectedCategory={selectedCategory} category={cat} setSelectedCategory={setSelectedCategory} setSelectedSubCategory={setSelectedSubCategory} setSelectedWorksheet={setSelectedWorksheet} />
+                  <MainCategory
+                    selectedCategory={selectedCategory}
+                    category={cat}
+                    setSelectedCategory={setSelectedCategory}
+                    setSelectedSubCategory={setSelectedSubCategory}
+                    setSelectedWorksheet={setSelectedWorksheet}
+                  />
                   {/* Subcategories */}
                   {selectedCategory === cat && (
                     <ul className="ml-4 mt-1">

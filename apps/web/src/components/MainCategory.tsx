@@ -1,7 +1,6 @@
+import type { Worksheet } from "@/types";
 import { classNames } from "@/utils/utils";
 import { ChevronRight } from "lucide-react";
-
-type Worksheet = { title: string; questions: string[] };
 
 const MainCategory = ({
   selectedCategory,
