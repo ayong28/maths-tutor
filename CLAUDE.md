@@ -308,12 +308,23 @@ curl "http://localhost:3001/api/problems?type=FRACTION_ADDITION&difficulty=EASY,
 - `renderMathExpression(expr)` - Tokenizes and renders math expressions with fractions
 - `classNames(...)` - Utility for conditional CSS classes
 
+**API Client (`apps/web/src/api/`):**
+- `client.ts` - Main API client with fetch wrappers
+  - `getCategories()` - Fetch problem types with counts
+  - `getProblems(filters)` - Query problems with type/difficulty/tags/limit/seed filters
+  - `getTags(type)` - Get available tags for a problem type
+  - `healthCheck()` - API health check
+- `types.ts` - TypeScript definitions matching backend
+- `index.ts` - Central exports for clean imports
+- `README.md` - Usage documentation and examples
+
 **Key Features:**
 - Browser-based printing with print-specific CSS
 - Gradient background (teal-50 to blue-100)
 - Sidebar navigation (categories → subcategories → worksheets)
 - Proper fraction alignment and rendering
 - STIX Two Math font for mathematical notation
+- Type-safe API client with error handling
 
 ### API Service Layer
 
@@ -383,16 +394,21 @@ VITE_API_URL=http://localhost:3001
 3. Serve static files from `apps/web/dist/`
 4. Run API: `npm run api:start`
 
-### Current Status (Phase 4 Complete)
+### Current Status (Phase 5 In Progress)
 
 **✅ Completed:**
 - Phase 1: Project setup (Vite + React + TypeScript + Tailwind)
 - Phase 2: Core UI components (Fraction, MixedNumber, MathExpression)
 - Phase 3: Layout & navigation (Sidebar, Categories, Worksheets)
 - Phase 4: API backend (Express + Prisma + 3 endpoints)
+- Phase 5 Task 1: API Client module (TypeScript client with type-safe fetch wrappers)
 
-**⏳ Next Phase:**
-- Phase 5: Frontend-API integration (replace static data with API calls)
+**⏳ In Progress:**
+- Phase 5 Task 2: Create custom React hooks (useCategories, useProblems, useTags)
+- Phase 5 Task 3: Replace static WORKSHEETS data with API calls
+- Phase 5 Task 4: Add loading and error states
+
+**⏳ Upcoming:**
 - Phase 6: Print functionality (browser printing with CSS)
 - Phase 7: Advanced features (filtering, seed support, answer toggle)
 - Phase 8: Polish & testing
@@ -1625,6 +1641,103 @@ Contains:
 - ✅ Phase 1-4 Complete: React UI + API Backend operational
 - ⏳ Next Phase 5: Frontend-API Integration (replace static data with API calls)
 - Remaining: Phases 6-8 (Print functionality, advanced features, polish)
+
+---
+
+## Recent Session Changes (2025-12-16 - Continued)
+
+**Session Summary**: Created TypeScript API client for React frontend to communicate with Express backend (Phase 5 - Task 1).
+
+### API Client Implementation
+
+**Files Created:**
+
+1. **`apps/web/src/api/types.ts`** - TypeScript type definitions
+   - `ProblemType` - Enum of all problem types (7 types)
+   - `Difficulty` - EASY, MEDIUM, HARD enums
+   - `CategoryInfo` - Category metadata with counts
+   - `Problem` - Complete problem object matching database schema
+   - `ProblemFilters` - Query filter options for API calls
+
+2. **`apps/web/src/api/client.ts`** - Main API client (133 lines)
+   - Base URL configuration: Uses `VITE_API_URL` env var, defaults to `http://localhost:3001`
+   - `ApiError` class: Custom error handling with status codes and response data
+   - `apiFetch<T>()`: Generic fetch wrapper with JSON parsing and error handling
+   - `buildQueryString()`: Converts filter objects to URL query parameters (arrays → comma-separated)
+   - **API Methods:**
+     - `getCategories()` - Fetch all problem types with counts
+     - `getProblems(filters)` - Query problems with optional type/difficulty/tags/limit/seed filters
+     - `getTags(type)` - Get available tags for a problem type
+     - `healthCheck()` - API health check endpoint
+
+3. **`apps/web/src/api/index.ts`** - Central exports module
+   - Re-exports all client functions and types
+   - Clean import syntax: `import { getCategories } from '@/api'`
+
+4. **`apps/web/src/api/README.md`** - API client documentation
+   - Usage examples for all methods
+   - Error handling patterns
+   - Endpoint reference table
+   - Setup instructions
+
+**Configuration Updates:**
+
+5. **`apps/web/vite.config.ts`** - Added development proxy
+   - Proxies `/api/*` requests to `http://localhost:3001`
+   - Enables CORS-free development
+   - `changeOrigin: true` for proper forwarding
+
+**TypeScript Compatibility Fixes:**
+
+- **Issue 1**: `verbatimModuleSyntax: true` requires inline type imports
+  - Fixed: Changed `import type { X }` → `import { type X }`
+
+- **Issue 2**: `erasableSyntaxOnly: true` disallows parameter properties
+  - Fixed: Changed constructor parameter properties to explicit class property declarations
+  - Updated `ApiError` instantiation to assign properties after construction
+
+**API Client Features:**
+
+✅ **Type-safe**: Full TypeScript support matching backend types
+✅ **Error handling**: Custom `ApiError` class with HTTP status codes
+✅ **Flexible filtering**: Supports all query parameters (type, difficulty, tags, limit, seed)
+✅ **Environment-aware**: Configurable via `VITE_API_URL` environment variable
+✅ **Development proxy**: Vite forwards API requests to backend automatically
+✅ **Query builder**: Automatic conversion of filter objects to URL params
+✅ **Well-documented**: Complete README with usage examples
+
+**Usage Example:**
+```typescript
+import { getCategories, getProblems, ApiError } from '@/api';
+
+// Fetch all categories
+const categories = await getCategories();
+
+// Fetch filtered problems
+const problems = await getProblems({
+  type: 'FRACTION_ADDITION',
+  difficulty: ['EASY', 'MEDIUM'],
+  tags: ['unlike-denominators'],
+  limit: 15,
+  seed: 'reproducible-seed'
+});
+
+// Error handling
+try {
+  const data = await getCategories();
+} catch (error) {
+  if (error instanceof ApiError) {
+    console.error('API Error:', error.message, error.status);
+  }
+}
+```
+
+**Phase 5 Progress:**
+- ✅ Task 1: API Client module complete
+- ⏳ Task 2: Create custom React hooks (useCategories, useProblems, useTags)
+- ⏳ Task 3: Replace static WORKSHEETS data with API calls
+- ⏳ Task 4: Add loading and error states
+- ⏳ Task 5: Test end-to-end data flow
 
 ---
 
