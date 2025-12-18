@@ -105,8 +105,11 @@ function renderMathExpression(expr: string) {
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
-  const [selectedProblemType, setSelectedProblemType] = useState<ProblemType | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
+    null
+  );
+  const [selectedProblemType, setSelectedProblemType] =
+    useState<ProblemType | null>(null);
 
   // Fetch categories from API
   const {
@@ -120,7 +123,9 @@ const App = () => {
     data: problems,
     loading: problemsLoading,
     error: problemsError,
-  } = useProblems(selectedProblemType ? { type: selectedProblemType, limit: 30 } : {});
+  } = useProblems(
+    selectedProblemType ? { type: selectedProblemType, limit: 30 } : {}
+  );
 
   // For printing
   const handlePrint = () => {
@@ -298,8 +303,8 @@ const App = () => {
                       <li key={problem.id} className="mb-3">
                         <span className="font-math text-blue-900 print:text-black">
                           {selectedCategory === "Fractions"
-                            ? renderMathExpression(problem.question)
-                            : problem.question}
+                            ? renderMathExpression(problem.question + " = ")
+                            : problem.question + " = "}
                         </span>
                         <div className="border-b border-dashed border-blue-300 mt-1 mb-2 print:border-black min-h-4" />
                       </li>
