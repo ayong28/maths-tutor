@@ -176,7 +176,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-teal-50 to-blue-100 flex flex-col items-center py-8 px-2 print:bg-white print:text-black">
       {/* Header */}
-      <header className="mb-8 text-center">
+      <header className="mb-8 text-center print:hidden">
         <h1 className="text-3xl font-bold text-blue-900 mb-2">
           Maths Tutoring Worksheets
         </h1>
@@ -295,10 +295,33 @@ const App = () => {
               {/* Problems display */}
               {!problemsLoading && !problemsError && problems && (
                 <div>
-                  <h2 className="text-2xl font-bold text-blue-900 block md:hidden mb-4 print:block">
+                  {/* Print header with metadata */}
+                  <div className="hidden print:block mb-8">
+                    <h2 className="text-2xl font-bold text-blue-900 print:text-black text-center mb-4">
+                      {selectedCategory} - {selectedSubCategory}
+                    </h2>
+                    <div className="flex justify-between items-center text-sm text-gray-600 print:text-black mb-4 border-b border-gray-300 print:border-black pb-2">
+                      <div>
+                        <span className="font-semibold">Name:</span>{" "}
+                        ___________________________
+                      </div>
+                      <div>
+                        <span className="font-semibold">Date:</span>{" "}
+                        _______________
+                      </div>
+                      <div>
+                        <span className="font-semibold">Problems:</span>{" "}
+                        {problems.length}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Screen title (hidden on print) */}
+                  <h2 className="text-2xl font-bold text-blue-900 block md:hidden mb-4 print:hidden">
                     {selectedCategory} - {selectedSubCategory}
                   </h2>
-                  <ol className="space-y-4 text-lg text-blue-900 print:text-black">
+
+                  <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg text-blue-900 print:text-black print:grid-cols-2">
                     {problems.map((problem) => (
                       <li key={problem.id} className="mb-3">
                         <span className="font-math text-blue-900 print:text-black">
@@ -306,7 +329,7 @@ const App = () => {
                             ? renderMathExpression(problem.question + " = ")
                             : problem.question + " = "}
                         </span>
-                        <div className="border-b border-dashed border-blue-300 mt-1 mb-2 print:border-black min-h-4" />
+                        <div className="border-b border-dashed border-blue-300 mt-1 mb-2 print:hidden min-h-4" />
                       </li>
                     ))}
                   </ol>
@@ -358,15 +381,111 @@ const App = () => {
       <style>
         {`
           @media print {
+            /* Page setup */
+            @page {
+              size: A4;
+              margin: 2cm 1.5cm;
+            }
+
+            /* Reset body */
             body {
               background: white !important;
+              margin: 0;
+              padding: 0;
             }
+
+            /* Tailwind print utilities */
             .print\\:hidden { display: none !important; }
             .print\\:block { display: block !important; }
             .print\\:shadow-none { box-shadow: none !important; }
             .print\\:bg-white { background: #fff !important; }
             .print\\:text-black { color: #000 !important; }
+            .print\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; }
+            .print\\:px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+            .print\\:py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+            .print\\:p-0 { padding: 0 !important; }
+            .print\\:border-black { border-color: #000 !important; }
+
+            /* Main container adjustments */
+            .min-h-screen {
+              min-height: auto !important;
+              padding: 0 !important;
+            }
+
+            /* Hide rounded corners and shadows */
+            .rounded-xl, .rounded-lg, .rounded-md, .rounded {
+              border-radius: 0 !important;
+            }
+            .shadow, .shadow-lg {
+              box-shadow: none !important;
+            }
+
+            /* Worksheet title - make it prominent */
+            h2 {
+              font-size: 18pt !important;
+              font-weight: bold !important;
+              margin-bottom: 0.5em !important;
+              text-align: center !important;
+              color: #000 !important;
+            }
+
+            /* Print header metadata */
+            .print\\:block {
+              display: block !important;
+            }
+            .hidden.print\\:block {
+              display: block !important;
+            }
+
+            /* Metadata line styling */
+            div.flex {
+              font-size: 10pt !important;
+              color: #000 !important;
+              margin-bottom: 1.5em !important;
+            }
+
+            /* Problems grid - ensure 2 columns */
+            ol {
+              display: grid !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 1em !important;
+              font-size: 11pt !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              list-style: none !important;
+              counter-reset: problem-counter !important;
+            }
+
+            /* Number each problem */
+            ol li {
+              position: relative !important;
+              padding-left: 1.5em !important;
+              margin-bottom: calc(1em) !important;
+              page-break-inside: avoid !important;
+              counter-increment: problem-counter !important;
+            }
+
+            ol li::before {
+              content: counter(problem-counter) ". " !important;
+              position: absolute !important;
+              left: 0 !important;
+              font-weight: bold !important;
+              color: #000 !important;
+            }
+
+            /* Prevent page breaks in the middle of problems */
+            li {
+              break-inside: avoid !important;
+              page-break-inside: avoid !important;
+            }
+
+            /* Ensure proper spacing */
+            * {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
           }
+
           .font-math {
             font-family: 'STIX Two Math', 'Cambria Math', 'Times New Roman', system-ui, sans-serif;
             font-variant-numeric: lining-nums;
