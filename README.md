@@ -66,6 +66,31 @@ npm run generate:list
 npm run generate:tags -- --type FRACTION_ADDITION
 ```
 
+## Web UI
+
+The React web interface (v2) provides a browser-based UI for browsing and printing worksheets:
+
+**Features:**
+- 🎯 Browse all 870 problems from PostgreSQL database
+- 📂 Category/subcategory navigation (Fractions, Algebra)
+- 🖨️ Browser-based printing with proper fraction notation
+- ⚡ Real-time loading states and error handling
+- 🎨 Clean UI with Tailwind CSS and gradient backgrounds
+
+**Running:**
+```bash
+# Terminal 1: Start React frontend
+npm run dev  # http://localhost:5173
+
+# Terminal 2: Start API backend
+npm run api:dev  # http://localhost:3001
+```
+
+**Architecture:**
+- Frontend: React 18 + Vite + TypeScript + Tailwind CSS
+- API: Express.js with Prisma ORM
+- Data flow: PostgreSQL → Prisma → Express API → React
+
 ## Problem Types
 
 | Type | Count |
