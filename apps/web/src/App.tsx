@@ -331,7 +331,7 @@ const App = () => {
 
                   {/* Questions - always show without answers in print */}
                   <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg text-blue-900 print:text-black print:grid-cols-2">
-                    {problems.map((problem, idx) => (
+                    {problems.map((problem) => (
                       <li key={problem.id} className="mb-3">
                         <span className="font-math text-blue-900 print:text-black">
                           {selectedCategory === "Fractions" ? (
