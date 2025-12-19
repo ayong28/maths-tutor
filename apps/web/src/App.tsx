@@ -173,6 +173,8 @@ const App = () => {
     setSelectedProblemType(null);
   };
 
+  const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-linear-to-br from-teal-50 to-blue-100 flex flex-col items-center py-8 px-2 print:bg-white print:text-black">
       {/* Header */}
@@ -220,7 +222,10 @@ const App = () => {
                           ? "bg-blue-200 text-blue-900"
                           : "hover:bg-blue-100 text-blue-700"
                       )}
-                      onClick={() => onSelectCategory(cat)}
+                      onClick={() => {
+                        onSelectCategory(cat);
+                        setAnswerKeyOpen(false);
+                      }}
                     >
                       {cat}
                       <ChevronRight className="ml-auto w-4 h-4" />
@@ -238,7 +243,10 @@ const App = () => {
                                     ? "bg-blue-300 text-blue-900 font-semibold"
                                     : "hover:bg-blue-100 text-blue-700"
                                 )}
-                                onClick={() => onSelectSubCategory(subCat)}
+                                onClick={() => {
+                                  onSelectSubCategory(subCat);
+                                  setAnswerKeyOpen(false);
+                                }}
                               >
                                 {subCat}
                               </button>
@@ -321,27 +329,72 @@ const App = () => {
                     {selectedCategory} - {selectedSubCategory}
                   </h2>
 
+                  {/* Questions - always show without answers in print */}
                   <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg text-blue-900 print:text-black print:grid-cols-2">
-                    {problems.map((problem) => (
+                    {problems.map((problem, idx) => (
                       <li key={problem.id} className="mb-3">
                         <span className="font-math text-blue-900 print:text-black">
-                          {selectedCategory === "Fractions"
-                            ? renderMathExpression(problem.question + " = ")
-                            : problem.question + " = "}
+                          {selectedCategory === "Fractions" ? (
+                            <>
+                              {renderMathExpression(problem.question + " = ")}
+                              <span className="inline-answer print:hidden">
+                                {answerKeyOpen &&
+                                  renderMathExpression(problem.answer)}
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              {problem.question + " = "}
+                              <span className="inline-answer print:hidden">
+                                {answerKeyOpen && problem.answer}
+                              </span>
+                            </>
+                          )}
                         </span>
-                        <div className="border-b border-dashed border-blue-300 mt-1 mb-2 print:hidden min-h-4" />
+                        {/* <div className="border-b border-dashed border-blue-300 mt-1 mb-2 print:hidden min-h-4" /> */}
                       </li>
                     ))}
                   </ol>
+
+                  {/* Answer Key - hidden on screen, shows on page 2 when printing */}
+                  <div className="print-answer-key">
+                    <h2 className="text-xl font-bold text-black text-center mb-6 mt-8">
+                      Answer Key
+                    </h2>
+                    <ol className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                      {problems.map((problem, idx) => (
+                        <li
+                          key={`answer-${problem.id}`}
+                          className="flex items-baseline"
+                        >
+                          <span className="font-semibold mr-2">{idx + 1}.</span>
+                          <span className="font-math">
+                            {selectedCategory === "Fractions"
+                              ? renderMathExpression(problem.answer)
+                              : problem.answer}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
                   <div className="mt-8 flex gap-4 print:hidden">
                     <button
                       className="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded transition"
                       onClick={() => {
                         setSelectedSubCategory(null);
                         setSelectedProblemType(null);
+                        setAnswerKeyOpen(false);
                       }}
                     >
                       Back to Categories
+                    </button>
+                    <button
+                      className="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 w-48 rounded transition"
+                      onClick={() => {
+                        setAnswerKeyOpen(!answerKeyOpen);
+                      }}
+                    >
+                      {answerKeyOpen ? "Hide Answer Key" : "Show Answer Key"}
                     </button>
                     <button
                       onClick={handlePrint}
@@ -384,7 +437,7 @@ const App = () => {
             /* Page setup */
             @page {
               size: A4;
-              margin: 2cm 1.5cm;
+              margin: 1cm 1cm;
             }
 
             /* Reset body */
@@ -405,6 +458,11 @@ const App = () => {
             .print\\:py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
             .print\\:p-0 { padding: 0 !important; }
             .print\\:border-black { border-color: #000 !important; }
+
+            /* Hide inline answers in print (they show on page 2 instead) */
+            .inline-answer {
+              display: none !important;
+            }
 
             /* Main container adjustments */
             .min-h-screen {
@@ -479,11 +537,49 @@ const App = () => {
               page-break-inside: avoid !important;
             }
 
+            /* Answer Key on Page 2 */
+            .print-answer-key {
+              display: block !important;
+              page-break-before: always !important;
+              break-before: page !important;
+              margin-top: 0 !important;
+              padding-top: 0.5cm !important;
+            }
+
+            .print-answer-key h2 {
+              font-size: 12pt !important;
+              margin-bottom: 0.5em !important;
+            }
+
+            .print-answer-key ol {
+              display: grid !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 0.3em 2em !important;
+              font-size: 9pt !important;
+              list-style: none !important;
+              counter-reset: none !important;
+            }
+
+            .print-answer-key li {
+              margin-bottom: 0.2em !important;
+              padding-left: 0 !important;
+              page-break-inside: avoid !important;
+            }
+
+            .print-answer-key li::before {
+              content: none !important;
+            }
+
             /* Ensure proper spacing */
             * {
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
             }
+          }
+
+          /* Hide answer key on screen, show only when printing */
+          .print-answer-key {
+            display: none;
           }
 
           .font-math {
