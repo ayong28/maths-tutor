@@ -12,3 +12,6 @@ node_modules
 
 # Resources (not needed in repo)
 vcaa-resource/
+
+# ideas folder 
+ideas/

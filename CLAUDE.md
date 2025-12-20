@@ -407,7 +407,7 @@ VITE_API_URL=http://localhost:3001
 3. Serve static files from `apps/web/dist/`
 4. Run API: `npm run api:start`
 
-### Current Status (Phase 5 ✅ Complete)
+### Current Status (Phase 6 ✅ Complete)
 
 **✅ Completed:**
 - Phase 1: Project setup (Vite + React + TypeScript + Tailwind)
@@ -419,6 +419,11 @@ VITE_API_URL=http://localhost:3001
   - Task 2: Custom React hooks (useCategories, useProblems, useTags)
   - Task 3: Replace static WORKSHEETS data with API calls (App.tsx refactoring)
   - Task 4: Loading & error states with Lucide icons
+- Phase 6: Print functionality
+  - Task 1: Enhanced print CSS with A4 layout and page breaks
+  - Task 2: Answer key implementation (2-page printing)
+  - Task 3: Worksheet header with student metadata
+  - Task 4: Optimized spacing and layout
 
 **📊 Current Capabilities:**
 - ✅ Browse all 870 problems from PostgreSQL database
@@ -428,10 +433,12 @@ VITE_API_URL=http://localhost:3001
 - ✅ Error handling with user-friendly messages
 - ✅ Proper fraction rendering with math notation
 - ✅ React hooks pattern with cleanup and refetch support
+- ✅ Professional print output with 2-page layout (questions + answers)
+- ✅ Toggle answer display on screen (Show/Hide Answer Key button)
+- ✅ Optimized print CSS for A4 worksheets
 
 **⏳ Next:**
-- Phase 6: Print functionality (browser printing with CSS `@media print`)
-- Phase 7: Advanced features (difficulty filters, tag filters, seed input, answer key toggle)
+- Phase 7: Advanced features (difficulty filters, tag filters, seed input, custom problem counts)
 - Phase 8: Polish & testing (mobile responsive, keyboard navigation, automated tests)
 
 ## Available Worksheets
@@ -1662,6 +1669,114 @@ Contains:
 - ✅ Phase 1-4 Complete: React UI + API Backend operational
 - ⏳ Next Phase 5: Frontend-API Integration (replace static data with API calls)
 - Remaining: Phases 6-8 (Print functionality, advanced features, polish)
+
+---
+
+## Recent Session Changes (2025-12-19)
+
+**Session Summary**: Completed Phase 6 - Print Functionality with comprehensive print CSS and answer key implementation. Added 2-page printing (questions on page 1, answers on page 2) with optimized spacing and layout for professional worksheet output.
+
+### Phase 6: Print Functionality ✅
+
+**Goals**: Enable browser printing with proper formatting and answer key support
+
+**Implementation:**
+
+1. **Enhanced Print CSS** (`apps/web/src/App.tsx` - style block)
+   - A4 page setup with 1cm margins
+   - 2-column grid layout for problems (11pt font)
+   - Compact spacing: 1em gap between problems
+   - Custom problem numbering with CSS counters
+   - Page break prevention for problems (`page-break-inside: avoid`)
+   - Hidden UI elements (header, sidebar, buttons)
+
+2. **Answer Key Implementation**
+   - Toggle button: "Show Answer Key" / "Hide Answer Key"
+   - **On-screen behavior**: Shows answers inline after "=" when toggled
+   - **Print behavior**: Answers hidden inline, separate answer key on page 2
+   - Answer key styling: 2-column grid, 9pt font, compact spacing
+   - Automatic page break before answer key (`page-break-before: always`)
+
+3. **Worksheet Header (Print Only)**
+   - Category and subcategory title (18pt, centered)
+   - Student metadata: Name field, Date field, Problem count
+   - Border separator line below metadata
+
+4. **Print Layout Optimizations**
+   - Removed inline answer blanks (dashed lines)
+   - Title font: 18pt for worksheet header
+   - Problem font: 11pt for questions
+   - Answer key font: 9pt for compact fit
+   - Top padding: 0.5cm on page 2 for answer key
+   - Vertical spacing: 0.3em row gap, 0.2em item margin
+
+**CSS Features:**
+```css
+@media print {
+  @page { size: A4; margin: 1cm; }
+
+  /* Questions page */
+  ol { grid-template-columns: repeat(2, 1fr); gap: 1em; font-size: 11pt; }
+  ol li { margin-bottom: 1em; }
+  ol li::before { content: counter(problem-counter) ". "; }
+
+  /* Answer key page */
+  .print-answer-key {
+    page-break-before: always;
+    padding-top: 0.5cm;
+  }
+  .print-answer-key ol {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3em 2em;
+    font-size: 9pt;
+  }
+
+  /* Hide on-screen elements */
+  header, aside, button, .inline-answer { display: none !important; }
+}
+```
+
+**Screen vs Print Behavior:**
+
+| Feature | Screen | Print |
+|---------|--------|-------|
+| Header & Sidebar | Visible | Hidden |
+| Worksheet Title | Hidden on desktop | Visible (18pt, centered) |
+| Student Metadata | Hidden | Visible (Name, Date, Count) |
+| Inline Answers | Toggle on/off | Always hidden |
+| Answer Key Section | Hidden | Visible on page 2 |
+| Answer Blanks | Dashed lines | Removed |
+| Problem Numbering | CSS counters | CSS counters |
+
+**Files Modified:**
+- `apps/web/src/App.tsx` - Added answer key state, print CSS, answer key section
+
+**User Adjustments:**
+- Title font: Changed to 18pt for prominence
+- Problem gap: Set to 1em for comfortable spacing
+- Page margins: 1cm all around for maximum space
+- Answer key padding: 0.5cm top to fit all answers
+- Answer font: 9pt for compact answer key
+
+### Phase 6 Status: ✅ COMPLETE
+
+**Completed Tasks:**
+- ✅ Enhanced print-specific CSS with page breaks
+- ✅ Added worksheet header with student metadata
+- ✅ Implemented answer key with 2-page printing
+- ✅ Optimized spacing to prevent answer cutoff
+- ✅ Tested fraction and algebra problem printing
+
+**Output Quality:**
+- Professional worksheet appearance
+- All 30 problems fit on page 1
+- All 30 answers fit on page 2
+- Proper fraction rendering in both questions and answers
+- Clean, readable layout suitable for students
+
+**Next Phase:**
+- Phase 7: Advanced features (difficulty filters, tag filters, seed input, answer key improvements)
+- Phase 8: Polish & testing (mobile responsive, keyboard navigation, automated tests)
 
 ---
 

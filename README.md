@@ -73,7 +73,9 @@ The React web interface (v2) provides a browser-based UI for browsing and printi
 **Features:**
 - 🎯 Browse all 870 problems from PostgreSQL database
 - 📂 Category/subcategory navigation (Fractions, Algebra)
-- 🖨️ Browser-based printing with proper fraction notation
+- 🖨️ Professional print output with 2-page layout (questions + answer key)
+- 👁️ Toggle answer display on screen (Show/Hide Answer Key)
+- 📄 Print-optimized CSS for A4 worksheets with proper spacing
 - ⚡ Real-time loading states and error handling
 - 🎨 Clean UI with Tailwind CSS and gradient backgrounds
 
