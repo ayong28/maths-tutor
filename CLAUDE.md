@@ -407,7 +407,7 @@ VITE_API_URL=http://localhost:3001
 3. Serve static files from `apps/web/dist/`
 4. Run API: `npm run api:start`
 
-### Current Status (Phase 6 ✅ Complete)
+### Current Status (Phase 7 🚧 Partially Complete)
 
 **✅ Completed:**
 - Phase 1: Project setup (Vite + React + TypeScript + Tailwind)
@@ -424,10 +424,17 @@ VITE_API_URL=http://localhost:3001
   - Task 2: Answer key implementation (2-page printing)
   - Task 3: Worksheet header with student metadata
   - Task 4: Optimized spacing and layout
+- Phase 7 (Partial): Advanced filters
+  - Task 1: ✅ Difficulty filters (EASY/MEDIUM/HARD checkboxes)
+  - Task 2: ✅ Tag filters (dynamic checkboxes based on selected type)
+  - Task 3: ⏸️  Seed input (deferred to future version - see Nice-to-Have Features below)
+  - Task 4: ⏸️  Custom problem count slider (deferred to future version)
 
 **📊 Current Capabilities:**
 - ✅ Browse all 870 problems from PostgreSQL database
 - ✅ Dynamic category/subcategory navigation built from API data
+- ✅ **Filter by difficulty** - Select EASY/MEDIUM/HARD combinations
+- ✅ **Filter by tags** - Filter problems by specific tags (e.g., "unlike-denominators", "has-powers")
 - ✅ Type-safe data flow: PostgreSQL → Prisma → Express → React
 - ✅ Loading states during API fetches
 - ✅ Error handling with user-friendly messages
@@ -436,10 +443,63 @@ VITE_API_URL=http://localhost:3001
 - ✅ Professional print output with 2-page layout (questions + answers)
 - ✅ Toggle answer display on screen (Show/Hide Answer Key button)
 - ✅ Optimized print CSS for A4 worksheets
+- ✅ Default 20 problems per worksheet
 
 **⏳ Next:**
-- Phase 7: Advanced features (difficulty filters, tag filters, seed input, custom problem counts)
 - Phase 8: Polish & testing (mobile responsive, keyboard navigation, automated tests)
+- Phase 9: VCAA Problem Database Expansion (generate missing Level 7 topics)
+
+**🐛 Known Issues:**
+- **Problem rendering issue**: Need to investigate and fix rendering when selecting filter options
+  - Symptoms: TBD (user to clarify)
+  - Priority: High
+  - Tracked for Phase 8
+
+## Nice-to-Have Features (Future Versions)
+
+**Deferred from Phase 7:**
+
+1. **Worksheet Seed Input** (Reproducible Generation)
+   - **Purpose**: Enter a seed string (e.g., "class-2025-01") to generate identical worksheets across sessions
+   - **Use case**: Recreate lost worksheets, share exact problem sets with colleagues, consistent makeup work
+   - **Backend support**: Already implemented via `seedShuffle()` function
+   - **CLI support**: Available via `npm run generate -- --seed "class-2025-01"`
+   - **Status**: UI implementation deferred, feature fully functional via CLI
+   - **Complexity**: Low (1-2 hours implementation)
+
+2. **Custom Problem Count**
+   - **Purpose**: Slider/input to adjust number of problems per worksheet (e.g., 10, 15, 20, 30)
+   - **Current**: Fixed at 20 problems per worksheet
+   - **Backend support**: Already implemented via `limit` parameter
+   - **Status**: Deferred to future version
+   - **Complexity**: Low (1-2 hours implementation)
+
+3. **Accessibility Improvements**
+   - Add ARIA labels and roles
+   - Improve keyboard navigation
+   - Add screen reader support
+   - Label associations for all form inputs
+   - Status: Tracked for Phase 8
+
+4. **Enhanced Error Handling**
+   - Seed-specific error messages
+   - Filter validation feedback
+   - Network error recovery
+   - Status: Nice-to-have for Phase 8
+
+**Priority Order for Future Implementation:**
+1. Fix problem rendering issue (Phase 8)
+2. Add test coverage for tag filtering (Phase 8)
+3. Custom problem count slider (quick win)
+4. Worksheet seed input (quick win)
+5. Accessibility improvements (Phase 8+)
+
+**Testing Reminders for Phase 8:**
+- Add Jest/Playwright tests to verify tag retrieval for all problem types
+- Test that tags are correctly filtered and applied to problem queries
+- Verify all problem types return expected tag arrays
+- Test tag filter combinations with difficulty filters
+- **Question for review**: Decide whether to keep markdown worksheets in `worksheets/` folder or archive them (all 870 problems now in PostgreSQL)
 
 ## Available Worksheets
 

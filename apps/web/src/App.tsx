@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronRight, Printer, Loader2, AlertCircle } from "lucide-react";
 import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
@@ -126,21 +126,24 @@ const App = () => {
     loading: tagsLoading,
   } = useTags(selectedProblemType || undefined);
 
+  // Create stable filter object with useMemo to prevent unnecessary re-renders
+  const problemFilters = useMemo(() => {
+    if (!selectedProblemType) return {};
+
+    return {
+      type: selectedProblemType,
+      limit: 20,
+      difficulty: selectedDifficulties.length > 0 ? selectedDifficulties : undefined,
+      tags: selectedTags.length > 0 ? selectedTags : undefined,
+    };
+  }, [selectedProblemType, selectedDifficulties, selectedTags]);
+
   // Fetch problems when a subcategory is selected
   const {
     data: problems,
     loading: problemsLoading,
     error: problemsError,
-  } = useProblems(
-    selectedProblemType
-      ? {
-          type: selectedProblemType,
-          limit: 20,
-          difficulty: selectedDifficulties.length > 0 ? selectedDifficulties : undefined,
-          tags: selectedTags.length > 0 ? selectedTags : undefined,
-        }
-      : {}
-  );
+  } = useProblems(problemFilters);
 
   // For printing
   const handlePrint = () => {
