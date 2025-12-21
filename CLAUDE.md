@@ -407,7 +407,7 @@ VITE_API_URL=http://localhost:3001
 3. Serve static files from `apps/web/dist/`
 4. Run API: `npm run api:start`
 
-### Current Status (Phase 7 🚧 Partially Complete)
+### Current Status (Phase 7 ✅ Complete)
 
 **✅ Completed:**
 - Phase 1: Project setup (Vite + React + TypeScript + Tailwind)
@@ -424,17 +424,20 @@ VITE_API_URL=http://localhost:3001
   - Task 2: Answer key implementation (2-page printing)
   - Task 3: Worksheet header with student metadata
   - Task 4: Optimized spacing and layout
-- Phase 7 (Partial): Advanced filters
+- Phase 7: Advanced filters ✅
   - Task 1: ✅ Difficulty filters (EASY/MEDIUM/HARD checkboxes)
   - Task 2: ✅ Tag filters (dynamic checkboxes based on selected type)
-  - Task 3: ⏸️  Seed input (deferred to future version - see Nice-to-Have Features below)
-  - Task 4: ⏸️  Custom problem count slider (deferred to future version)
+  - Task 3: ✅ Apply Filters button (staged vs applied filter pattern for performance)
+  - Task 4: ⏸️  Seed input (deferred to future version - see Nice-to-Have Features below)
+  - Task 5: ⏸️  Custom problem count slider (deferred to future version)
 
 **📊 Current Capabilities:**
 - ✅ Browse all 870 problems from PostgreSQL database
 - ✅ Dynamic category/subcategory navigation built from API data
 - ✅ **Filter by difficulty** - Select EASY/MEDIUM/HARD combinations
 - ✅ **Filter by tags** - Filter problems by specific tags (e.g., "unlike-denominators", "has-powers")
+- ✅ **Staged filter pattern** - Experiment with filters before applying (prevents expensive re-renders)
+- ✅ **Apply/Clear Filters buttons** - Explicit control over when API calls are made
 - ✅ Type-safe data flow: PostgreSQL → Prisma → Express → React
 - ✅ Loading states during API fetches
 - ✅ Error handling with user-friendly messages
@@ -450,10 +453,12 @@ VITE_API_URL=http://localhost:3001
 - Phase 9: VCAA Problem Database Expansion (generate missing Level 7 topics)
 
 **🐛 Known Issues:**
-- **Problem rendering issue**: Need to investigate and fix rendering when selecting filter options
-  - Symptoms: TBD (user to clarify)
-  - Priority: High
-  - Tracked for Phase 8
+- ~~**Problem rendering issue**~~: FIXED - Implemented staged vs applied filter pattern
+  - **Problem**: Every difficulty/tag checkbox click triggered immediate API call → expensive re-renders
+  - **Solution**: Separated "staged" filters (user selections) from "applied" filters (sent to API)
+  - **Implementation**: Added "Apply Filters" button - API only called when user clicks Apply
+  - **Benefits**: Faster UI, users can experiment with filter combinations before committing
+  - **Status**: ✅ Resolved in Phase 7
 
 ## Nice-to-Have Features (Future Versions)
 

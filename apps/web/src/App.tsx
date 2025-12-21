@@ -110,8 +110,14 @@ const App = () => {
   );
   const [selectedProblemType, setSelectedProblemType] =
     useState<ProblemType | null>(null);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Staged filters - change immediately on checkbox click (not sent to API yet)
+  const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>([]);
+  const [stagedTags, setStagedTags] = useState<string[]>([]);
+
+  // Applied filters - only updated when "Apply Filters" is clicked (sent to API)
+  const [appliedDifficulties, setAppliedDifficulties] = useState<Difficulty[]>([]);
+  const [appliedTags, setAppliedTags] = useState<string[]>([]);
 
   // Fetch categories from API
   const {
@@ -126,17 +132,27 @@ const App = () => {
     loading: tagsLoading,
   } = useTags(selectedProblemType || undefined);
 
+  // Detect if there are unapplied filter changes
+  const hasUnappliedChanges = useMemo(() => {
+    const diffChanged = JSON.stringify([...stagedDifficulties].sort()) !==
+                        JSON.stringify([...appliedDifficulties].sort());
+    const tagsChanged = JSON.stringify([...stagedTags].sort()) !==
+                        JSON.stringify([...appliedTags].sort());
+    return diffChanged || tagsChanged;
+  }, [stagedDifficulties, appliedDifficulties, stagedTags, appliedTags]);
+
   // Create stable filter object with useMemo to prevent unnecessary re-renders
+  // ONLY uses APPLIED filters - API is called only when filters are applied
   const problemFilters = useMemo(() => {
     if (!selectedProblemType) return {};
 
     return {
       type: selectedProblemType,
       limit: 20,
-      difficulty: selectedDifficulties.length > 0 ? selectedDifficulties : undefined,
-      tags: selectedTags.length > 0 ? selectedTags : undefined,
+      difficulty: appliedDifficulties.length > 0 ? appliedDifficulties : undefined,
+      tags: appliedTags.length > 0 ? appliedTags : undefined,
     };
-  }, [selectedProblemType, selectedDifficulties, selectedTags]);
+  }, [selectedProblemType, appliedDifficulties, appliedTags]);
 
   // Fetch problems when a subcategory is selected
   const {
@@ -176,8 +192,11 @@ const App = () => {
   // Handle subcategory selection
   const onSelectSubCategory = (subCat: string) => {
     setSelectedSubCategory(subCat);
-    setSelectedDifficulties([]); // Reset difficulty filters
-    setSelectedTags([]); // Reset tag filters
+    // Reset both staged and applied filters
+    setStagedDifficulties([]);
+    setStagedTags([]);
+    setAppliedDifficulties([]);
+    setAppliedTags([]);
 
     // Find the ProblemType for this subcategory
     if (selectedCategory && subcategoryToType[selectedCategory]) {
@@ -191,26 +210,43 @@ const App = () => {
     setSelectedCategory(cat);
     setSelectedSubCategory(null);
     setSelectedProblemType(null);
-    setSelectedDifficulties([]); // Reset difficulty filters
-    setSelectedTags([]); // Reset tag filters
+    // Reset both staged and applied filters
+    setStagedDifficulties([]);
+    setStagedTags([]);
+    setAppliedDifficulties([]);
+    setAppliedTags([]);
   };
 
-  // Toggle difficulty selection
-  const toggleDifficulty = (difficulty: Difficulty) => {
-    setSelectedDifficulties((prev) =>
+  // Toggle difficulty selection (staged only - doesn't trigger API call)
+  const toggleDifficulty = (difficulty: Difficulty): void => {
+    setStagedDifficulties((prev) =>
       prev.includes(difficulty)
         ? prev.filter((d) => d !== difficulty)
         : [...prev, difficulty]
     );
   };
 
-  // Toggle tag selection
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
+  // Toggle tag selection (staged only - doesn't trigger API call)
+  const toggleTag = (tag: string): void => {
+    setStagedTags((prev) =>
       prev.includes(tag)
         ? prev.filter((t) => t !== tag)
         : [...prev, tag]
     );
+  };
+
+  // Apply staged filters - triggers API call
+  const applyFilters = (): void => {
+    setAppliedDifficulties(stagedDifficulties);
+    setAppliedTags(stagedTags);
+  };
+
+  // Clear all filters
+  const clearFilters = (): void => {
+    setStagedDifficulties([]);
+    setStagedTags([]);
+    setAppliedDifficulties([]);
+    setAppliedTags([]);
   };
 
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
@@ -248,7 +284,7 @@ const App = () => {
                     >
                       <input
                         type="checkbox"
-                        checked={selectedDifficulties.includes(difficulty)}
+                        checked={stagedDifficulties.includes(difficulty)}
                         onChange={() => toggleDifficulty(difficulty)}
                         className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                       />
@@ -258,7 +294,7 @@ const App = () => {
                     </label>
                   ))}
                 </div>
-                {selectedDifficulties.length === 0 && (
+                {stagedDifficulties.length === 0 && (
                   <p className="text-xs text-blue-500 mt-2 italic">
                     All difficulties shown
                   </p>
@@ -268,7 +304,7 @@ const App = () => {
 
             {/* Tag Filters */}
             {selectedSubCategory && availableTags && availableTags.length > 0 && (
-              <div className="mb-6 p-4 bg-white rounded-lg border border-blue-200">
+              <div className="mb-4 p-4 bg-white rounded-lg border border-blue-200">
                 <h3 className="text-sm font-semibold text-blue-700 mb-3">
                   Filter by Tags
                 </h3>
@@ -286,7 +322,7 @@ const App = () => {
                       >
                         <input
                           type="checkbox"
-                          checked={selectedTags.includes(tag)}
+                          checked={stagedTags.includes(tag)}
                           onChange={() => toggleTag(tag)}
                           className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                         />
@@ -297,16 +333,53 @@ const App = () => {
                     ))}
                   </div>
                 )}
-                {selectedTags.length === 0 && !tagsLoading && (
+                {stagedTags.length === 0 && !tagsLoading && (
                   <p className="text-xs text-blue-500 mt-2 italic">
                     All tags shown
                   </p>
                 )}
-                {selectedTags.length > 0 && (
+                {stagedTags.length > 0 && (
                   <p className="text-xs text-blue-600 mt-2 font-medium">
-                    {selectedTags.length} tag{selectedTags.length !== 1 ? 's' : ''} selected
+                    {stagedTags.length} tag{stagedTags.length !== 1 ? 's' : ''} selected
                   </p>
                 )}
+              </div>
+            )}
+
+            {/* Apply/Clear Filters Buttons */}
+            {selectedSubCategory && (
+              <div className="mb-6 p-4 bg-white rounded-lg border border-blue-200">
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={applyFilters}
+                    disabled={!hasUnappliedChanges}
+                    className={classNames(
+                      "w-full px-4 py-2 rounded-lg font-medium transition",
+                      hasUnappliedChanges
+                        ? "bg-blue-600 hover:bg-blue-700 text-white"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    )}
+                  >
+                    Apply Filters
+                    {hasUnappliedChanges && (
+                      <span className="ml-2 text-xs bg-blue-500 px-2 py-0.5 rounded-full">
+                        Pending
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    onClick={clearFilters}
+                    disabled={stagedDifficulties.length === 0 && stagedTags.length === 0}
+                    className={classNames(
+                      "w-full px-4 py-2 rounded-lg font-medium transition",
+                      stagedDifficulties.length > 0 || stagedTags.length > 0
+                        ? "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                        : "bg-gray-50 text-gray-300 cursor-not-allowed"
+                    )}
+                  >
+                    Clear Filters
+                  </button>
+                </div>
               </div>
             )}
 
