@@ -3,8 +3,8 @@ import { ChevronRight, Printer, Loader2, AlertCircle } from "lucide-react";
 import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
-import { useCategories, useProblems } from "@/hooks";
-import { type ProblemType } from "@/api";
+import { useCategories, useProblems, useTags } from "@/hooks";
+import { type ProblemType, type Difficulty } from "@/api";
 
 /**
  * Map API problem types to display categories and subcategories
@@ -110,6 +110,8 @@ const App = () => {
   );
   const [selectedProblemType, setSelectedProblemType] =
     useState<ProblemType | null>(null);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Fetch categories from API
   const {
@@ -118,13 +120,26 @@ const App = () => {
     error: categoriesError,
   } = useCategories();
 
+  // Fetch tags for the selected problem type (only when type is selected)
+  const {
+    data: availableTags,
+    loading: tagsLoading,
+  } = useTags(selectedProblemType || undefined);
+
   // Fetch problems when a subcategory is selected
   const {
     data: problems,
     loading: problemsLoading,
     error: problemsError,
   } = useProblems(
-    selectedProblemType ? { type: selectedProblemType, limit: 30 } : {}
+    selectedProblemType
+      ? {
+          type: selectedProblemType,
+          limit: 20,
+          difficulty: selectedDifficulties.length > 0 ? selectedDifficulties : undefined,
+          tags: selectedTags.length > 0 ? selectedTags : undefined,
+        }
+      : {}
   );
 
   // For printing
@@ -158,6 +173,8 @@ const App = () => {
   // Handle subcategory selection
   const onSelectSubCategory = (subCat: string) => {
     setSelectedSubCategory(subCat);
+    setSelectedDifficulties([]); // Reset difficulty filters
+    setSelectedTags([]); // Reset tag filters
 
     // Find the ProblemType for this subcategory
     if (selectedCategory && subcategoryToType[selectedCategory]) {
@@ -171,6 +188,26 @@ const App = () => {
     setSelectedCategory(cat);
     setSelectedSubCategory(null);
     setSelectedProblemType(null);
+    setSelectedDifficulties([]); // Reset difficulty filters
+    setSelectedTags([]); // Reset tag filters
+  };
+
+  // Toggle difficulty selection
+  const toggleDifficulty = (difficulty: Difficulty) => {
+    setSelectedDifficulties((prev) =>
+      prev.includes(difficulty)
+        ? prev.filter((d) => d !== difficulty)
+        : [...prev, difficulty]
+    );
+  };
+
+  // Toggle tag selection
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag)
+        ? prev.filter((t) => t !== tag)
+        : [...prev, tag]
+    );
   };
 
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
@@ -193,6 +230,82 @@ const App = () => {
         <aside className="md:w-1/3 border-r border-blue-100 bg-blue-50 px-6 py-6 print:hidden">
           <div>
             <h2 className="text-lg font-semibold text-blue-700 mb-4">Topics</h2>
+
+            {/* Difficulty Filters */}
+            {selectedSubCategory && (
+              <div className="mb-4 p-4 bg-white rounded-lg border border-blue-200">
+                <h3 className="text-sm font-semibold text-blue-700 mb-3">
+                  Difficulty Levels
+                </h3>
+                <div className="space-y-2">
+                  {(['EASY', 'MEDIUM', 'HARD'] as Difficulty[]).map((difficulty) => (
+                    <label
+                      key={difficulty}
+                      className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedDifficulties.includes(difficulty)}
+                        onChange={() => toggleDifficulty(difficulty)}
+                        className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-blue-900">
+                        {difficulty.charAt(0) + difficulty.slice(1).toLowerCase()}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                {selectedDifficulties.length === 0 && (
+                  <p className="text-xs text-blue-500 mt-2 italic">
+                    All difficulties shown
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Tag Filters */}
+            {selectedSubCategory && availableTags && availableTags.length > 0 && (
+              <div className="mb-6 p-4 bg-white rounded-lg border border-blue-200">
+                <h3 className="text-sm font-semibold text-blue-700 mb-3">
+                  Filter by Tags
+                </h3>
+                {tagsLoading ? (
+                  <div className="flex items-center gap-2 text-blue-600 text-sm">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    <span>Loading tags...</span>
+                  </div>
+                ) : (
+                  <div className="space-y-2 max-h-48 overflow-y-auto">
+                    {availableTags.map((tag) => (
+                      <label
+                        key={tag}
+                        className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedTags.includes(tag)}
+                          onChange={() => toggleTag(tag)}
+                          className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-blue-900">
+                          {tag}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+                {selectedTags.length === 0 && !tagsLoading && (
+                  <p className="text-xs text-blue-500 mt-2 italic">
+                    All tags shown
+                  </p>
+                )}
+                {selectedTags.length > 0 && (
+                  <p className="text-xs text-blue-600 mt-2 font-medium">
+                    {selectedTags.length} tag{selectedTags.length !== 1 ? 's' : ''} selected
+                  </p>
+                )}
+              </div>
+            )}
 
             {categoriesLoading && (
               <div className="flex items-center gap-2 text-blue-600">

@@ -32,13 +32,21 @@ type UseTagsResult = {
  * }
  * ```
  */
-export function useTags(type: ProblemType): UseTagsResult {
+export function useTags(type?: ProblemType): UseTagsResult {
   const [data, setData] = useState<string[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState<number>(0);
 
   useEffect(() => {
+    // Don't fetch if no type provided
+    if (!type) {
+      setData(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     let isMounted = true;
 
     async function fetchTags() {
