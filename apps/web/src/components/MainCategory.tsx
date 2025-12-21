@@ -1,25 +1,24 @@
-import type { Worksheet } from "@/types";
+import { type FC } from "react";
 import { classNames } from "@/utils/utils";
 import { ChevronRight } from "lucide-react";
 
-const MainCategory = ({
-  selectedCategory,
-  category,
-  setSelectedCategory,
-  setSelectedSubCategory,
-  setSelectedWorksheet,
-}: {
+type MainCategoryProps = {
   selectedCategory: string | null;
   category: string;
   setSelectedCategory: (cat: string) => void;
   setSelectedSubCategory: (subCat: string | null) => void;
-  setSelectedWorksheet: (worksheet: Worksheet | null) => void;
+};
+
+const MainCategory: FC<MainCategoryProps> = ({
+  selectedCategory,
+  category,
+  setSelectedCategory,
+  setSelectedSubCategory,
 }) => {
-  // Reset subcategory + worksheet when category is changed
-  const onSelectCategory = (cat: string) => {
+  // Reset subcategory when category is changed
+  const onSelectCategory = (cat: string): void => {
     setSelectedCategory(cat);
     setSelectedSubCategory(null);
-    setSelectedWorksheet(null);
   };
 
   return (

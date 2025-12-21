@@ -1,18 +1,21 @@
+import { type FC } from "react";
 import { classNames } from "@/utils/utils";
+
+type FractionProps = {
+  numerator: string;
+  denominator: string;
+  className?: string;
+};
 
 /**
  * Render a simple fraction (proper, improper) in math notation, e.g. 3/4.
  * Improved: add `min-h-[1.2em]` and align numerators and denominators.
  */
-export function Fraction({
+export const Fraction: FC<FractionProps> = ({
   numerator,
   denominator,
   className,
-}: {
-  numerator: string;
-  denominator: string;
-  className?: string;
-}) {
+}) => {
   // Use baseline by default and center text with min-w/-h to ensure uniform height.
   return (
     <span
@@ -27,4 +30,4 @@ export function Fraction({
       <span className="leading-tight font-math text-sm">{denominator}</span>
     </span>
   );
-}
+};

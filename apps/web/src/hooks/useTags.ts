@@ -49,7 +49,10 @@ export function useTags(type?: ProblemType): UseTagsResult {
 
     let isMounted = true;
 
-    async function fetchTags() {
+    async function fetchTags(): Promise<void> {
+      // Type guard: we already checked type exists above
+      if (!type) return;
+
       try {
         setLoading(true);
         setError(null);
@@ -84,7 +87,7 @@ export function useTags(type?: ProblemType): UseTagsResult {
     };
   }, [type, refetchTrigger]);
 
-  const refetch = () => {
+  const refetch = (): void => {
     setRefetchTrigger(prev => prev + 1);
   };
 

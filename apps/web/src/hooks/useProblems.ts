@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getProblems, ApiError, type Problem, type ProblemFilters } from '@/api';
 
 type UseProblemsResult = {
@@ -42,10 +42,22 @@ export function useProblems(filters: ProblemFilters = {}): UseProblemsResult {
   const [error, setError] = useState<string | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState<number>(0);
 
+  // Create a stable filter key to prevent unnecessary re-renders
+  // when array references change but values remain identical
+  const filterKey = useMemo(() => {
+    return JSON.stringify({
+      type: filters.type,
+      difficulty: filters.difficulty?.sort(),
+      tags: filters.tags?.sort(),
+      limit: filters.limit,
+      seed: filters.seed,
+    });
+  }, [filters.type, filters.difficulty, filters.tags, filters.limit, filters.seed]);
+
   useEffect(() => {
     let isMounted = true;
 
-    async function fetchProblems() {
+    async function fetchProblems(): Promise<void> {
       try {
         setLoading(true);
         setError(null);
@@ -78,9 +90,9 @@ export function useProblems(filters: ProblemFilters = {}): UseProblemsResult {
     return () => {
       isMounted = false;
     };
-  }, [filters.type, filters.difficulty, filters.tags, filters.limit, filters.seed, refetchTrigger]);
+  }, [filterKey, refetchTrigger, filters]);
 
-  const refetch = () => {
+  const refetch = (): void => {
     setRefetchTrigger(prev => prev + 1);
   };
 

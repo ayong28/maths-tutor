@@ -1,10 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, type FC, type JSX } from "react";
 import { ChevronRight, Printer, Loader2, AlertCircle } from "lucide-react";
 import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
 import { useCategories, useProblems, useTags } from "@/hooks";
 import { type ProblemType, type Difficulty } from "@/api";
+import { UI_CONFIG, DIFFICULTY_LEVELS } from "@/config/constants";
 
 /**
  * Map API problem types to display categories and subcategories
@@ -37,7 +38,7 @@ const PROBLEM_TYPE_MAP: Record<
 /**
  * Tokenize expression string to identify mixed numbers, fractions, operators, numbers, fill-ins, and variables.
  */
-function tokenizeMathExpression(expr: string) {
+function tokenizeMathExpression(expr: string): string[] {
   // - Mixed numbers (\d+\s+\d+/\d+)
   // - Fractions (\d+/\d+)
   // - Fill-in ("___")
@@ -53,22 +54,22 @@ function tokenizeMathExpression(expr: string) {
  * Takes an expression string and replaces all occurrences of mixed numbers and a/b with their respective components.
  * Ensures fractions and mixed numbers are vertically aligned and of consistent height.
  */
-function renderMathExpression(expr: string) {
+function renderMathExpression(expr: string): JSX.Element {
   const tokens = tokenizeMathExpression(expr);
   // For alignment fix: wrap all major tokens in a flex-row container to baseline-align operands.
   // For each "operand", we can wrap in a span with inline-flex and align-middle for best results.
   return (
     <span className="inline-flex flex-row items-center flex-wrap [-webkit-font-smoothing:auto]">
-      {tokens.map((token: string, idx: number) => {
+      {tokens.map((token, idx) => {
         const cleanedToken = token.trim();
         if (!cleanedToken) {
-          return <span key={`ws-${idx}`} className="mx-0.5" />;
+          return <span key={`whitespace-${idx}`} className="mx-0.5" />;
         }
         const mixed = parseMixedNumber(cleanedToken);
         if (mixed)
           return (
             <MixedNumber
-              key={idx}
+              key={`mixed-${idx}`}
               whole={mixed.whole}
               numerator={mixed.numerator}
               denominator={mixed.denominator}
@@ -78,7 +79,7 @@ function renderMathExpression(expr: string) {
         if (frac)
           return (
             <Fraction
-              key={idx}
+              key={`fraction-${idx}`}
               numerator={frac.numerator}
               denominator={frac.denominator}
             />
@@ -86,13 +87,13 @@ function renderMathExpression(expr: string) {
         if (cleanedToken === "___")
           return (
             <span
-              key={idx}
+              key={`fill-${idx}`}
               className="inline-block border-b border-dashed border-blue-300 w-16 align-middle mx-2 min-h-[1.5em]"
             />
           );
         return (
           <span
-            key={idx}
+            key={`token-${idx}`}
             className="mx-0.5 select-none font-math text-xl leading-tight min-w-[0.8em] text-center inline-block align-middle"
           >
             {cleanedToken}
@@ -103,7 +104,7 @@ function renderMathExpression(expr: string) {
   );
 }
 
-const App = () => {
+const App: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
     null
@@ -148,7 +149,7 @@ const App = () => {
 
     return {
       type: selectedProblemType,
-      limit: 20,
+      limit: UI_CONFIG.DEFAULT_PROBLEM_LIMIT,
       difficulty: appliedDifficulties.length > 0 ? appliedDifficulties : undefined,
       tags: appliedTags.length > 0 ? appliedTags : undefined,
     };
@@ -162,7 +163,7 @@ const App = () => {
   } = useProblems(problemFilters);
 
   // For printing
-  const handlePrint = () => {
+  const handlePrint = (): void => {
     window.print();
   };
 
@@ -190,7 +191,7 @@ const App = () => {
   const categories = Object.keys(categoryStructure);
 
   // Handle subcategory selection
-  const onSelectSubCategory = (subCat: string) => {
+  const onSelectSubCategory = (subCat: string): void => {
     setSelectedSubCategory(subCat);
     // Reset both staged and applied filters
     setStagedDifficulties([]);
@@ -206,7 +207,7 @@ const App = () => {
   };
 
   // Reset selections when category changes
-  const onSelectCategory = (cat: string) => {
+  const onSelectCategory = (cat: string): void => {
     setSelectedCategory(cat);
     setSelectedSubCategory(null);
     setSelectedProblemType(null);
@@ -277,16 +278,19 @@ const App = () => {
                   Difficulty Levels
                 </h3>
                 <div className="space-y-2">
-                  {(['EASY', 'MEDIUM', 'HARD'] as Difficulty[]).map((difficulty) => (
+                  {DIFFICULTY_LEVELS.map((difficulty) => (
                     <label
                       key={difficulty}
+                      htmlFor={`difficulty-${difficulty}`}
                       className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
                     >
                       <input
                         type="checkbox"
+                        id={`difficulty-${difficulty}`}
                         checked={stagedDifficulties.includes(difficulty)}
                         onChange={() => toggleDifficulty(difficulty)}
                         className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                        aria-label={`Filter by ${difficulty.toLowerCase()} difficulty`}
                       />
                       <span className="text-sm text-blue-900">
                         {difficulty.charAt(0) + difficulty.slice(1).toLowerCase()}
@@ -318,13 +322,16 @@ const App = () => {
                     {availableTags.map((tag) => (
                       <label
                         key={tag}
+                        htmlFor={`tag-${tag}`}
                         className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
                       >
                         <input
                           type="checkbox"
+                          id={`tag-${tag}`}
                           checked={stagedTags.includes(tag)}
                           onChange={() => toggleTag(tag)}
                           className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                          aria-label={`Filter by tag: ${tag}`}
                         />
                         <span className="text-sm text-blue-900">
                           {tag}
