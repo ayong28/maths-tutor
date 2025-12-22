@@ -447,9 +447,10 @@ VITE_API_URL=http://localhost:3001
 - ✅ Toggle answer display on screen (Show/Hide Answer Key button)
 - ✅ Optimized print CSS for A4 worksheets
 - ✅ Default 20 problems per worksheet
+- ✅ **Comprehensive test suite** - 53 Jest tests for all custom hooks (useCategories, useProblems, useTags)
 
 **⏳ Next:**
-- Phase 8: Polish & testing (mobile responsive, keyboard navigation, automated tests)
+- Phase 8: Polish & testing (mobile responsive, keyboard navigation, component tests, E2E tests)
 - Phase 9: VCAA Problem Database Expansion (generate missing Level 7 topics)
 
 **🐛 Known Issues:**
@@ -493,17 +494,21 @@ VITE_API_URL=http://localhost:3001
    - Status: Nice-to-have for Phase 8
 
 **Priority Order for Future Implementation:**
-1. Fix problem rendering issue (Phase 8)
-2. Add test coverage for tag filtering (Phase 8)
+1. ~~Fix problem rendering issue~~ ✅ COMPLETED (Phase 7)
+2. ~~Add test coverage for tag filtering~~ ✅ COMPLETED (2025-12-22 - 53 Jest tests)
 3. Custom problem count slider (quick win)
 4. Worksheet seed input (quick win)
 5. Accessibility improvements (Phase 8+)
+6. Component tests (Fraction, MixedNumber, ErrorBoundary) - Phase 8
+7. Integration tests for App.tsx - Phase 8
 
 **Testing Reminders for Phase 8:**
-- Add Jest/Playwright tests to verify tag retrieval for all problem types
-- Test that tags are correctly filtered and applied to problem queries
-- Verify all problem types return expected tag arrays
-- Test tag filter combinations with difficulty filters
+- ✅ Hook tests complete (useCategories, useProblems, useTags) - 53 tests passing
+- Add component tests for UI components (Fraction, MixedNumber, ErrorBoundary)
+- Add integration tests for App.tsx with real user interactions
+- Add E2E tests with Playwright for critical user flows
+- Test mobile responsive behavior
+- Test keyboard navigation and accessibility
 - **Question for review**: Decide whether to keep markdown worksheets in `worksheets/` folder or archive them (all 870 problems now in PostgreSQL)
 
 ## Available Worksheets
@@ -626,6 +631,118 @@ Based on VCAA curriculum analysis, here are the planned worksheets to complete t
 - [Level 7 - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
 - [Level 8 - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/level8?layout=1&d=M)
 - [Mathematics Version 2.0](https://victoriancurriculum.vcaa.vic.edu.au/mathematics/mathematics-version-2-0/curriculum/f-10)
+
+## Recent Session Changes (2025-12-22)
+
+**Session Summary**: Implemented comprehensive Jest test suite for custom React hooks - Created 53 passing tests covering all hook functionality including loading states, error handling, refetch behavior, and cleanup on unmount.
+
+### Jest Test Suite Implementation ✅
+
+**Test Coverage:**
+- **53 tests total** - all passing
+- **useCategories**: 11 tests
+- **useProblems**: 24 tests
+- **useTags**: 18 tests
+
+**Files Created:**
+
+1. **`apps/web/jest.config.cjs`** - Jest configuration
+   - jsdom environment for React testing
+   - Path alias mapping (@/* → src/*)
+   - TypeScript support via ts-jest
+   - esModuleInterop enabled
+
+2. **`apps/web/src/setupTests.ts`** - Test setup
+   - Imports @testing-library/jest-dom matchers
+
+3. **`apps/web/src/hooks/__tests__/useCategories.test.ts`** - 11 tests
+   - Initial fetch (loading, success, error states)
+   - API error handling (ApiError, Error, unknown types)
+   - Refetch functionality with state reset
+   - Cleanup on unmount (no state updates after unmount)
+   - Edge cases (empty arrays, multiple refetches)
+
+4. **`apps/web/src/hooks/__tests__/useProblems.test.ts`** - 24 tests
+   - Initial fetch with/without filters
+   - Filter types (type, difficulty, tags, limit, seed)
+   - Filter changes triggering refetch
+   - Stable filter key preventing unnecessary refetches
+   - Refetch functionality with error state reset
+   - Cleanup on unmount
+   - Edge cases (empty results, filter transitions)
+
+5. **`apps/web/src/hooks/__tests__/useTags.test.ts`** - 18 tests
+   - Initial fetch with type parameter
+   - Behavior when type is undefined (no fetch)
+   - Type changes triggering refetch
+   - Refetch functionality
+   - Cleanup on unmount
+   - Edge cases (empty tags, multiple problem types)
+
+**Dependencies Installed:**
+- `@testing-library/react` (16.3.1) - React hook testing utilities
+- `@testing-library/jest-dom` (6.9.1) - DOM matchers for Jest
+- `jest-environment-jsdom` (30.2.0) - jsdom environment
+- `jest` (30.2.0), `ts-jest` (29.4.6), `@types/jest` (30.0.0)
+
+**Test Scripts Added to package.json:**
+```json
+"test": "jest",
+"test:watch": "jest --watch",
+"test:coverage": "jest --coverage"
+```
+
+**Testing Patterns Used:**
+- **API mocking**: All API client functions mocked with jest.fn()
+- **act() wrapping**: State updates wrapped in act() to prevent warnings
+- **waitFor() assertions**: Async state changes verified with waitFor()
+- **Cleanup verification**: Tests ensure no state updates after component unmount
+- **Error handling**: Tests for ApiError, Error, and unknown error types
+- **isMounted pattern**: Verified cleanup flag prevents memory leaks
+
+**Key Test Scenarios:**
+
+1. **Loading States**: Verify loading→true initially, loading→false after fetch
+2. **Success States**: Verify data populated correctly after successful fetch
+3. **Error States**: Verify error messages set correctly on API failures
+4. **Refetch**: Verify manual refetch triggers new API calls
+5. **Filter Changes**: Verify useProblems refetches when filters change
+6. **Stable Dependencies**: Verify useProblems filterKey prevents redundant fetches
+7. **Type Changes**: Verify useTags refetches when type parameter changes
+8. **Undefined Handling**: Verify useTags doesn't fetch when type is undefined
+9. **Cleanup**: Verify no state updates after unmount (prevent "Can't perform a React state update on an unmounted component" warnings)
+
+**Test Results:**
+```bash
+Test Suites: 3 passed, 3 total
+Tests:       53 passed, 53 total
+Snapshots:   0 total
+Time:        ~3s
+```
+
+**Files Modified:**
+- `apps/web/package.json` - Added test scripts and dependencies
+- `apps/web/jest.config.cjs` - New Jest configuration
+- `apps/web/src/setupTests.ts` - New test setup file
+- `apps/web/src/hooks/__tests__/useCategories.test.ts` - New test file
+- `apps/web/src/hooks/__tests__/useProblems.test.ts` - New test file
+- `apps/web/src/hooks/__tests__/useTags.test.ts` - New test file
+
+**Verification:**
+- ✅ All 53 tests passing
+- ✅ TypeScript compilation: No errors
+- ✅ Jest configuration working correctly
+- ✅ Mock infrastructure functional
+- ✅ act() warnings resolved
+- ✅ Test coverage comprehensive
+
+**Next Steps:**
+- Phase 8: Add component tests (Fraction, MixedNumber, ErrorBoundary)
+- Phase 8: Add integration tests for App.tsx
+- Phase 8: Mobile responsive testing
+- Phase 8: Keyboard navigation testing
+
+---
 
 ## Recent Session Changes (2025-12-21)
 
