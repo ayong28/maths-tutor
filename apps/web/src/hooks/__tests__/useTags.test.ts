@@ -1,10 +1,10 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { useTags } from '../useTags';
-import { getTags, ApiError } from '@/api';
-import type { ProblemType } from '@/api';
+import { getTags, ApiError } from '@/api/client';
+import type { ProblemType } from '@/api/types';
 
 // Mock the API client
-jest.mock('@/api', () => ({
+jest.mock('@/api/client', () => ({
   getTags: jest.fn(),
   ApiError: class ApiError extends Error {
     constructor(message: string) {
