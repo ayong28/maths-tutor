@@ -1,11 +1,12 @@
 import { useState, useMemo, type FC, type JSX } from "react";
 import { ChevronRight, Printer, Loader2, AlertCircle } from "lucide-react";
 import { Fraction } from "./components/Fraction";
-import { classNames, parseFraction, parseMixedNumber } from "./utils/utils";
+import { classNames, parseFraction, parseMixedNumber, tokenizeMathExpression } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
 import { useCategories, useProblems, useTags } from "@/hooks";
 import { type ProblemType, type Difficulty } from "@/api";
-import { UI_CONFIG, DIFFICULTY_LEVELS } from "@/config/constants";
+import { UI_CONFIG } from "@/config/constants";
+import DifficultyFilter from "./components/DifficultyFilter";
 
 /**
  * Map API problem types to display categories and subcategories
@@ -35,20 +36,7 @@ const PROBLEM_TYPE_MAP: Record<
   },
 };
 
-/**
- * Tokenize expression string to identify mixed numbers, fractions, operators, numbers, fill-ins, and variables.
- */
-function tokenizeMathExpression(expr: string): string[] {
-  // - Mixed numbers (\d+\s+\d+/\d+)
-  // - Fractions (\d+/\d+)
-  // - Fill-in ("___")
-  // - Numbers/variables/words (\w+)
-  // - Operators (+ - =)
-  // - Parentheses (\(|\))
-  // - Any leftover single character
-  const regex = /\d+\s+\d+\s*\/\s*\d+|\d+\s*\/\s*\d+|___|[+\-=()]|\w+|\s+|./g;
-  return expr.match(regex) || [];
-}
+
 
 /**
  * Takes an expression string and replaces all occurrences of mixed numbers and a/b with their respective components.
@@ -113,11 +101,15 @@ const App: FC = () => {
     useState<ProblemType | null>(null);
 
   // Staged filters - change immediately on checkbox click (not sent to API yet)
-  const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>([]);
+  const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>(
+    []
+  );
   const [stagedTags, setStagedTags] = useState<string[]>([]);
 
   // Applied filters - only updated when "Apply Filters" is clicked (sent to API)
-  const [appliedDifficulties, setAppliedDifficulties] = useState<Difficulty[]>([]);
+  const [appliedDifficulties, setAppliedDifficulties] = useState<Difficulty[]>(
+    []
+  );
   const [appliedTags, setAppliedTags] = useState<string[]>([]);
 
   // Fetch categories from API
@@ -128,17 +120,18 @@ const App: FC = () => {
   } = useCategories();
 
   // Fetch tags for the selected problem type (only when type is selected)
-  const {
-    data: availableTags,
-    loading: tagsLoading,
-  } = useTags(selectedProblemType || undefined);
+  const { data: availableTags, loading: tagsLoading } = useTags(
+    selectedProblemType || undefined
+  );
 
   // Detect if there are unapplied filter changes
   const hasUnappliedChanges = useMemo(() => {
-    const diffChanged = JSON.stringify([...stagedDifficulties].sort()) !==
-                        JSON.stringify([...appliedDifficulties].sort());
-    const tagsChanged = JSON.stringify([...stagedTags].sort()) !==
-                        JSON.stringify([...appliedTags].sort());
+    const diffChanged =
+      JSON.stringify([...stagedDifficulties].sort()) !==
+      JSON.stringify([...appliedDifficulties].sort());
+    const tagsChanged =
+      JSON.stringify([...stagedTags].sort()) !==
+      JSON.stringify([...appliedTags].sort());
     return diffChanged || tagsChanged;
   }, [stagedDifficulties, appliedDifficulties, stagedTags, appliedTags]);
 
@@ -150,7 +143,8 @@ const App: FC = () => {
     return {
       type: selectedProblemType,
       limit: UI_CONFIG.DEFAULT_PROBLEM_LIMIT,
-      difficulty: appliedDifficulties.length > 0 ? appliedDifficulties : undefined,
+      difficulty:
+        appliedDifficulties.length > 0 ? appliedDifficulties : undefined,
       tags: appliedTags.length > 0 ? appliedTags : undefined,
     };
   }, [selectedProblemType, appliedDifficulties, appliedTags]);
@@ -230,9 +224,7 @@ const App: FC = () => {
   // Toggle tag selection (staged only - doesn't trigger API call)
   const toggleTag = (tag: string): void => {
     setStagedTags((prev) =>
-      prev.includes(tag)
-        ? prev.filter((t) => t !== tag)
-        : [...prev, tag]
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
@@ -270,125 +262,6 @@ const App: FC = () => {
         <aside className="md:w-1/3 border-r border-blue-100 bg-blue-50 px-6 py-6 print:hidden">
           <div>
             <h2 className="text-lg font-semibold text-blue-700 mb-4">Topics</h2>
-
-            {/* Difficulty Filters */}
-            {selectedSubCategory && (
-              <div className="mb-4 p-4 bg-white rounded-lg border border-blue-200">
-                <h3 className="text-sm font-semibold text-blue-700 mb-3">
-                  Difficulty Levels
-                </h3>
-                <div className="space-y-2">
-                  {DIFFICULTY_LEVELS.map((difficulty) => (
-                    <label
-                      key={difficulty}
-                      htmlFor={`difficulty-${difficulty}`}
-                      className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
-                    >
-                      <input
-                        type="checkbox"
-                        id={`difficulty-${difficulty}`}
-                        checked={stagedDifficulties.includes(difficulty)}
-                        onChange={() => toggleDifficulty(difficulty)}
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                        aria-label={`Filter by ${difficulty.toLowerCase()} difficulty`}
-                      />
-                      <span className="text-sm text-blue-900">
-                        {difficulty.charAt(0) + difficulty.slice(1).toLowerCase()}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-                {stagedDifficulties.length === 0 && (
-                  <p className="text-xs text-blue-500 mt-2 italic">
-                    All difficulties shown
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Tag Filters */}
-            {selectedSubCategory && availableTags && availableTags.length > 0 && (
-              <div className="mb-4 p-4 bg-white rounded-lg border border-blue-200">
-                <h3 className="text-sm font-semibold text-blue-700 mb-3">
-                  Filter by Tags
-                </h3>
-                {tagsLoading ? (
-                  <div className="flex items-center gap-2 text-blue-600 text-sm">
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                    <span>Loading tags...</span>
-                  </div>
-                ) : (
-                  <div className="space-y-2 max-h-48 overflow-y-auto">
-                    {availableTags.map((tag) => (
-                      <label
-                        key={tag}
-                        htmlFor={`tag-${tag}`}
-                        className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
-                      >
-                        <input
-                          type="checkbox"
-                          id={`tag-${tag}`}
-                          checked={stagedTags.includes(tag)}
-                          onChange={() => toggleTag(tag)}
-                          className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                          aria-label={`Filter by tag: ${tag}`}
-                        />
-                        <span className="text-sm text-blue-900">
-                          {tag}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-                {stagedTags.length === 0 && !tagsLoading && (
-                  <p className="text-xs text-blue-500 mt-2 italic">
-                    All tags shown
-                  </p>
-                )}
-                {stagedTags.length > 0 && (
-                  <p className="text-xs text-blue-600 mt-2 font-medium">
-                    {stagedTags.length} tag{stagedTags.length !== 1 ? 's' : ''} selected
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Apply/Clear Filters Buttons */}
-            {selectedSubCategory && (
-              <div className="mb-6 p-4 bg-white rounded-lg border border-blue-200">
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={applyFilters}
-                    disabled={!hasUnappliedChanges}
-                    className={classNames(
-                      "w-full px-4 py-2 rounded-lg font-medium transition",
-                      hasUnappliedChanges
-                        ? "bg-blue-600 hover:bg-blue-700 text-white"
-                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    )}
-                  >
-                    Apply Filters
-                    {hasUnappliedChanges && (
-                      <span className="ml-2 text-xs bg-blue-500 px-2 py-0.5 rounded-full">
-                        Pending
-                      </span>
-                    )}
-                  </button>
-                  <button
-                    onClick={clearFilters}
-                    disabled={stagedDifficulties.length === 0 && stagedTags.length === 0}
-                    className={classNames(
-                      "w-full px-4 py-2 rounded-lg font-medium transition",
-                      stagedDifficulties.length > 0 || stagedTags.length > 0
-                        ? "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                        : "bg-gray-50 text-gray-300 cursor-not-allowed"
-                    )}
-                  >
-                    Clear Filters
-                  </button>
-                </div>
-              </div>
-            )}
 
             {categoriesLoading && (
               <div className="flex items-center gap-2 text-blue-600">
@@ -454,6 +327,103 @@ const App: FC = () => {
                   </li>
                 ))}
               </ul>
+            )}
+            {/* Difficulty Filters */}
+            {
+              <DifficultyFilter selectedSubCategory={selectedSubCategory} stagedDifficulties={stagedDifficulties} toggleDifficulty={toggleDifficulty} />
+            }
+
+            {/* Tag Filters */}
+            {
+              availableTags &&
+              availableTags.length > 0 && (
+                <div
+                className={classNames(
+                  "mb-4 p-4 bg-white rounded-lg border border-blue-200",
+                  selectedSubCategory
+                    ? "bg-white border-blue-200"
+                    : "bg-gray-100 border-gray-300 opacity-50 pointer-events-none"
+                )}>
+                  <h3 className="text-sm font-semibold text-blue-700 mb-3">
+                    Filter by Tags
+                  </h3>
+                  {tagsLoading ? (
+                    <div className="flex items-center gap-2 text-blue-600 text-sm">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <span>Loading tags...</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {availableTags.map((tag) => (
+                        <label
+                          key={tag}
+                          htmlFor={`tag-${tag}`}
+                          className="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"
+                        >
+                          <input
+                            type="checkbox"
+                            id={`tag-${tag}`}
+                            checked={stagedTags.includes(tag)}
+                            onChange={() => toggleTag(tag)}
+                            className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                            aria-label={`Filter by tag: ${tag}`}
+                          />
+                          <span className="text-sm text-blue-900">{tag}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                  {stagedTags.length === 0 && !tagsLoading && (
+                    <p className="text-xs text-blue-500 mt-2 italic">
+                      All tags shown
+                    </p>
+                  )}
+                  {stagedTags.length > 0 && (
+                    <p className="text-xs text-blue-600 mt-2 font-medium">
+                      {stagedTags.length} tag
+                      {stagedTags.length !== 1 ? "s" : ""} selected
+                    </p>
+                  )}
+                </div>
+              )}
+
+            {/* Apply/Clear Filters Buttons */}
+            {selectedSubCategory && (
+              <div className="mb-6 p-4 bg-white rounded-lg border border-blue-200">
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={applyFilters}
+                    disabled={!hasUnappliedChanges}
+                    className={classNames(
+                      "w-full px-4 py-2 rounded-lg font-medium transition",
+                      hasUnappliedChanges
+                        ? "bg-blue-600 hover:bg-blue-700 text-white"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    )}
+                  >
+                    Apply Filters
+                    {hasUnappliedChanges && (
+                      <span className="ml-2 text-xs bg-blue-500 px-2 py-0.5 rounded-full">
+                        Pending
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    onClick={clearFilters}
+                    disabled={
+                      stagedDifficulties.length === 0 && stagedTags.length === 0
+                    }
+                    className={classNames(
+                      "w-full px-4 py-2 rounded-lg font-medium transition",
+                      stagedDifficulties.length > 0 || stagedTags.length > 0
+                        ? "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                        : "bg-gray-50 text-gray-300 cursor-not-allowed"
+                    )}
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </aside>

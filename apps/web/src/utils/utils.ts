@@ -42,3 +42,17 @@ export function parseMixedNumber(str: string): MixedNumberParts | null {
   return null;
 }
 
+/**
+ * Tokenize expression string to identify mixed numbers, fractions, operators, numbers, fill-ins, and variables.
+ */
+export function tokenizeMathExpression(expr: string): string[] {
+  // - Mixed numbers (\d+\s+\d+/\d+)
+  // - Fractions (\d+/\d+)
+  // - Fill-in ("___")
+  // - Numbers/variables/words (\w+)
+  // - Operators (+ - =)
+  // - Parentheses (\(|\))
+  // - Any leftover single character
+  const regex = /\d+\s+\d+\s*\/\s*\d+|\d+\s*\/\s*\d+|___|[+\-=()]|\w+|\s+|./g;
+  return expr.match(regex) || [];
+}
