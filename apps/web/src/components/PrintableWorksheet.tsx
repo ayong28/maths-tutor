@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   page: {
     padding: '1cm',
     fontFamily: 'Times-Roman',
-    fontSize: 11,
+    fontSize: 12,
   },
   header: {
     textAlign: 'center',
@@ -191,7 +191,7 @@ export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
             {leftColumnProblems.map((problem, idx) => (
               <View key={`answer-${problem.id}`} style={styles.answer}>
                 <Text style={styles.answerNumber}>{idx + 1}.</Text>
-                <Text>{formatFraction(problem.answer)}</Text>
+                <Text>{formatFraction(problem.question)} = {formatFraction(problem.answer)}</Text>
               </View>
             ))}
           </View>
@@ -201,7 +201,7 @@ export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
             {rightColumnProblems.map((problem, idx) => (
               <View key={`answer-${problem.id}`} style={styles.answer}>
                 <Text style={styles.answerNumber}>{half + idx + 1}.</Text>
-                <Text>{formatFraction(problem.answer)}</Text>
+                <Text>{formatFraction(problem.question)} = {formatFraction(problem.answer)}</Text>
               </View>
             ))}
           </View>
