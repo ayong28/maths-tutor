@@ -6,3 +6,4 @@
 export { useCategories } from './useCategories';
 export { useProblems } from './useProblems';
 export { useTags } from './useTags';
+export { usePDFGenerator } from './usePDFGenerator';

@@ -1,12 +1,13 @@
 import { useState, useMemo, type FC, type JSX } from "react";
-import { ChevronRight, Printer, Loader2, AlertCircle } from "lucide-react";
+import { ChevronRight, Printer, Loader2, AlertCircle, Download } from "lucide-react";
 import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber, tokenizeMathExpression } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
-import { useCategories, useProblems, useTags } from "@/hooks";
+import { useCategories, useProblems, useTags, usePDFGenerator } from "@/hooks";
 import { type ProblemType, type Difficulty } from "@/api";
 import { UI_CONFIG } from "@/config/constants";
 import DifficultyFilter from "./components/DifficultyFilter";
+import { PrintableWorksheet } from "./components/PrintableWorksheet";
 
 /**
  * Map API problem types to display categories and subcategories
@@ -156,9 +157,29 @@ const App: FC = () => {
     error: problemsError,
   } = useProblems(problemFilters);
 
+  // PDF generation
+  const { generating: generatingPDF, error: pdfError, generatePDF } = usePDFGenerator();
+
   // For printing
   const handlePrint = (): void => {
     window.print();
+  };
+
+  // For PDF download
+  const handleDownloadPDF = async (): Promise<void> => {
+    if (!problems || !selectedCategory || !selectedSubCategory) return;
+
+    const title = `${selectedCategory} - ${selectedSubCategory}`;
+    const filename = `${selectedCategory.toLowerCase()}-${selectedSubCategory.toLowerCase().replace(/\s+/g, '-')}-worksheet.pdf`;
+
+    const document = (
+      <PrintableWorksheet
+        title={title}
+        problems={problems}
+      />
+    );
+
+    await generatePDF(document, filename);
   };
 
   // Build category structure from API data
@@ -437,13 +458,32 @@ const App: FC = () => {
                   {selectedCategory} - {selectedSubCategory}
                 </h2>
                 {problems && problems.length > 0 && (
-                  <button
-                    onClick={handlePrint}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition"
-                  >
-                    <Printer className="w-5 h-5" />
-                    Print
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleDownloadPDF}
+                      disabled={generatingPDF}
+                      className="flex items-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg shadow transition"
+                    >
+                      {generatingPDF ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-5 h-5" />
+                          Download PDF
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={handlePrint}
+                      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition"
+                    >
+                      <Printer className="w-5 h-5" />
+                      Print
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -457,11 +497,22 @@ const App: FC = () => {
 
               {/* Error state */}
               {problemsError && (
-                <div className="flex items-start gap-3 text-red-600 bg-red-50 p-4 rounded-lg">
+                <div className="flex items-start gap-3 text-red-600 bg-red-50 p-4 rounded-lg mb-4">
                   <AlertCircle className="w-6 h-6 shrink-0 mt-0.5" />
                   <div>
                     <p className="font-semibold">Error loading problems</p>
                     <p className="text-sm">{problemsError}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* PDF Generation Error */}
+              {pdfError && (
+                <div className="flex items-start gap-3 text-red-600 bg-red-50 p-4 rounded-lg mb-4">
+                  <AlertCircle className="w-6 h-6 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold">Error generating PDF</p>
+                    <p className="text-sm">{pdfError}</p>
                   </div>
                 </div>
               )}
@@ -561,6 +612,23 @@ const App: FC = () => {
                       }}
                     >
                       {answerKeyOpen ? "Hide Answer Key" : "Show Answer Key"}
+                    </button>
+                    <button
+                      onClick={handleDownloadPDF}
+                      disabled={generatingPDF}
+                      className="flex items-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg shadow transition"
+                    >
+                      {generatingPDF ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-5 h-5" />
+                          Download PDF
+                        </>
+                      )}
                     </button>
                     <button
                       onClick={handlePrint}
