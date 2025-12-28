@@ -1,5 +1,5 @@
 import { useState, useMemo, type FC, type JSX } from "react";
-import { ChevronRight, Printer, Loader2, AlertCircle, Download } from "lucide-react";
+import { ChevronRight, Loader2, AlertCircle, Download } from "lucide-react";
 import { Fraction } from "./components/Fraction";
 import { classNames, parseFraction, parseMixedNumber, tokenizeMathExpression } from "./utils/utils";
 import { MixedNumber } from "./components/MixedNumber";
@@ -8,6 +8,7 @@ import { type ProblemType, type Difficulty } from "@/api";
 import { UI_CONFIG } from "@/config/constants";
 import DifficultyFilter from "./components/DifficultyFilter";
 import { PrintableWorksheet } from "./components/PrintableWorksheet";
+import HeroSection from "./components/HeroSection";
 
 /**
  * Map API problem types to display categories and subcategories
@@ -159,11 +160,6 @@ const App: FC = () => {
 
   // PDF generation
   const { generating: generatingPDF, error: pdfError, generatePDF } = usePDFGenerator();
-
-  // For printing
-  const handlePrint = (): void => {
-    window.print();
-  };
 
   // For PDF download
   const handleDownloadPDF = async (): Promise<void> => {
@@ -640,12 +636,7 @@ const App: FC = () => {
                 )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center min-h-50 text-blue-500">
-              <span className="text-6xl mb-2">🧮</span>
-              <p className="text-lg">
-                Please select a topic and category to view worksheets.
-              </p>
-            </div>
+<HeroSection />
           )}
         </main>
       </div>
