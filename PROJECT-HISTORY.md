@@ -2,7 +2,49 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-29)
+## Recent Session Changes (2025-12-30)
+
+**Session Summary**: Phase 9 - Integration Testing - Converted 10 E2E test scenarios to fast Jest integration tests. Created comprehensive App.test.tsx with 21 tests covering category selection, filtering, navigation, error handling, and loading states. All 106 tests passing (32 PDF + 74 Web + 3 E2E).
+
+### Phase 9: Integration Testing (Completed) ✅
+
+**Strategy Decision**: Use javascript-testing-patterns skill to optimize test strategy
+- Converted E2E-002 through E2E-013 to Jest integration tests
+- Kept 7 browser-specific scenarios for Playwright (PDF download, mobile, a11y, etc.)
+- ~100x speed improvement over E2E (2.6s vs 3-4 minutes)
+
+**Files Created:**
+1. **`apps/web/src/__tests__/App.test.tsx`** - App integration tests (21 tests, all passing)
+   - E2E-002: Category Selection Flow (2 tests)
+   - E2E-003: Subcategory & Problem Display (2 tests)
+   - E2E-004: Difficulty Filtering (3 tests)
+   - E2E-005: Tag Filtering (3 tests)
+   - E2E-006: Answer Key Toggle (2 tests)
+   - E2E-008: Navigation Flow (2 tests)
+   - E2E-009: Filter State Management (1 test)
+   - E2E-010: Error Handling (2 tests)
+   - E2E-011: Loading States (3 tests)
+   - E2E-013: Empty State Handling (1 test)
+
+**Test Scripts Updated** (`apps/web/package.json`):
+```json
+"test:integration": "jest src/__tests__",
+"test:hooks": "jest src/hooks/__tests__"
+```
+
+**Test Coverage**: 106 tests total
+- PDF Generator: 32 unit tests
+- React Hooks: 53 tests (useCategories, useProblems, useTags)
+- App Integration: 21 tests (10 E2E scenarios)
+- Playwright E2E: 3 tests (homepage validation)
+
+**Documentation Updated**:
+- `CLAUDE.md` - Condensed from 146 to 102 lines, updated test counts and commands
+- Test breakdown and scripts reorganized for clarity
+
+---
+
+## Session Changes (2025-12-29)
 
 **Session Summary**: Phase 9 - E2E Testing Setup - Installed Playwright, created comprehensive test plan with 20 test scenarios, and implemented initial homepage tests. All 3 homepage tests passing.
 

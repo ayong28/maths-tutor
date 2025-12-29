@@ -1,145 +1,102 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working with this repository.
 
-**Full Documentation:**
-- Architecture & Setup: `PROJECT-SETUP.md`
-- Session History: `PROJECT-HISTORY.md`
+**Full Docs:** `PROJECT-SETUP.md` | `PROJECT-HISTORY.md` | `E2E-TEST-PLAN.md`
 
 ## Quick Start
 
 ```bash
-# Testing
-npm test                    # Unit tests: 32 PDF generator + 53 React hooks
-npm run test:e2e:chromium   # E2E tests: 3 homepage tests (Chromium only)
-npm run test:e2e            # E2E tests: All browsers
+# Testing (106 tests total)
+npm test                       # All: 32 PDF + 74 Web tests (~3s)
+npm run test:integration       # App integration tests (21)
+npm run test:hooks             # React hooks tests (53)
+npm run test:e2e:chromium      # Playwright E2E (3 tests)
 
 # Web App
-npm run dev                 # React frontend (localhost:5173)
-npm run api:dev             # Express API backend (localhost:3001)
+npm run dev                    # React (localhost:5173)
+npm run api:dev                # Express API (localhost:3001)
 
-# Generate Worksheets from Database (Recommended)
+# Generate Worksheets
 npm run generate -- --type FRACTION_ADDITION --output worksheet.pdf
 npm run generate -- --type FRACTION_ADDITION -d "easy:10,medium:15,hard:5"
-npm run generate -- --type FRACTION_ADDITION --tags unlike-denominators
-npm run generate:list       # List available problems
+npm run generate:list          # List problems
 npm run generate:tags -- --type FRACTION_ADDITION
-
-# Legacy: Generate from Markdown
-npx tsx generate-worksheet-pdf.ts [worksheet.md] [output.pdf]
 ```
 
 ## Project Overview
 
-Maths tutoring project for generating printable PDF worksheets with fraction and algebra problems.
+Generate printable PDF worksheets for fraction and algebra problems.
 
-**Key Features:**
-- **1104 problems** in PostgreSQL database (5 types: fraction add/sub/reduce, algebra collecting/multiplication)
-- **Web UI**: React + Tailwind frontend with Express API backend
-- **CLI tools**: Command-line generation with custom difficulty mix and tag filtering
-- **Test suite**: 85 unit tests (Jest) + 3 E2E tests (Playwright)
+- **1104 problems** in PostgreSQL (5 types: fraction add/sub/reduce, algebra)
+- **Web UI**: React + Tailwind + Express API
+- **CLI tools**: Custom difficulty mix & tag filtering
+- **Tests**: 106 tests (32 PDF + 74 Web + 3 E2E)
 
-**Problem Types:**
-- `FRACTION_ADDITION` (328 problems, includes 118 mixed numbers)
-- `FRACTION_SUBTRACTION` (606 problems, includes 196 mixed numbers)
-- `FRACTION_REDUCTION` (180 problems)
-- `ALGEBRA_COLLECTING_TERMS` (150 problems)
-- `ALGEBRA_MULTIPLICATION` (120 problems)
+**Problem Types:** FRACTION_ADDITION (328) | FRACTION_SUBTRACTION (606) | FRACTION_REDUCTION (180) | ALGEBRA_COLLECTING_TERMS (150) | ALGEBRA_MULTIPLICATION (120)
 
 ## Testing
 
-**Unit Tests (Jest):**
+**From `apps/web/`:**
 ```bash
-npm test               # Run all unit tests (85 tests)
-npm run test:watch     # Watch mode
-npm run test:coverage  # Coverage report
+npm test                    # All web tests (74 tests, ~3s)
+npm run test:integration    # App integration (21 tests)
+npm run test:hooks          # React hooks (53 tests)
+npm run test:watch          # Watch mode
+npm run test:coverage       # Coverage report
 ```
 
-**E2E Tests (Playwright):**
+**From root:**
 ```bash
-# Prerequisites: Start dev servers first
-npm run dev            # Terminal 1: React frontend
-npm run api:dev        # Terminal 2: Express API
-
-# Run tests
-npm run test:e2e:chromium   # Fast: Chromium only (recommended for development)
-npm run test:e2e            # Full: All browsers (Chromium, Firefox, WebKit)
-npm run test:e2e:ui         # Interactive UI mode
-npm run test:e2e:headed     # Watch tests run in browser
-npm run test:e2e:report     # View HTML report
+npm test                    # PDF generator (32 tests)
+npm run test:all            # All unit+web (106 tests)
+npm run test:e2e:chromium   # E2E Chromium only (3 tests)
+npm run test:e2e            # E2E all browsers
 ```
 
-**Test Coverage:**
-- **Unit Tests (85 total):**
-  - PDF Generator: 32 tests (markdown parsing, expression rendering, fractions)
-  - React Hooks: 53 tests (useCategories, useProblems, useTags)
-- **E2E Tests (3 total, Phase 9 in progress):**
-  - Homepage: 3 tests (hero section, categories load, no console errors)
-  - See `E2E-TEST-PLAN.md` for full test plan (20 scenarios)
+**Test Breakdown:**
+- PDF Generator: 32 unit tests (markdown, fractions, expressions)
+- React Hooks: 53 tests (useCategories, useProblems, useTags)
+- App Integration: 21 tests (10 E2E scenarios converted to Jest)
+- E2E: 3 Playwright tests (homepage validation)
 
-**Critical Regression Tests:**
-- Multi-term algebraic expressions (e.g., "2a + 3b + 4a")
-- Mixed number parsing (e.g., "1 5/6")
-- Column ordering (left 1-15, then right 16-30)
+**Critical Patterns:** Multi-term algebra (2a+3b+4a) | Mixed numbers (1 5/6) | Column order (1-15 left, 16-30 right)
 
-## Database Setup
+## Database
 
 ```bash
-brew services start postgresql@16
-# Database: maths_tutor_dev on localhost:5432
-# Schema: npx prisma migrate dev
+brew services start postgresql@16  # maths_tutor_dev on localhost:5432
+npx prisma migrate dev              # Update schema
 ```
 
-## Current Status (Phase 9 In Progress)
+## Status (Phase 9 Complete)
 
-**✅ Implemented:**
-- Web UI with React + Tailwind + Express API
-- 1104 problems in PostgreSQL with Prisma ORM
-- Difficulty filters (EASY/MEDIUM/HARD)
-- Tag filters (dynamic based on problem type)
-- **PDF Download** - @react-pdf/renderer generates 2-page worksheets
-- HeroSection component for enhanced empty state
-- **Unit test suite**: 85 Jest tests (PDF generator + React hooks)
-- **E2E testing**: Playwright setup with 3 homepage tests passing
-
-**⏳ Phase 9 - In Progress:**
-- ✅ E2E test plan created (`E2E-TEST-PLAN.md` - 20 test scenarios)
-- ✅ Playwright installed and configured
-- ✅ Page Object Model created (`e2e/fixtures/WorksheetPage.ts`)
-- ✅ Homepage tests implemented (3/3 passing)
-- 📋 Category selection tests (E2E-002, E2E-003)
-- 📋 Filtering tests (E2E-004, E2E-005)
-- 📋 PDF download test (E2E-007)
-- 📋 Mobile responsive testing
+**✅ Completed:**
+- Web UI: React + Tailwind + Express API
+- 1104 problems in PostgreSQL (Prisma ORM)
+- Filters: Difficulty (EASY/MEDIUM/HARD) + Tags
+- PDF Download (@react-pdf/renderer)
+- **Test Suite**: 106 tests (32 PDF + 74 Web + 3 E2E)
+  - Integration tests for 10 E2E scenarios (Jest)
+  - Homepage E2E tests (Playwright)
 
 **⏳ Next:**
-- Phase 9: Complete remaining E2E tests (17 scenarios)
-- Phase 10: VCAA Problem Database Expansion (Level 7 topics)
+- Phase 9: Implement 7 remaining browser-specific E2E tests
+- Phase 10: VCAA Problem Database Expansion
 
-## Dependencies
+## Tech Stack
 
-**Production:**
-- `pdfkit` - PDF generation (CLI tools)
-- `@react-pdf/renderer` - React-based PDF generation (Web UI)
-- PostgreSQL 16 + Prisma 6.19
+**Production:** pdfkit | @react-pdf/renderer | PostgreSQL 16 | Prisma 6.19
+**Dev:** tsx | jest | @testing-library/react | @playwright/test
 
-**Development:**
-- `tsx` - TypeScript execution
-- `jest` + `ts-jest` - Unit testing framework
-- `@testing-library/react` - React testing utilities
-- `@playwright/test` - E2E testing framework
+## Architecture
 
-## Architecture Quick Reference
-
-**Monorepo Structure:**
 ```
-apps/web/          # React frontend (Vite + TypeScript + Tailwind)
-packages/api/      # Express API backend
-src/               # CLI tools & PDF generator
-prisma/            # Database schema
-e2e/               # E2E tests (Playwright)
-  tests/           # Test specs
-  fixtures/        # Page Object Models
+apps/web/          # React (Vite + TS + Tailwind)
+packages/api/      # Express API
+src/               # CLI + PDF generator
+prisma/            # DB schema
+e2e/               # Playwright tests
 ```
 
-See `PROJECT-SETUP.md` for detailed architecture documentation.
+See `PROJECT-SETUP.md` for details.
