@@ -2,6 +2,75 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
+## Recent Session Changes (2025-12-29)
+
+**Session Summary**: Implemented PDF generation using @react-pdf/renderer - Added Download PDF button to replace browser print functionality, created 2-page PDF worksheets (problems + answer key), and updated UI styling with new gradient background and HeroSection component.
+
+### PDF Generation Implementation ✅
+
+**Dependencies Installed:**
+- `@react-pdf/renderer` - React-based PDF generation library
+
+**Files Created:**
+
+1. **`apps/web/src/components/PrintableWorksheet.tsx`** - PDF Document component
+   - **Page 1**: Problems only with header metadata (name, date, problem count)
+   - **Page 2**: Answer key showing question = answer format
+   - Two-column layout for both pages
+   - A4 page size with 1cm margins
+   - Professional typography (Times-Roman, proper font sizes)
+   - Supports fractions and mixed numbers as text
+
+2. **`apps/web/src/hooks/usePDFGenerator.ts`** - Custom hook for PDF generation
+   - Async PDF blob generation from React components
+   - Automatic file download with custom filename
+   - Loading state tracking (`generating` boolean)
+   - Error handling with user-friendly messages
+   - Proper cleanup (URL.revokeObjectURL)
+
+**Files Modified:**
+
+1. **`apps/web/src/App.tsx`** - UI updates and PDF integration
+   - **Removed**: Browser print functionality (`handlePrint`, Print buttons, Printer icon import)
+   - **Added**: Green "Download PDF" button (replaced print buttons)
+   - **Added**: PDF generation loading states and error handling
+   - **Updated**: Background gradient from teal-blue to blue-blue (`from-blue-600 to-blue-400`)
+   - **Updated**: Header text colors (darker blue for title, lighter blue for subtitle)
+   - **Added**: HeroSection component for empty state (replaces emoji placeholder)
+   - PDF error display with AlertCircle icon
+
+2. **`apps/web/src/hooks/index.ts`** - Export new hook
+   - Added `usePDFGenerator` export for clean imports
+
+3. **`apps/web/src/components/PrintableWorksheet.tsx`** - Answer key format
+   - Answer key shows both question and answer: "1/2 + 1/4 = 3/4"
+   - Previously showed only answer: "3/4"
+
+**Features:**
+- ✅ **Single download button**: Streamlined UX with PDF-only workflow
+- ✅ **2-page PDF layout**: Professional worksheet format
+- ✅ **Auto-generated filenames**: `{category}-{subcategory}-worksheet.pdf`
+- ✅ **Loading feedback**: Shows "Generating..." spinner during PDF creation
+- ✅ **Error handling**: Displays error messages if PDF generation fails
+- ✅ **Complete answer key**: Shows full equation format in answers
+
+**UI Improvements:**
+- Darker blue gradient background for better visual contrast
+- HeroSection component for improved empty state UX
+- Removed browser print dependency (PDF-first workflow)
+
+**Verification:**
+- ✅ TypeScript compilation: No errors
+- ✅ Production build: Success (2.69s, 1.7MB bundle)
+- ✅ PDF generation: Functional with proper 2-page layout
+
+**Next Steps:**
+- Test PDF generation with all problem types (fractions, algebra)
+- Consider adding custom date/name fields to PDF metadata
+- Potential enhancement: Preview PDF before download
+
+---
+
 ## Recent Session Changes (2025-12-23)
 
 **Session Summary**: Expanded fraction problem database with mixed numbers - Generated 314 new problems (196 subtraction + 118 addition) for unlike denominators with mixed numbers.

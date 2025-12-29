@@ -71,24 +71,26 @@ brew services start postgresql@16
 # Schema: npx prisma migrate dev
 ```
 
-## Current Status (Phase 7 Complete)
+## Current Status (Phase 8 Complete)
 
 **✅ Implemented:**
 - Web UI with React + Tailwind + Express API
 - 1104 problems in PostgreSQL with Prisma ORM
 - Difficulty filters (EASY/MEDIUM/HARD)
 - Tag filters (dynamic based on problem type)
-- Professional 2-page print output (questions + answers)
+- **PDF Download** - @react-pdf/renderer generates 2-page worksheets
+- HeroSection component for enhanced empty state
 - Comprehensive test suite (85 tests)
 
 **⏳ Next:**
-- Phase 8: Polish & testing (mobile responsive, component tests, E2E tests)
-- Phase 9: VCAA Problem Database Expansion (Level 7 topics)
+- Phase 9: Polish & testing (mobile responsive, component tests, E2E tests)
+- Phase 10: VCAA Problem Database Expansion (Level 7 topics)
 
 ## Dependencies
 
 **Production:**
-- `pdfkit` - PDF generation
+- `pdfkit` - PDF generation (CLI tools)
+- `@react-pdf/renderer` - React-based PDF generation (Web UI)
 - PostgreSQL 16 + Prisma 6.19
 
 **Development:**

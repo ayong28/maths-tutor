@@ -11,8 +11,8 @@ const HeroSection = () => {
           {/* Hero Content */}
           <div className="relative z-10 flex max-w-2xl flex-col items-center px-8 text-center">
             {/* Icon/Badge */}
-            <div className="mb-8 flex h-28 w-28 items-center justify-center rounded-3xl bg-linear-to-br from-brand-purple-light to-brand-purple-dark p-1 shadow-2xl border-4 border-orange-300">
-              <div className="flex h-full w-full items-center justify-center rounded-3xl bg-background border-4 border-orange-300 shadow-lg">
+            <div className="mb-8 flex h-28 w-28 items-center justify-center rounded-3xl bg-linear-to-br from-brand-purple-light to-brand-purple-dark p-1 shadow-2xl border-4 border-blue-300">
+              <div className="flex h-full w-full items-center justify-center rounded-3xl bg-background border-4 border-blue-300 shadow-lg">
                 <svg className="h-14 w-14 text-brand-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
@@ -40,7 +40,7 @@ const HeroSection = () => {
             </p>
 
             {/* CTA Button */}
-            <button className="group relative overflow-hidden rounded-xl bg-orange-400 px-8 py-4 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:bg-orange-300">
+            <button className="group relative overflow-hidden rounded-xl bg-blue-200 px-8 py-4 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:bg-blue-300">
               <span className="relative z-10 text-black">Get Started</span>
             </button>
 

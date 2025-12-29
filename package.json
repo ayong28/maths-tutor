@@ -20,6 +20,11 @@
     "test:web": "npm test -w apps/web",
     "test:web:watch": "npm run test:watch -w apps/web",
     "test:all": "npm test && npm test -w apps/web",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:report": "playwright show-report",
     "generate": "tsx src/cli/generate-worksheet.ts generate",
     "generate:list": "tsx src/cli/generate-worksheet.ts list",
     "generate:tags": "tsx src/cli/generate-worksheet.ts tags"
@@ -29,6 +34,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",

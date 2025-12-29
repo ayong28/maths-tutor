@@ -241,12 +241,13 @@ curl "http://localhost:3001/api/problems?type=FRACTION_ADDITION&difficulty=EASY,
 - `README.md` - Usage examples and documentation
 
 **Key Features:**
-- Browser-based printing with print-specific CSS
-- Gradient background (teal-50 to blue-100)
+- PDF download with @react-pdf/renderer (2-page worksheets: problems + answer key)
+- Gradient background (blue-600 to blue-400)
 - Sidebar navigation (categories → subcategories → worksheets)
 - Proper fraction alignment and rendering
 - STIX Two Math font for mathematical notation
 - Type-safe API client with error handling
+- HeroSection component for enhanced empty state UX
 
 ### API Service Layer
 
@@ -330,7 +331,7 @@ API configured for local development:
 3. Serve static files from `apps/web/dist/`
 4. Run API: `npm run api:start`
 
-## Current Status (Phase 7 ✅ Complete)
+## Current Status (Phase 8 ✅ Complete)
 
 **✅ Completed:**
 - Phase 1: Project setup (Vite + React + TypeScript + Tailwind)
@@ -342,7 +343,7 @@ API configured for local development:
   - Task 2: Custom React hooks (useCategories, useProblems, useTags)
   - Task 3: Replace static WORKSHEETS data with API calls (App.tsx refactoring)
   - Task 4: Loading & error states with Lucide icons
-- Phase 6: Print functionality
+- Phase 6: Print functionality (deprecated - replaced by Phase 8)
   - Task 1: Enhanced print CSS with A4 layout and page breaks
   - Task 2: Answer key implementation (2-page printing)
   - Task 3: Worksheet header with student metadata
@@ -353,6 +354,12 @@ API configured for local development:
   - Task 3: ✅ Apply Filters button (staged vs applied filter pattern for performance)
   - Task 4: ⏸️  Seed input (deferred to future version)
   - Task 5: ⏸️  Custom problem count slider (deferred to future version)
+- Phase 8: PDF Generation with @react-pdf/renderer ✅
+  - Task 1: ✅ Install @react-pdf/renderer library
+  - Task 2: ✅ Create PrintableWorksheet component (2-page layout)
+  - Task 3: ✅ Create usePDFGenerator hook with download functionality
+  - Task 4: ✅ Replace browser print with PDF download button
+  - Task 5: ✅ Update UI styling (blue gradient, HeroSection)
 
 **📊 Current Capabilities:**
 - ✅ Browse all 1104 problems from PostgreSQL database
@@ -366,15 +373,17 @@ API configured for local development:
 - ✅ Error handling with user-friendly messages
 - ✅ Proper fraction rendering with math notation
 - ✅ React hooks pattern with cleanup and refetch support
-- ✅ Professional print output with 2-page layout (questions + answers)
+- ✅ **PDF Download** - @react-pdf/renderer generates professional 2-page PDFs
+- ✅ **Page 1**: Problems with metadata header (name, date, problem count)
+- ✅ **Page 2**: Complete answer key (question = answer format)
 - ✅ Toggle answer display on screen (Show/Hide Answer Key button)
-- ✅ Optimized print CSS for A4 worksheets
+- ✅ Auto-generated filenames (e.g., `fractions-addition-worksheet.pdf`)
 - ✅ Default 20 problems per worksheet
 - ✅ **Comprehensive test suite** - 85 Jest tests (32 PDF + 53 hooks)
 
 **⏳ Next:**
-- Phase 8: Polish & testing (mobile responsive, keyboard navigation, component tests, E2E tests)
-- Phase 9: VCAA Problem Database Expansion (generate missing Level 7 topics)
+- Phase 9: Polish & testing (mobile responsive, keyboard navigation, component tests, E2E tests)
+- Phase 10: VCAA Problem Database Expansion (generate missing Level 7 topics)
 
 **🐛 Known Issues:**
 - ~~**Problem rendering issue**~~: FIXED - Implemented staged vs applied filter pattern

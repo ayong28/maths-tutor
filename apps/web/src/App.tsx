@@ -262,13 +262,13 @@ const App: FC = () => {
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-teal-50 to-blue-100 flex flex-col items-center py-8 px-2 print:bg-white print:text-black">
+    <div className="min-h-screen bg-linear-to-r from-blue-600 to-blue-400 flex flex-col items-center py-8 px-2 print:bg-white print:text-black">
       {/* Header */}
       <header className="mb-8 text-center print:hidden">
-        <h1 className="text-3xl font-bold text-blue-900 mb-2">
+        <h1 className="text-3xl font-bold text-blue-950 mb-2">
           Maths Tutoring Worksheets
         </h1>
-        <p className="text-blue-700">
+        <p className="text-blue-200">
           Select a topic and category to view printable worksheets.
         </p>
       </header>
