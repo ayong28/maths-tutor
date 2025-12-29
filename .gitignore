@@ -15,3 +15,6 @@ vcaa-resource/
 
 # ideas folder 
 ideas/
+
+# Playwright report
+/playwright-report

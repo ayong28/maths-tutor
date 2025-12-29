@@ -4,6 +4,105 @@ This document tracks the implementation timeline and session history for the mat
 
 ## Recent Session Changes (2025-12-29)
 
+**Session Summary**: Phase 9 - E2E Testing Setup - Installed Playwright, created comprehensive test plan with 20 test scenarios, and implemented initial homepage tests. All 3 homepage tests passing.
+
+### Phase 9: E2E Testing (In Progress) ⏳
+
+**Goals**: Implement comprehensive end-to-end testing with Playwright to ensure app reliability
+
+**Dependencies Installed:**
+- `@playwright/test` (1.57.0) - E2E testing framework
+- Browsers: Chromium, Firefox, WebKit
+
+**Files Created:**
+
+1. **`E2E-TEST-PLAN.md`** - Comprehensive test plan document
+   - 20 detailed test scenarios covering all user flows
+   - Critical paths: homepage, category selection, filtering, PDF download
+   - Edge cases: error handling, empty states, race conditions
+   - Performance benchmarks: FCP, TTI, LCP, API response times
+   - Accessibility tests: keyboard navigation, screen readers
+   - Cross-browser testing strategy (Chromium, Firefox, WebKit)
+   - Mobile responsive testing (3 viewport sizes)
+
+2. **`playwright.config.ts`** - Playwright configuration
+   - Test directory: `./e2e`
+   - Base URL: `http://localhost:5173`
+   - 6 projects: Desktop (Chrome, Firefox, Safari), Mobile (Chrome, Safari), Tablet (iPad)
+   - Parallel execution: 4 workers (1 in CI)
+   - Reporters: HTML report + list output
+   - Screenshots/videos on failure
+   - **Note**: Web server auto-start disabled (requires manual server startup)
+
+3. **`e2e/fixtures/WorksheetPage.ts`** - Page Object Model
+   - Encapsulates all page interactions (selectCategory, toggleDifficulty, applyFilters)
+   - Reusable locators (heroSection, downloadPdfButton, problemsList)
+   - Helper methods (waitForProblemsToLoad, getProblemCount, isHeroVisible)
+   - Clean abstraction for test readability
+
+4. **`e2e/tests/01-homepage.spec.ts`** - Homepage tests (3 tests)
+   - ✅ E2E-001: Display hero section on initial load
+   - ✅ E2E-001: Load categories from API
+   - ✅ E2E-001: No console errors on load
+
+**Scripts Added to package.json:**
+```json
+"test:e2e": "playwright test",
+"test:e2e:ui": "playwright test --ui",
+"test:e2e:headed": "playwright test --headed",
+"test:e2e:chromium": "playwright test --project=chromium",
+"test:e2e:report": "playwright show-report"
+```
+
+**Test Execution Workflow:**
+```bash
+# Terminal 1: Start React dev server
+npm run dev
+
+# Terminal 2: Start API server
+npm run api:dev
+
+# Terminal 3: Run E2E tests
+npm run test:e2e:chromium
+```
+
+**Test Results:**
+```bash
+Test Files: 1 passed (1)
+Tests:      3 passed (3)
+Duration:   ~2.5s
+```
+
+**Testing Patterns:**
+- Page Object Model for maintainable tests
+- Strict mode locators for specificity (avoid multiple element matches)
+- Role-based selectors (`getByRole('button')`) for accessibility
+- Network idle waiting for stable state assertions
+- Screenshot/video capture on failures
+
+**Issues Fixed:**
+1. Strict mode violations (duplicate text on page)
+   - Fixed: Scoped headerSubtitle to `header` element
+   - Fixed: Changed heroSection to use heading role
+   - Fixed: Used heading roles for feature cards
+
+**Test Plan Coverage:**
+- ✅ E2E-001: Homepage & Initial Load (3 tests implemented)
+- 📋 E2E-002-020: Remaining 17 test scenarios documented
+
+**Next Steps:**
+- Implement category selection tests (E2E-002, E2E-003)
+- Implement filtering tests (E2E-004, E2E-005, E2E-009)
+- Implement answer key toggle test (E2E-006)
+- Implement PDF download test (E2E-007)
+- Implement navigation tests (E2E-008)
+- Add mobile responsive tests
+- Run full test suite across all browsers
+
+---
+
+## Previous Session (2025-12-29)
+
 **Session Summary**: Implemented PDF generation using @react-pdf/renderer - Added Download PDF button to replace browser print functionality, created 2-page PDF worksheets (problems + answer key), and updated UI styling with new gradient background and HeroSection component.
 
 ### PDF Generation Implementation ✅
