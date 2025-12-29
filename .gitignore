@@ -19,3 +19,5 @@ ideas/
 # Playwright report
 /playwright-report
 
+test-results/
+test-results/.last-run.json
