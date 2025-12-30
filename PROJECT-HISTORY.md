@@ -2,7 +2,57 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-30 - Extremely Late Night)
+## Recent Session Changes (2025-12-30 - Early Morning)
+
+**Session Summary**: Phase 10 - VCAA Database Expansion (Probability) - Added 250 probability problems (PROBABILITY type covering coins, dice, balls, spinners, compound events, and probability with/without replacement). Database now contains 4578 total problems covering comprehensive VCAA Level 7 mathematics concepts including statistics and probability.
+
+### Phase 10: Probability (Complete) ✅
+
+**Database Expansion**: Added 250 problems for PROBABILITY
+
+**Problem Coverage**:
+- **EASY (100 problems)**: Basic probability (coins, dice, spinners, balls), simple fractions, certain/impossible events
+- **MEDIUM (100 problems)**: Probability as decimals and percentages, complementary events (NOT), two independent events, at-least-one problems
+- **HARD (50 problems)**: Compound events with multiple outcomes, probability without replacement (dependent events), conditional probability, binomial probability, two-dice sums
+
+**VCAA Level 7 Curriculum Alignment**:
+Based on VCAA Mathematics Version 2.0 content descriptors VC2M7P01-P02:
+- Identify sample space for single-stage experiments
+- Assign probabilities using common fractions, decimals, and percentages
+- Predict relative frequencies for related experiments
+- Conduct repeated chance experiments and run simulations with digital tools
+- Compare predicted with observed results
+- Explain differences and effect of sample size on outcomes
+
+**Problem Types**:
+- **Coin problems**: 26 (basic flips, multiple flips, at-least-one)
+- **Dice problems**: 86 (single die, two dice, sums, multiple rolls)
+- **Balls/bags**: 98 (with replacement, without replacement, multiple colors)
+- **Spinner problems**: 15 (equal sections, probability fractions)
+- **Two events**: 26 (independent events, compound probability)
+- **Three+ events**: 8 (multiple flips/rolls, binomial)
+- **Without replacement**: 14 (dependent events, conditional probability)
+
+**Files Created**:
+- `temp/probability-problems.json` - 250 probability problems
+- `src/scripts/insert-probability.ts` - Insertion script
+- `prisma/migrations/20251230092155_add_probability_type/` - Schema migration
+
+**Schema Updates**:
+- Added `PROBABILITY` to `ProblemType` enum under "Statistics & Probability" category
+
+**Problem Breakdown**:
+- 100 EASY | 100 MEDIUM | 50 HARD
+- All 250 problems include variables (probability notation)
+- 192 problems with fractions (probability expressions)
+- 31 problems with decimals (decimal probabilities)
+- **Database total: 4328 → 4578 problems**
+
+**Sources**:
+- [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
+- [Level 7 - Mathematics - Curriculum - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/mathematics/mathematics/curriculum/f-10?y=7&s=SP&layout=3)
+
+## Previous Session (2025-12-30 - Extremely Late Night)
 
 **Session Summary**: Phase 10 - VCAA Database Expansion (Angles) - Added 250 angle problems (ANGLES type covering complementary/supplementary angles, triangles, parallel lines, and quadrilaterals). Database now contains 4328 total problems covering comprehensive VCAA Level 7 geometry and measurement concepts.
 

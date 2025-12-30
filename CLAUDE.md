@@ -29,12 +29,12 @@ npm run generate:tags -- --type FRACTION_ADDITION
 
 Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
-- **4328 problems** in PostgreSQL (23 types: fractions, algebra, integers, decimals, index notation, coordinates, linear graphs, ratio & rates, area, angles)
+- **4578 problems** in PostgreSQL (24 types: fractions, algebra, integers, decimals, index notation, coordinates, linear graphs, ratio & rates, area, angles, probability)
 - **Web UI**: React + Tailwind + Express API
 - **CLI tools**: Custom difficulty mix & tag filtering
 - **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
 
-**Top Types:** FRACTION_SUBTRACTION (606) | FRACTION_ADDITION (328) | ALGEBRA (270) | ANGLES (250) | AREA (250) | RATIO_RATES (250) | LINEAR_GRAPHING (250) | COORDINATES (250) | INTEGERS (250) | DECIMALS (250)
+**Top Types:** FRACTION_SUBTRACTION (606) | FRACTION_ADDITION (328) | ALGEBRA (270) | PROBABILITY (250) | ANGLES (250) | AREA (250) | RATIO_RATES (250) | LINEAR_GRAPHING (250) | COORDINATES (250) | INTEGERS (250) | DECIMALS (250)
 
 ## Testing
 
@@ -75,7 +75,7 @@ npx prisma migrate dev              # Update schema
 
 **✅ Completed:**
 - Web UI: React + Tailwind + Express API + 153 tests
-- **Database**: 4328 problems (23 types, VCAA Level 7 aligned)
+- **Database**: 4578 problems (24 types, VCAA Level 7 aligned)
   - Fractions: 1104 problems (5 types)
   - Algebra: 270 problems (2 types)
   - Integers: 250 problems (4 operations)
@@ -86,11 +86,12 @@ npx prisma migrate dev              # Update schema
   - Ratio & Rates: 250 problems (simplifying, dividing quantities, unit rates, best buys)
   - Area: 250 problems (rectangles, squares, triangles, circles, composite shapes, word problems)
   - Angles: 250 problems (complementary, supplementary, triangles, parallel lines, quadrilaterals)
+  - Probability: 250 problems (coins, dice, balls, spinners, compound events, with/without replacement)
 - Filters: Difficulty (EASY/MEDIUM/HARD) + Tags
 - PDF Download (@react-pdf/renderer)
 
 **⏳ Next VCAA Level 7 Topics:**
-- Probability | Data analysis
+- Data analysis
 
 ## Tech Stack
 
