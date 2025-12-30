@@ -102,10 +102,15 @@ npx prisma migrate dev              # Update schema
 
 ```
 apps/web/          # React (Vite + TS + Tailwind)
-packages/api/      # Express API
+packages/api/      # Express API + Prisma client (packages/api/src/db/prisma.ts)
 src/               # CLI + PDF generator
 prisma/            # DB schema
 e2e/               # Playwright tests
+generated/         # Prisma client output (root level)
 ```
+
+**Prisma Imports:**
+- API: `import { prisma } from '../db/prisma'` (packages/api/src/services/*)
+- Client: `import { PrismaClient } from '../../../../generated/prisma'` (packages/api/src/db/prisma.ts)
 
 See `PROJECT-SETUP.md` for details.
