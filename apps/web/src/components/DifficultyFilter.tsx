@@ -9,10 +9,10 @@ const DifficultyFilter = ({ selectedSubCategory, stagedDifficulties, toggleDiffi
                   "mb-4 p-4 bg-white rounded-lg border border-blue-200",
                   selectedSubCategory
                     ? "bg-white border-blue-200"
-                    : "bg-gray-100 border-gray-300 opacity-50 pointer-events-none"
+                    : "bg-gray-100 border-gray-200 opacity-50 pointer-events-none"
                 )}
               >
-                <h3 className="text-sm font-semibold text-blue-700 mb-3">
+                <h3 className="text-sm font-semibold text-blue-800 mb-3">
                   Difficulty Levels
                 </h3>
                 <div className="space-y-2">
@@ -27,7 +27,7 @@ const DifficultyFilter = ({ selectedSubCategory, stagedDifficulties, toggleDiffi
                         id={`difficulty-${difficulty}`}
                         checked={stagedDifficulties.includes(difficulty)}
                         onChange={() => toggleDifficulty(difficulty)}
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                        className="w-4 h-4 text-blue-700 rounded focus:ring-2 focus:ring-blue-500"
                         aria-label={`Filter by ${difficulty.toLowerCase()} difficulty`}
                       />
                       <span className="text-sm text-blue-900">
@@ -38,7 +38,7 @@ const DifficultyFilter = ({ selectedSubCategory, stagedDifficulties, toggleDiffi
                   ))}
                 </div>
                 {stagedDifficulties.length === 0 && (
-                  <p className="text-xs text-blue-500 mt-2 italic">
+                  <p className="text-xs text-blue-700 mt-2 italic">
                     All difficulties shown
                   </p>
                 )}

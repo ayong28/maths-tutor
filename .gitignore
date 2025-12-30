@@ -21,3 +21,5 @@ ideas/
 
 test-results/
 test-results/.last-run.json
+
+temp/
