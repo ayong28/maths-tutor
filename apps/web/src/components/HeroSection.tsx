@@ -101,7 +101,7 @@ const HeroSection = () => {
             </div>
 
             <div className="rounded-2xl border border-brand-purple/20 bg-background/80 p-6 backdrop-blur-sm">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-purple-light/10 to-brand-purple-dark/10">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-brand-purple-light/10 to-brand-purple-dark/10">
                 <svg
                   className="h-6 w-6 text-brand-purple"
                   fill="none"
