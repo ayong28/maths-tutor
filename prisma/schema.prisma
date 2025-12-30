@@ -101,8 +101,9 @@ enum ProblemType {
   AREA
   ANGLES
 
-  // Statistics & Probability (1 type)
+  // Statistics & Probability (2 types)
   PROBABILITY
+  DATA_ANALYSIS
 }
 
 enum Difficulty {
