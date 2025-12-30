@@ -96,6 +96,9 @@ enum ProblemType {
 
   // Ratio & Rates (1 type)
   RATIO_RATES
+
+  // Area & Geometry (1 type)
+  AREA
 }
 
 enum Difficulty {
