@@ -2,7 +2,51 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-30 - Night)
+## Recent Session Changes (2025-12-30 - Late Night)
+
+**Session Summary**: Phase 10 - VCAA Database Expansion (Ratio & Rates) - Added 250 ratio & rates problems (RATIO_RATES type covering simplifying ratios, dividing quantities, unit rates, and best buys). Database now contains 3828 total problems covering all key VCAA Level 7 number concepts.
+
+### Phase 10: Ratio & Rates (Complete) ✅
+
+**Database Expansion**: Added 250 problems for RATIO_RATES
+
+**Problem Coverage**:
+- **EASY (100 problems)**: Simplifying ratios (4:2 = 2:1), writing ratios, equivalent ratios
+- **MEDIUM (100 problems)**: Dividing quantities in ratios, unit prices, simple rate problems (speed, cost per item)
+- **HARD (50 problems)**: Best buys (comparing unit prices), complex ratio word problems, inverse ratios, scaling problems
+
+**VCAA Level 7 Curriculum Alignment**:
+Based on VCAA content descriptors VCMNA249-250:
+- Recognise and solve problems involving simple ratios
+- Investigate and calculate 'best buys' with and without digital technologies
+- Understand unit rates and proportional relationships
+- Apply ratio concepts to real-world contexts
+
+**Problem Types**:
+- **Simplify ratios**: 92 (reducing ratios to simplest form)
+- **Divide quantities**: 67 (sharing amounts in given ratios)
+- **Rate problems**: 44 (speed, unit price, production rates)
+- **Best buy**: 17 (comparing unit prices to find better value)
+
+**Files Created**:
+- `temp/ratio-rates-problems.json` - 250 ratio & rates problems
+- `src/scripts/insert-ratio-rates.ts` - Insertion script
+- `prisma/migrations/20251230085347_add_ratio_rates_type/` - Schema migration
+
+**Schema Updates**:
+- Added `RATIO_RATES` to `ProblemType` enum
+
+**Problem Breakdown**:
+- 100 EASY | 100 MEDIUM | 50 HARD
+- All 250 problems include variables (ratio notation)
+- 7 problems with decimals
+- **Database total: 3578 → 3828 problems**
+
+**Sources**:
+- [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7)
+- [Level 7 - VIC MATHS NOTES](https://vicmathsnotes.weebly.com/level-7.html)
+
+## Previous Session (2025-12-30 - Night)
 
 **Session Summary**: Phase 10 - VCAA Database Expansion (Linear Graphing) - Added 250 linear graphing problems (LINEAR_GRAPHING type covering gradients, intercepts, equations, and real-world applications). Database now contains 3578 total problems covering linear relationships and graphs.
 

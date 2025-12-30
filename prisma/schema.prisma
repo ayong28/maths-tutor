@@ -93,6 +93,9 @@ enum ProblemType {
   // Graphing (2 types)
   COORDINATES_PLOTTING
   LINEAR_GRAPHING
+
+  // Ratio & Rates (1 type)
+  RATIO_RATES
 }
 
 enum Difficulty {
