@@ -2,7 +2,54 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-30 - Evening)
+## Recent Session Changes (2025-12-30 - Late Evening)
+
+**Session Summary**: Phase 10 - VCAA Database Expansion (Coordinates) - Added 250 coordinate problems (COORDINATES_PLOTTING type covering plotting points, quadrants, distance, and midpoint). Database now contains 3328 total problems covering all four quadrants of the Cartesian plane.
+
+### Phase 10: Coordinates & Cartesian Plane (Complete) ✅
+
+**Database Expansion**: Added 250 problems for COORDINATES_PLOTTING
+
+**Problem Coverage**:
+- **EASY (100 problems)**: First quadrant plotting, small positive integers (0-10), basic coordinate identification
+- **MEDIUM (100 problems)**: All four quadrants, negative integers (-10 to 10), arithmetic with coordinates
+- **HARD (50 problems)**: Distance between points, midpoint calculations, decimals, larger ranges (-25 to 25)
+
+**VCAA Level 7 Curriculum Alignment**:
+Based on VCAA content description VCMNA255:
+- Plot points on the Cartesian plane given coordinates
+- Find coordinates for a given point
+- Use all four quadrants (builds on Level 6)
+- Distance and midpoint calculations (extension)
+
+**Problem Sets Generated**:
+1. **Set 1-5 (EASY)** - Quadrant 1 plotting, coordinate identification, basic arithmetic with coordinates
+2. **Set 1-5 (MEDIUM)** - All quadrants, negative integers, quadrant identification, coordinate arithmetic
+3. **Set 1-5 (HARD)** - Distance formula, midpoint formula, decimals, large numbers
+
+**Files Created**:
+- `temp/coordinates-problems.json` - 250 coordinate problems
+- `src/scripts/insert-coordinates.ts` - Insertion script with variable/decimal detection
+- `src/scripts/delete-coordinates.ts` - Cleanup script for duplicates
+
+**Problem Type Breakdown**:
+- **Distance problems**: 21 (Pythagorean theorem, vertical/horizontal distance)
+- **Midpoint problems**: 13 (midpoint formula)
+- **Quadrant-specific**: 193 (plotting and identifying points in all quadrants)
+- **With decimals**: 12 (decimal coordinates)
+
+**Results**:
+- 250 problems inserted successfully
+- 100 EASY | 100 MEDIUM | 50 HARD
+- All 250 problems include variables (coordinate notation)
+- **Database total: 3078 → 3328 problems**
+
+**Sources**:
+- [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
+- [Content description VCMNA255 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/Curriculum/ContentDescription/VCMNA255)
+- [Year 7 The Cartesian plane and plotting points](https://www.amsi.org.au/ESA_middle_years/Year7/Year7_md/Year7_2a.html)
+
+## Previous Session (2025-12-30 - Evening)
 
 **Session Summary**: Phase 10 - VCAA Database Expansion - Added 250 index notation and square roots problems (3 new types: INDEX_POWERS, INDEX_SQUARE_ROOTS, INDEX_LAWS). Database now contains 3078 total problems covering integers, decimals, and index notation for VCAA Level 7.
 

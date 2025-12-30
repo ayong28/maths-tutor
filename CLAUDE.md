@@ -29,12 +29,12 @@ npm run generate:tags -- --type FRACTION_ADDITION
 
 Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
-- **3078 problems** in PostgreSQL (18 types: fractions, algebra, integers, decimals, index notation)
+- **3328 problems** in PostgreSQL (19 types: fractions, algebra, integers, decimals, index notation, coordinates)
 - **Web UI**: React + Tailwind + Express API
 - **CLI tools**: Custom difficulty mix & tag filtering
 - **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
 
-**Top Types:** FRACTION_SUBTRACTION (606) | FRACTION_ADDITION (328) | INTEGERS (250) | DECIMALS (250) | INDEX (250) | FRACTION_REDUCTION (180) | ALGEBRA (270)
+**Top Types:** FRACTION_SUBTRACTION (606) | FRACTION_ADDITION (328) | ALGEBRA (270) | COORDINATES (250) | INTEGERS (250) | DECIMALS (250) | INDEX (250) | FRACTION_REDUCTION (180)
 
 ## Testing
 
@@ -75,17 +75,18 @@ npx prisma migrate dev              # Update schema
 
 **✅ Completed:**
 - Web UI: React + Tailwind + Express API + 153 tests
-- **Database**: 3078 problems (18 types, VCAA Level 7 aligned)
+- **Database**: 3328 problems (19 types, VCAA Level 7 aligned)
   - Fractions: 1104 problems (5 types)
   - Algebra: 270 problems (2 types)
   - Integers: 250 problems (4 operations)
   - Decimals: 250 problems (4 operations)
   - Index Notation: 250 problems (powers, square roots, laws)
+  - Coordinates: 250 problems (plotting, quadrants, distance, midpoint)
 - Filters: Difficulty (EASY/MEDIUM/HARD) + Tags
 - PDF Download (@react-pdf/renderer)
 
 **⏳ Next VCAA Level 7 Topics:**
-- Coordinates & Cartesian plane | Ratio & rates | Area | Angles | Probability | Data analysis
+- Linear graphing | Ratio & rates | Area | Angles | Probability | Data analysis
 
 ## Tech Stack
 
