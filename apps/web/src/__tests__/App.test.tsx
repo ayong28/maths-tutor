@@ -41,21 +41,29 @@ describe('App Integration Tests', () => {
       type: 'FRACTION_ADDITION',
       count: 328,
       displayName: 'Fraction Addition',
+      mainCategory: 'Fractions',
+      subCategory: 'Addition',
     },
     {
       type: 'FRACTION_SUBTRACTION',
       count: 606,
       displayName: 'Fraction Subtraction',
+      mainCategory: 'Fractions',
+      subCategory: 'Subtraction',
     },
     {
       type: 'FRACTION_REDUCTION',
       count: 180,
       displayName: 'Fraction Reduction',
+      mainCategory: 'Fractions',
+      subCategory: 'Reduction',
     },
     {
       type: 'ALGEBRA_COLLECTING_TERMS',
       count: 150,
       displayName: 'Collecting Like Terms',
+      mainCategory: 'Algebras',
+      subCategory: 'Collecting Terms',
     },
   ];
 

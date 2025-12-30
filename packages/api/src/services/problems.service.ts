@@ -13,6 +13,8 @@ export type CategoryInfo = {
   type: ProblemType;
   count: number;
   displayName: string;
+  mainCategory: string;
+  subCategory: string;
 };
 
 /**
@@ -30,6 +32,8 @@ export async function getCategories(): Promise<CategoryInfo[]> {
     type: item.type,
     count: item._count.type,
     displayName: formatCategoryName(item.type),
+    mainCategory: getMainCategory(item.type),
+    subCategory: getSubCategory(item.type),
   }));
 }
 
@@ -90,7 +94,7 @@ export async function getTagsForType(type: ProblemType): Promise<string[]> {
  * Format problem type for display
  */
 function formatCategoryName(type: ProblemType): string {
-  const names: Record<ProblemType, string> = {
+  const names: Partial<Record<ProblemType, string>> = {
     FRACTION_ADDITION: 'Fraction Addition',
     FRACTION_SUBTRACTION: 'Fraction Subtraction',
     FRACTION_REDUCTION: 'Fraction Reduction',
@@ -99,7 +103,26 @@ function formatCategoryName(type: ProblemType): string {
     ALGEBRA_COLLECTING_TERMS: 'Collecting Like Terms',
     ALGEBRA_MULTIPLICATION: 'Algebraic Multiplication',
   };
-  return names[type] || type;
+  return names[type] || type.replace(/_/g, ' ');
+}
+
+/**
+ * Get main category from problem type (e.g., FRACTION_ADDITION -> Fractions)
+ */
+function getMainCategory(type: ProblemType): string {
+  const firstWord = type.split('_')[0];
+  return firstWord ? firstWord.toLowerCase().replace(/^\w/, c => c.toUpperCase()) : 'Other';
+}
+
+/**
+ * Get subcategory from problem type (e.g., FRACTION_ADDITION -> Addition)
+ */
+function getSubCategory(type: ProblemType): string {
+  const parts = type.split('_').slice(1);
+  return parts
+    .join(' ')
+    .toLowerCase()
+    .replace(/\b\w/g, c => c.toUpperCase());
 }
 
 /**

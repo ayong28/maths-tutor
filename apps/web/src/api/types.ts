@@ -18,6 +18,8 @@ export type CategoryInfo = {
   type: ProblemType;
   count: number;
   displayName: string;
+  mainCategory: string;
+  subCategory: string;
 };
 
 export type Problem = {

@@ -13,33 +13,6 @@ import HeroSection from "./components/HeroSection";
 /**
  * Map API problem types to display categories and subcategories
  */
-const PROBLEM_TYPE_MAP: Record<
-  ProblemType,
-  { mainCategory: string; subCategory: string }
-> = {
-  FRACTION_ADDITION: { mainCategory: "Fractions", subCategory: "Addition" },
-  FRACTION_SUBTRACTION: {
-    mainCategory: "Fractions",
-    subCategory: "Subtraction",
-  },
-  FRACTION_REDUCTION: { mainCategory: "Fractions", subCategory: "Reduction" },
-  FRACTION_MULTIPLICATION: {
-    mainCategory: "Fractions",
-    subCategory: "Multiplication",
-  },
-  FRACTION_DIVISION: { mainCategory: "Fractions", subCategory: "Division" },
-  ALGEBRA_COLLECTING_TERMS: {
-    mainCategory: "Algebra",
-    subCategory: "Collecting Terms",
-  },
-  ALGEBRA_MULTIPLICATION: {
-    mainCategory: "Algebra",
-    subCategory: "Multiplication",
-  },
-};
-
-
-
 /**
  * Takes an expression string and replaces all occurrences of mixed numbers and a/b with their respective components.
  * Ensures fractions and mixed numbers are vertically aligned and of consistent height.
@@ -184,18 +157,15 @@ const App: FC = () => {
 
   if (apiCategories) {
     apiCategories.forEach((cat) => {
-      const mapping = PROBLEM_TYPE_MAP[cat.type];
-      if (mapping) {
-        const { mainCategory, subCategory } = mapping;
+      const { mainCategory, subCategory } = cat;
 
-        if (!categoryStructure[mainCategory]) {
-          categoryStructure[mainCategory] = new Set();
-          subcategoryToType[mainCategory] = {};
-        }
-
-        categoryStructure[mainCategory]!.add(subCategory);
-        subcategoryToType[mainCategory]![subCategory] = cat.type;
+      if (!categoryStructure[mainCategory]) {
+        categoryStructure[mainCategory] = new Set();
+        subcategoryToType[mainCategory] = {};
       }
+
+      categoryStructure[mainCategory]!.add(subCategory);
+      subcategoryToType[mainCategory]![subCategory] = cat.type;
     });
   }
 
