@@ -2,7 +2,50 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-30 - Late Evening)
+## Recent Session Changes (2025-12-30 - Night)
+
+**Session Summary**: Phase 10 - VCAA Database Expansion (Linear Graphing) - Added 250 linear graphing problems (LINEAR_GRAPHING type covering gradients, intercepts, equations, and real-world applications). Database now contains 3578 total problems covering linear relationships and graphs.
+
+### Phase 10: Linear Graphing (Complete) ✅
+
+**Database Expansion**: Added 250 problems for LINEAR_GRAPHING
+
+**Problem Coverage**:
+- **EASY (100 problems)**: Reading gradients and y-intercepts from y = mx + c form, simple substitution
+- **MEDIUM (100 problems)**: Finding gradients from two points, writing equations, finding x-intercepts
+- **HARD (50 problems)**: Finding equations from points, parallel lines, real-world linear models
+
+**VCAA Level 7 Curriculum Alignment**:
+Based on VCAA content descriptors VCMNA256-257:
+- Solve simple linear equations
+- Plot points and interpret graphs from real data
+- Develop simple linear models for situations
+- Make predictions based on models
+- Understand gradient (slope) and y-intercept
+
+**Problem Types**:
+- **Gradient problems**: 99 (identifying slope from equation, calculating from two points)
+- **Intercept problems**: 126 (y-intercept identification, x-intercept calculation)
+- **Writing equations**: 80 (given gradient & intercept, two points, point-slope form)
+- **Real-world applications**: 12 (distance/time, cost models, growth/decay)
+
+**Files Created**:
+- `temp/linear-graphing-problems.json` - 250 linear graphing problems
+- `src/scripts/insert-linear-graphing.ts` - Insertion script with variable/decimal detection
+- `src/scripts/delete-linear-graphing.ts` - Cleanup script
+
+**Problem Breakdown**:
+- 100 EASY | 100 MEDIUM | 50 HARD
+- All 250 problems include variables (algebraic notation)
+- 2 problems with decimals
+- **Database total: 3328 → 3578 problems**
+
+**Sources**:
+- [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
+- [Level 7 - Mathematics - Curriculum - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/mathematics/mathematics/curriculum/f-10?y=7&s=SP&layout=3)
+- [11.03 Graphs of linear relationships | Year 7 Maths | Australian Curriculum Year 7 - 2020 Edition | Mathspace](https://mathspace.co/textbooks/syllabuses/Syllabus-815/topics/Topic-18239/subtopics/Subtopic-249516/)
+
+## Previous Session (2025-12-30 - Late Evening)
 
 **Session Summary**: Phase 10 - VCAA Database Expansion (Coordinates) - Added 250 coordinate problems (COORDINATES_PLOTTING type covering plotting points, quadrants, distance, and midpoint). Database now contains 3328 total problems covering all four quadrants of the Cartesian plane.
 
