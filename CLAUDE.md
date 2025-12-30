@@ -27,14 +27,14 @@ npm run generate:tags -- --type FRACTION_ADDITION
 
 ## Project Overview
 
-Generate printable PDF worksheets for fraction and algebra problems.
+Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
-- **1104 problems** in PostgreSQL (5 types: fraction add/sub/reduce, algebra)
+- **3078 problems** in PostgreSQL (18 types: fractions, algebra, integers, decimals, index notation)
 - **Web UI**: React + Tailwind + Express API
 - **CLI tools**: Custom difficulty mix & tag filtering
 - **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
 
-**Problem Types:** FRACTION_ADDITION (328) | FRACTION_SUBTRACTION (606) | FRACTION_REDUCTION (180) | ALGEBRA_COLLECTING_TERMS (150) | ALGEBRA_MULTIPLICATION (120)
+**Top Types:** FRACTION_SUBTRACTION (606) | FRACTION_ADDITION (328) | INTEGERS (250) | DECIMALS (250) | INDEX (250) | FRACTION_REDUCTION (180) | ALGEBRA (270)
 
 ## Testing
 
@@ -71,23 +71,21 @@ brew services start postgresql@16  # maths_tutor_dev on localhost:5432
 npx prisma migrate dev              # Update schema
 ```
 
-## Status (Phase 9 - E2E Tests)
+## Status (Phase 10 - VCAA Database Expansion)
 
 **✅ Completed:**
-- Web UI: React + Tailwind + Express API
-- 1104 problems in PostgreSQL (Prisma ORM)
+- Web UI: React + Tailwind + Express API + 153 tests
+- **Database**: 3078 problems (18 types, VCAA Level 7 aligned)
+  - Fractions: 1104 problems (5 types)
+  - Algebra: 270 problems (2 types)
+  - Integers: 250 problems (4 operations)
+  - Decimals: 250 problems (4 operations)
+  - Index Notation: 250 problems (powers, square roots, laws)
 - Filters: Difficulty (EASY/MEDIUM/HARD) + Tags
 - PDF Download (@react-pdf/renderer)
-- **Test Suite**: 153 tests (32 PDF + 74 Web + 47 E2E)
-  - Integration tests for 10 E2E scenarios (Jest)
-  - 47 E2E tests: homepage, PDF, mobile, race conditions, keyboard, a11y, cross-browser
-  - Accessibility testing with @axe-core/playwright (WCAG 2.1 AA)
 
-**⏳ In Progress:**
-- Fixing E2E test failures (27/47 passing)
-
-**⏳ Next:**
-- Phase 10: VCAA Problem Database Expansion
+**⏳ Next VCAA Level 7 Topics:**
+- Coordinates & Cartesian plane | Ratio & rates | Area | Angles | Probability | Data analysis
 
 ## Tech Stack
 

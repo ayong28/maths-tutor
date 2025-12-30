@@ -2,7 +2,57 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-30 - Afternoon)
+## Recent Session Changes (2025-12-30 - Evening)
+
+**Session Summary**: Phase 10 - VCAA Database Expansion - Added 250 index notation and square roots problems (3 new types: INDEX_POWERS, INDEX_SQUARE_ROOTS, INDEX_LAWS). Database now contains 3078 total problems covering integers, decimals, and index notation for VCAA Level 7.
+
+### Phase 10: Index Notation & Square Roots (Complete) ✅
+
+**Database Expansion**: Added 250 problems across 3 new types
+
+**Schema Updates** (`prisma/schema.prisma`):
+- Added `INDEX_POWERS` - basic powers, negative exponents, fractional exponents
+- Added `INDEX_SQUARE_ROOTS` - perfect squares, simplified surds, operations with roots
+- Added `INDEX_LAWS` - multiplication law, division law, power of power, variables
+
+**Problem Sets Generated**:
+1. **Set 1** (50 EASY) - Basic powers: squares (2² to 20²), cubes (2³ to 10³), higher powers, power of 0/1, negative bases
+2. **Set 2** (50 EASY) - Square roots: perfect squares (√4 to √729), simplified surds (√8 = 2√2, √12 = 2√3, etc.)
+3. **Set 3** (50 MEDIUM) - Index laws: aᵐ × aⁿ = aᵐ⁺ⁿ, aᵐ ÷ aⁿ = aᵐ⁻ⁿ, (aᵐ)ⁿ = aᵐⁿ, with variables
+4. **Set 4** (50 MEDIUM) - Mixed operations: combined laws, roots with operations, different bases
+5. **Set 5** (50 HARD) - Advanced: negative exponents (2⁻³ = 1/8), fractional exponents (16^(3/2) = 64), complex surds
+
+**Files Created**:
+- `temp/index-set1.json` through `temp/index-set5.json` - Individual problem sets
+- `temp/index-problems.json` - Combined 250 problems
+- `src/scripts/insert-index.ts` - Insertion script with variable detection
+
+**Migration**: `20251230034530_add_index_notation_types`
+
+**Results**:
+- 250 problems inserted successfully
+- 75 INDEX_POWERS | 97 INDEX_SQUARE_ROOTS | 78 INDEX_LAWS
+- 100 EASY | 100 MEDIUM | 50 HARD
+- 58 problems with variables
+- **Database total: 2828 → 3078 problems**
+
+### Phase 10: Decimal Operations (Complete) ✅
+
+**Database Expansion**: Added 250 decimal problems (4 types: DECIMALS_ADDITION, DECIMALS_SUBTRACTION, DECIMALS_MULTIPLICATION, DECIMALS_DIVISION)
+
+**Files**: `temp/decimals-problems.json` | `src/scripts/insert-decimals.ts`
+**Migration**: Added 4 decimal operation types to schema
+**Result**: Database 2578 → 2828 problems
+
+### Phase 10: Integer Operations (Complete) ✅
+
+**Database Expansion**: Added 250 integer problems (4 types: INTEGERS_ADDITION, INTEGERS_SUBTRACTION, INTEGERS_MULTIPLICATION, INTEGERS_DIVISION)
+
+**Files**: `temp/integers-problems.json` | `src/scripts/insert-integers.ts`
+**Migration**: Added 4 integer operation types to schema
+**Result**: Database 2328 → 2578 problems
+
+## Previous Session (2025-12-30 - Afternoon)
 
 **Session Summary**: Phase 9 - Browser-Specific E2E Tests - Implemented 7 comprehensive E2E test files (47 tests total) covering PDF download, mobile responsiveness, race conditions, keyboard navigation, accessibility (with @axe-core/playwright), and cross-browser compatibility. Test suite: 153 tests (32 PDF + 74 Web + 47 E2E), currently 27/47 E2E tests passing, being fixed manually.
 
