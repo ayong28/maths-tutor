@@ -91,38 +91,106 @@ export async function getTagsForType(type: ProblemType): Promise<string[]> {
 }
 
 /**
- * Format problem type for display
+ * Special case overrides for category grouping
+ * Only for types that can't be auto-derived from their enum name
  */
-function formatCategoryName(type: ProblemType): string {
-  const names: Partial<Record<ProblemType, string>> = {
-    FRACTION_ADDITION: 'Fraction Addition',
-    FRACTION_SUBTRACTION: 'Fraction Subtraction',
-    FRACTION_REDUCTION: 'Fraction Reduction',
-    FRACTION_MULTIPLICATION: 'Fraction Multiplication',
-    FRACTION_DIVISION: 'Fraction Division',
-    ALGEBRA_COLLECTING_TERMS: 'Collecting Like Terms',
-    ALGEBRA_MULTIPLICATION: 'Algebraic Multiplication',
-  };
-  return names[type] || type.replace(/_/g, ' ');
+const CATEGORY_OVERRIDES: Partial<Record<ProblemType, { main: string; sub: string }>> = {
+  // Single-word types that need proper grouping
+  AREA: { main: 'Geometry', sub: 'Area' },
+  ANGLES: { main: 'Geometry', sub: 'Angles' },
+  PROBABILITY: { main: 'Statistics', sub: 'Probability' },
+  DATA_ANALYSIS: { main: 'Statistics', sub: 'Data Analysis' },
+
+  // Types with special subcategory grouping
+  COORDINATES_PLOTTING: { main: 'Coordinates', sub: 'Plotting' },
+  LINEAR_GRAPHING: { main: 'Linear Graphs', sub: 'Graphing' },
+  RATIO_RATES: { main: 'Ratio & Rates', sub: 'Ratio & Rates' },
+};
+
+/**
+ * Special display name overrides
+ */
+const DISPLAY_NAME_OVERRIDES: Partial<Record<ProblemType, string>> = {
+  ALGEBRA_COLLECTING_TERMS: 'Collecting Like Terms',
+  ALGEBRA_MULTIPLICATION: 'Algebraic Multiplication',
+  COORDINATES_PLOTTING: 'Plotting Points',
+  ALGEBRA_LINEAR_EQUATIONS_SIMPLE: 'Linear Equations (Simple)',
+  ALGEBRA_LINEAR_EQUATIONS_COMPLEX: 'Linear Equations (Complex)',
+};
+
+/**
+ * Capitalize first letter of each word
+ */
+function titleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 /**
- * Get main category from problem type (e.g., FRACTION_ADDITION -> Fractions)
+ * Pluralize category name (Fraction -> Fractions, Index -> Index Notation)
+ */
+function pluralizeCategory(word: string): string {
+  const SPECIAL_PLURALS: Record<string, string> = {
+    'Index': 'Index Notation',
+    'Percentage': 'Percentages',
+  };
+
+  if (SPECIAL_PLURALS[word]) return SPECIAL_PLURALS[word];
+
+  // Standard pluralization: add 's' if not already plural
+  if (!word.endsWith('s')) {
+    return word + 's';
+  }
+  return word;
+}
+
+/**
+ * Get main category from problem type
+ * Auto-derives from enum name with override support
  */
 function getMainCategory(type: ProblemType): string {
+  if (CATEGORY_OVERRIDES[type]) {
+    return CATEGORY_OVERRIDES[type]!.main;
+  }
+
+  // Auto-derive: take first word before underscore, titleCase, and pluralize
   const firstWord = type.split('_')[0];
-  return firstWord ? firstWord.toLowerCase().replace(/^\w/, c => c.toUpperCase()) : 'Other';
+  if (!firstWord) return 'Other';
+
+  const capitalized = titleCase(firstWord);
+  return pluralizeCategory(capitalized);
 }
 
 /**
- * Get subcategory from problem type (e.g., FRACTION_ADDITION -> Addition)
+ * Get subcategory from problem type
+ * Auto-derives from enum name with override support
  */
 function getSubCategory(type: ProblemType): string {
+  if (CATEGORY_OVERRIDES[type]) {
+    return CATEGORY_OVERRIDES[type]!.sub;
+  }
+
+  // Auto-derive: take all words after first underscore, titleCase them
   const parts = type.split('_').slice(1);
-  return parts
-    .join(' ')
-    .toLowerCase()
-    .replace(/\b\w/g, c => c.toUpperCase());
+  if (parts.length === 0) return '';
+
+  return titleCase(parts.join(' '));
+}
+
+/**
+ * Format problem type for display
+ * Auto-derives from enum name with override support
+ */
+function formatCategoryName(type: ProblemType): string {
+  if (DISPLAY_NAME_OVERRIDES[type]) {
+    return DISPLAY_NAME_OVERRIDES[type]!;
+  }
+
+  // Auto-derive: titleCase the whole thing with spaces
+  return titleCase(type.replace(/_/g, ' '));
 }
 
 /**
