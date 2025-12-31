@@ -4,7 +4,36 @@ This document tracks the implementation timeline and session history for the mat
 
 ## Recent Session Changes (2025-12-30 - Morning)
 
-**Session Summary**: Phase 10 - VCAA Database Expansion (Data Analysis) - Added 250 data analysis problems (DATA_ANALYSIS type covering mean, median, mode, range, comparing statistics, missing values, and real-world contexts). Database now contains 4828 total problems covering all VCAA Level 7 mathematics topics. **Phase 10 is now complete.**
+**Session Summary**: Phase 10 - VCAA Database Expansion (Data Analysis) + Category Auto-Derivation - Added 250 data analysis problems and refactored API category mapping to auto-derive from enum names, reducing maintenance overhead. Database now contains 4828 total problems covering all VCAA Level 7 mathematics topics. **Phase 10 is now complete.**
+
+### API Improvements: Category Auto-Derivation ✅
+
+**Problem**: Manual CATEGORY_MAP with 25 entries that needed updating every time a new problem type was added.
+
+**Solution**: Refactored to auto-derive categories from enum names (packages/api/src/services/problems.service.ts:93-193)
+- Auto-derives main category from first word (FRACTION_ADDITION → "Fractions")
+- Auto-derives subcategory from remaining words (FRACTION_ADDITION → "Addition")
+- Small CATEGORY_OVERRIDES map (7 entries) for special cases only
+- Automatic pluralization and title casing
+
+**Benefits**:
+- New problem types auto-appear in UI without code changes
+- Reduced from 25 manual entries to 7 override entries
+- Follows DRY principle (enum is single source of truth)
+
+**Example**:
+```typescript
+// Before: 25 manual entries
+FRACTION_ADDITION: { main: 'Fractions', sub: 'Addition', display: 'Fraction Addition' }
+
+// After: Auto-derived from "FRACTION_ADDITION"
+// Override only needed for: AREA, ANGLES, PROBABILITY, DATA_ANALYSIS (non-standard grouping)
+```
+
+**Categories Now Available in Web UI**:
+- **Statistics**: Probability, Data Analysis
+- **Geometry**: Area, Angles
+- All 25 types now properly grouped and displayed
 
 ### Phase 10: Data Analysis (Complete) ✅
 
