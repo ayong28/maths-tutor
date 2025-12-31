@@ -34,10 +34,6 @@ export type Problem = {
   sourceWorksheet: string | null;
   sourceProblemNumber: number | null;
   hasVariables: boolean;
-  hasFractions: boolean;
-  hasMixedNumbers: boolean;
-  denominators: number[];
-  requiresLCD: boolean;
 };
 
 export type ProblemFilters = {

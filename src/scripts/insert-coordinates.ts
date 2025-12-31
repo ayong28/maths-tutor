@@ -54,10 +54,6 @@ async function main() {
     sourceWorksheet: null,
     sourceProblemNumber: null,
     hasVariables: detectVariables(p.question, p.answer),
-    hasFractions: detectFractions(p.question, p.answer),
-    hasMixedNumbers: false,
-    denominators: [],
-    requiresLCD: false,
   }));
 
   // Count by difficulty

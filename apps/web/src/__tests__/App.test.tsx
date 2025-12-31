@@ -79,10 +79,6 @@ describe('App Integration Tests', () => {
     sourceWorksheet: null,
     sourceProblemNumber: null,
     hasVariables: false,
-    hasFractions: true,
-    hasMixedNumbers: false,
-    denominators: [i + 2, i + 3],
-    requiresLCD: true,
   }));
 
   const mockTags = ['unlike-denominators', 'like-denominators', 'simplification'];

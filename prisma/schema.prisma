@@ -31,20 +31,13 @@ model Problem {
   sourceProblemNumber Int?
 
   // Metadata for filtering
-  hasVariables    Boolean @default(false)
-  hasFractions    Boolean @default(false)
-  hasMixedNumbers Boolean @default(false)
-  denominators    Int[] // Changed from String[] - numeric filtering
-  requiresLCD     Boolean @default(false)
+  hasVariables Boolean @default(false)
 
   worksheetProblems WorksheetProblem[]
 
   // Composite indexes for common query patterns
   @@index([type, difficulty])
-  @@index([type, difficulty, hasFractions])
   @@index([type, difficulty, hasVariables])
-  @@index([type, difficulty, requiresLCD])
-  @@index([type, difficulty, hasMixedNumbers])
   @@index([tags], type: Gin) // GIN index for array operations
 }
 

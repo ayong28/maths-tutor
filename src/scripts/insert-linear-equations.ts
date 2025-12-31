@@ -50,10 +50,6 @@ async function insertProblems() {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: true,
-      hasFractions: false,
-      hasMixedNumbers: false,
-      denominators: [],
-      requiresLCD: false,
     }));
 
     console.log('\n\nInserting into database...');

@@ -30,10 +30,6 @@ describe('useProblems', () => {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: false,
-      hasFractions: true,
-      hasMixedNumbers: false,
-      denominators: [8],
-      requiresLCD: false,
     },
     {
       id: '2',
@@ -47,10 +43,6 @@ describe('useProblems', () => {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: false,
-      hasFractions: true,
-      hasMixedNumbers: false,
-      denominators: [5, 3],
-      requiresLCD: true,
     },
     {
       id: '3',
@@ -64,10 +56,6 @@ describe('useProblems', () => {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: true,
-      hasFractions: false,
-      hasMixedNumbers: false,
-      denominators: [],
-      requiresLCD: false,
     },
   ];
 

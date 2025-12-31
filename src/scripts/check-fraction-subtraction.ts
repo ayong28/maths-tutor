@@ -41,7 +41,6 @@ async function checkFractionSubtraction() {
         answer: true,
         difficulty: true,
         tags: true,
-        denominators: true,
       },
     });
 

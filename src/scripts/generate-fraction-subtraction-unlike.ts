@@ -22,7 +22,6 @@ function subtractFractions(
   den1: number,
   num2: number,
   den2: number
-): { question: string; answer: string; denominators: number[] } {
   // Find LCD (least common denominator)
   const lcd = (den1 * den2) / gcd(den1, den2);
 
@@ -43,7 +42,6 @@ function subtractFractions(
   return {
     question,
     answer,
-    denominators: [den1, den2],
   };
 }
 
@@ -56,10 +54,6 @@ interface Problem {
   sourceWorksheet: null;
   sourceProblemNumber: null;
   hasVariables: false;
-  hasFractions: true;
-  hasMixedNumbers: false;
-  denominators: number[];
-  requiresLCD: true;
 }
 
 async function generateProblems() {
@@ -99,9 +93,6 @@ async function generateProblems() {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: false,
-      hasFractions: true,
-      hasMixedNumbers: false,
-      requiresLCD: true,
     });
   }
 
@@ -133,9 +124,6 @@ async function generateProblems() {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: false,
-      hasFractions: true,
-      hasMixedNumbers: false,
-      requiresLCD: true,
     });
   }
 
@@ -167,9 +155,6 @@ async function generateProblems() {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: false,
-      hasFractions: true,
-      hasMixedNumbers: false,
-      requiresLCD: true,
     });
   }
 
@@ -219,7 +204,6 @@ async function insertProblems() {
       },
     });
 
-    console.log(`\nTotal FRACTION_SUBTRACTION with unlike-denominators: ${count}`);
 
   } catch (error) {
     console.error('Error:', error);

@@ -8,7 +8,6 @@ interface JsonProblem {
   question: string;
   answer: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  denominators: number[];
 }
 
 async function insertProblems() {
@@ -49,10 +48,6 @@ async function insertProblems() {
       sourceWorksheet: null,
       sourceProblemNumber: null,
       hasVariables: false,
-      hasFractions: true,
-      hasMixedNumbers: true,
-      denominators: p.denominators,
-      requiresLCD: true,
     }));
 
     console.log('\n\nInserting into database...');
@@ -86,7 +81,6 @@ async function insertProblems() {
     });
 
     console.log(`\nTotal FRACTION_SUBTRACTION: ${totalSubtraction}`);
-    console.log(`Total with unlike-denominators: ${unlikeDenominators}`);
     console.log(`Total with mixed-numbers: ${mixedNumbers}`);
 
   } catch (error) {

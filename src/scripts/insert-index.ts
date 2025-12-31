@@ -42,10 +42,6 @@ async function main() {
     sourceWorksheet: null,
     sourceProblemNumber: null,
     hasVariables: detectVariables(p.question, p.answer),
-    hasFractions: false,
-    hasMixedNumbers: false,
-    denominators: [],
-    requiresLCD: false,
   }));
 
   // Count by type

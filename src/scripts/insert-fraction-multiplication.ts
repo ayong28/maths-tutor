@@ -53,10 +53,6 @@ async function insertProblems() {
         sourceWorksheet: null,
         sourceProblemNumber: null,
         hasVariables: false,
-        hasFractions: true,
-        hasMixedNumbers: hasMixedNumbers,
-        denominators: [],
-        requiresLCD: false,
       };
     });
 
