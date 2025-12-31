@@ -50,8 +50,6 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^6.19.0",
-    "@tanstack/react-router": "^1.144.0",
-    "@tanstack/react-router-devtools": "^1.144.0",
     "@types/pdfkit": "^0.17.3",
     "commander": "^14.0.2",
     "dotenv": "^17.2.3",
