@@ -2,7 +2,59 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Recent Session Changes (2025-12-30 - Morning)
+## Recent Session Changes (2025-12-31 - Afternoon)
+
+**Session Summary**: Mobile Responsiveness - Implemented view-switching UX for iPhone screens where aside menu shows initially, switches to worksheet content on subcategory selection, and "Back to Categories" returns to menu. Desktop behavior unchanged (side-by-side). E2E tests updated.
+
+### Mobile Responsiveness Implementation ✅
+
+**Problem**: On iPhone screens (<768px), both sidebar and content stacked vertically requiring excessive scrolling to view worksheets.
+
+**Solution**: Added mobile view state to control panel visibility (apps/web/src/App.tsx:73)
+
+**Implementation:**
+1. **Mobile view state** - Type-safe union: `type MobileView = 'menu' | 'content'`
+2. **Conditional visibility** - Tailwind classes: `hidden md:block` pattern
+   - Aside: Shows in menu view, hides in content view, always visible on desktop
+   - Main: Hides in menu view, shows in content view, always visible on desktop
+3. **Navigation flow**:
+   - Initial: Menu view (aside visible)
+   - Select subcategory → Content view (main visible)
+   - Click "Back to Categories" → Menu view (aside visible)
+
+**Responsive Behavior:**
+
+| Viewport | Aside | Main | Behavior |
+|----------|-------|------|----------|
+| Mobile (<768px) initial | Visible | Hidden | Menu view |
+| Mobile after subcategory | Hidden | Visible | Content view |
+| Desktop (≥768px) | Visible | Visible | Side-by-side (unchanged) |
+
+**Files Modified:**
+- `apps/web/src/App.tsx` - Added mobileView state, conditional className on aside/main, navigation handlers
+- `e2e/tests/03-mobile-responsive.spec.ts` - Updated iPhone/iPad tests for view switching behavior
+
+**E2E Test Updates:**
+- **iPhone SE test**: Validates menu→content→menu flow with "Back to Categories" button
+- **iPad test**: Verifies desktop layout at md breakpoint (both panels always visible)
+- **Desktop tests**: No changes needed (already verify side-by-side layout)
+
+**Benefits:**
+- Zero breaking changes to desktop experience
+- Simple implementation (one state variable + Tailwind utilities)
+- Type-safe view state
+- Improved mobile UX (no scrolling past sidebar)
+
+**Testing:**
+```bash
+# Visual testing
+npm run dev  # Test in browser DevTools mobile view
+
+# E2E tests
+npm run test:e2e:chromium -- 03-mobile-responsive
+```
+
+## Previous Session (2025-12-30 - Morning)
 
 **Session Summary**: Phase 10 - VCAA Database Expansion (Data Analysis) + Category Auto-Derivation - Added 250 data analysis problems and refactored API category mapping to auto-derive from enum names, reducing maintenance overhead. Database now contains 4828 total problems covering all VCAA Level 7 mathematics topics. **Phase 10 is now complete.**
 
