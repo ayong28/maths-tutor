@@ -68,6 +68,10 @@ function renderMathExpression(expr: string): JSX.Element {
 }
 
 const App: FC = () => {
+  // Mobile view state: 'menu' shows aside, 'content' shows main
+  type MobileView = 'menu' | 'content';
+  const [mobileView, setMobileView] = useState<MobileView>('menu');
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
     null
@@ -174,6 +178,7 @@ const App: FC = () => {
   // Handle subcategory selection
   const onSelectSubCategory = (subCat: string): void => {
     setSelectedSubCategory(subCat);
+    setMobileView('content'); // Switch to content view on mobile
     // Reset both staged and applied filters
     setStagedDifficulties([]);
     setStagedTags([]);
@@ -246,7 +251,10 @@ const App: FC = () => {
       {/* Main content area */}
       <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg flex flex-col md:flex-row overflow-hidden print:shadow-none print:bg-white">
         {/* Sidebar: Categories & Subcategories */}
-        <aside className="md:w-1/3 border-r border-blue-100 bg-blue-50 px-6 py-6 print:hidden">
+        <aside className={classNames(
+          "md:w-1/3 border-r border-blue-100 bg-blue-50 px-6 py-6 print:hidden",
+          mobileView === 'menu' ? 'block' : 'hidden md:block'
+        )}>
           <div>
             <h2 className="text-lg font-semibold text-blue-900 mb-4">Topics</h2>
 
@@ -416,7 +424,10 @@ const App: FC = () => {
         </aside>
 
         {/* Main: Problems Display */}
-        <main className="flex-1 p-8 print:px-0 print:py-0">
+        <main className={classNames(
+          "flex-1 p-8 print:px-0 print:py-0",
+          mobileView === 'content' ? 'block' : 'hidden md:block'
+        )}>
           {selectedCategory && selectedSubCategory ? (
             <div className="print:p-0">
               <div className="flex items-baseline justify-between mb-6 print:hidden">
@@ -560,6 +571,7 @@ const App: FC = () => {
                         setSelectedSubCategory(null);
                         setSelectedProblemType(null);
                         setAnswerKeyOpen(false);
+                        setMobileView('menu'); // Return to menu view on mobile
                       }}
                     >
                       Back to Categories
