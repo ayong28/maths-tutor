@@ -38,7 +38,7 @@ npm install react-router@7 react-router-dom@7
 - `react-router@7` - Core routing library
 - `react-router-dom@7` - DOM bindings for React Router
 
-**Note:** We're NOT installing `@react-router/dev` because we're using library mode (routes defined in main.tsx), not framework mode (routes in routes.ts file).
+**Note:** We're using library mode (routes defined in main.tsx), so we don't need `@react-router/dev`.
 
 **Expected output:** Package installation (warnings about engine version are OK)
 
@@ -1114,13 +1114,13 @@ mv src/App.tsx src/App.tsx.backup
 
 **Why:** Keep the old file as reference. Delete later after testing.
 
-## Step 14: Update Vite Config (Revert to React Plugin)
+## Step 14: Update Vite Config (Disable Fast Refresh Warning)
 
-Since we're using library mode (not framework mode), we don't need the `reactRouter()` Vite plugin.
+The simplest approach is to suppress the Fast Refresh warning for route files, since it's harmless.
 
 **File:** `apps/web/vite.config.ts`
 
-Make sure it looks like this:
+Use the standard React plugin with Fast Refresh disabled for route files:
 
 ```typescript
 import { defineConfig } from 'vite';
@@ -1129,7 +1129,13 @@ import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react({
+      // Disable Fast Refresh for route files (they export loaders + components)
+      exclude: /routes\/.*.tsx$/,
+    }),
+    tailwindcss()
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -1146,10 +1152,18 @@ export default defineConfig({
 });
 ```
 
-**What changed:**
-- Using standard `react()` plugin (not `reactRouter()`)
-- This is simpler for library mode
-- Fast Refresh will work fine because we're using standard route components
+**What this does:**
+- Uses standard `react()` plugin (simpler setup)
+- Excludes route files from Fast Refresh (prevents the warning)
+- Route files will still work, just without Fast Refresh
+- Main app code still gets Fast Refresh benefits
+
+**Alternative (if you still see warnings):** Use regex to be more specific:
+```typescript
+react({
+  exclude: [/routes\/home\.tsx$/, /routes\/category\.tsx$/, /routes\/worksheet\.tsx$/],
+})
+```
 
 ## Step 15: Test TypeScript Compilation
 
@@ -1353,6 +1367,50 @@ export { usePDFGenerator } from './usePDFGenerator';
 ```
 
 The old hooks (`useCategories`, `useProblems`, `useTags`) aren't needed anymore since we're using route loaders.
+
+### Error: "Could not find a root route module in the app directory as 'app/root.tsx'"
+
+**Cause:** Using `reactRouter()` Vite plugin, which runs in framework mode and looks for route files
+
+**Solution:** We're using library mode (routes in main.tsx), so use the standard `react()` plugin instead:
+
+```typescript
+import react from '@vitejs/plugin-react';  // Not reactRouter
+
+export default defineConfig({
+  plugins: [
+    react({
+      exclude: /routes\/.*.tsx$/,  // Suppress Fast Refresh warning for routes
+    }),
+    tailwindcss()
+  ],
+  // ... rest of config
+});
+```
+
+### Error: "Fast refresh only works when a file only exports components" (in route files)
+
+**Location:** Route files like worksheet.tsx, home.tsx, category.tsx
+
+**Cause:** Route files export both components and `clientLoader` functions, which triggers a Fast Refresh warning
+
+**Solution:** Exclude route files from Fast Refresh in vite.config.ts (Step 14):
+
+```typescript
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [
+    react({
+      exclude: /routes\/.*.tsx$/,  // Disable Fast Refresh for route files
+    }),
+    tailwindcss()
+  ],
+  // ... rest of config
+});
+```
+
+This is harmless - route files will still work, just without Fast Refresh. Your main app code still gets Fast Refresh.
 
 ### Error: "Operator '>' cannot be applied to types..." (JSX in .ts file)
 
