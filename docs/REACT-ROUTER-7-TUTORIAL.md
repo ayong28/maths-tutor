@@ -84,7 +84,7 @@ import { Outlet, Link } from 'react-router';
 
 export default function Root() {
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-600 to-blue-400 flex flex-col items-center py-8 px-2 print:bg-white print:text-black">
+    <div className="min-h-screen bg-linear-to-r from-blue-600 to-blue-400 flex flex-col items-center py-8 px-2 print:bg-white print:text-black">
       {/* Header */}
       <header className="mb-8 text-center print:hidden">
         <Link to="/" className="hover:opacity-80 transition">
