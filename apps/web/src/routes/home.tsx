@@ -72,12 +72,12 @@ export default function Home() {
               <Link
                 key={category}
                 to={`/${slug}`}
-                className="p-6 bg-blue-50 hover:bg-blue-100 rounded-lg transition text-center"
+                className="p-6 bg-blue-400 hover:bg-blue-500 rounded-lg transition text-center"
               >
-                <h3 className="text-xl font-semibold text-blue-900">
+                <h3 className="text-xl font-semibold text-black">
                   {category}
                 </h3>
-                <p className="text-sm text-blue-700 mt-2">
+                <p className="text-sm text-blue-900 mt-2">
                   {info.count} {info.count === 1 ? 'type' : 'types'}
                 </p>
               </Link>
