@@ -32,13 +32,13 @@ git commit -m "Before React Router 7 implementation"
 cd apps/web
 
 npm install react-router@7 react-router-dom@7
-npm install -D @react-router/dev
 ```
 
 **What you're installing:**
 - `react-router@7` - Core routing library
 - `react-router-dom@7` - DOM bindings for React Router
-- `@react-router/dev` - Development tools (provides route config utilities)
+
+**Note:** We're NOT installing `@react-router/dev` because we're using library mode (routes defined in main.tsx), not framework mode (routes in routes.ts file).
 
 **Expected output:** Package installation (warnings about engine version are OK)
 
@@ -51,35 +51,24 @@ mkdir -p src/routes
 **File structure you're creating:**
 ```
 apps/web/src/
-├── routes/
-│   ├── root.tsx       # Layout wrapper
-│   ├── home.tsx       # Home page
-│   ├── category.tsx   # Category list
-│   └── worksheet.tsx  # Worksheet view
-└── routes.ts          # Route configuration
+└── routes/
+    ├── root.tsx       # Layout wrapper
+    ├── home.tsx       # Home page
+    ├── category.tsx   # Category list
+    └── worksheet.tsx  # Worksheet view
 ```
 
-## Step 4: Create Route Configuration File
+**Note:** We're using "library mode" so routes are defined in main.tsx (Step 12), not in a separate routes.ts file.
 
-**File:** `apps/web/src/routes.ts`
+## Step 4: Skip Route Configuration File
 
-```typescript
-import { type RouteConfig, route, index, layout } from "@react-router/dev/routes";
+**Note:** We're going to use React Router 7 in "library mode" instead of "framework mode". This means:
+- No `routes.ts` config file needed
+- We'll define routes directly in main.tsx using `createBrowserRouter`
+- Simpler setup for SPAs
+- No need for `@react-router/dev` package (though we already installed it)
 
-export default [
-  layout("routes/root.tsx", [
-    index("routes/home.tsx"),
-    route(":category", "routes/category.tsx"),
-    route(":category/:subcategory", "routes/worksheet.tsx"),
-  ]),
-] satisfies RouteConfig;
-```
-
-**What this does:**
-- Defines URL structure: `/`, `/:category`, `/:category/:subcategory`
-- `layout` wraps all routes with Root component
-- `index` is the home page route
-- `route` defines dynamic segments (`:category`, `:subcategory`)
+Skip this step - we'll define routes in Step 12 instead.
 
 ## Step 5: Create Root Layout Component
 
@@ -162,6 +151,49 @@ Replace the entire file with:
 - Functions now return Promises directly (no React hooks)
 - Simple error handling that works with `isolatedModules: true`
 - Ready for use in route loaders
+
+**Now update the API index file:**
+
+**File:** `apps/web/src/api/index.ts`
+
+```typescript
+/**
+ * API Client
+ * Central exports for all API-related functionality
+ */
+
+export { getCategories, getProblems, getTags } from './client';
+export {
+  type CategoryInfo,
+  type Problem,
+  type ProblemFilters,
+  type ProblemType,
+  type Difficulty,
+} from './types';
+```
+
+**What changed:**
+- Removed `healthCheck` and `ApiError` exports (not in simplified client)
+- Only export what actually exists in client.ts
+
+**Also update the hooks index file:**
+
+**File:** `apps/web/src/hooks/index.ts`
+
+```typescript
+/**
+ * Custom React Hooks
+ * Hooks for fetching data from the API with loading and error states
+ */
+
+// Only export usePDFGenerator - other hooks not needed with route loaders
+export { usePDFGenerator } from './usePDFGenerator';
+```
+
+**What changed:**
+- Removed `useCategories`, `useProblems`, `useTags` exports (not needed with route loaders)
+- These old hooks import `ApiError` which no longer exists
+- Only `usePDFGenerator` is still used (in worksheet route)
 
 ## Step 7: Create Dynamic Routing Helper
 
@@ -317,9 +349,9 @@ export function HydrateFallback() {
   );
 }
 
-// Component receives loader data
-export default function Home({ loaderData }: { loaderData: LoaderData }) {
-  const { categoryList, categoryInfo } = loaderData;
+// Component uses useLoaderData hook
+export default function Home() {
+  const { categoryList, categoryInfo } = useLoaderData<LoaderData>();
 
   return (
     <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden">
@@ -359,7 +391,7 @@ export default function Home({ loaderData }: { loaderData: LoaderData }) {
 - `buildTypeMap()` auto-generates URL mappings from API data
 - `setCachedTypeMap()` caches it for other routes (no extra API calls)
 - `HydrateFallback` shows loading UI
-- Component receives data via `loaderData` prop
+- Component gets data via `useLoaderData<LoaderData>()` hook (NOT props)
 - Type safety with `Awaited<ReturnType<typeof clientLoader>>`
 
 ## Step 9: Create Category Route
@@ -441,8 +473,8 @@ export function HydrateFallback() {
 }
 
 // Component
-export default function Category({ loaderData }: { loaderData: LoaderData }) {
-  const { category, categoryDisplay, subcategories } = loaderData;
+export default function Category() {
+  const { category, categoryDisplay, subcategories } = useLoaderData<LoaderData>();
 
   return (
     <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden">
@@ -497,7 +529,93 @@ export default function Category({ loaderData }: { loaderData: LoaderData }) {
 - Use `redirect` to navigate programmatically
 - Breadcrumb navigation with `Link`
 
-## Step 10: Create Worksheet Route
+## Step 10: Extract renderMathExpression Helper
+
+Before creating the worksheet route, we need to extract `renderMathExpression()` from App.tsx to make it reusable. Since it returns JSX, it needs to be in a `.tsx` file.
+
+**Create new file:** `apps/web/src/utils/mathRenderer.tsx`
+
+```typescript
+import type { ReactElement } from 'react';
+import { Fraction } from '@/components/Fraction';
+import { MixedNumber } from '@/components/MixedNumber';
+import { tokenizeMathExpression, parseFraction, parseMixedNumber } from './utils';
+
+/**
+ * Render a math expression with proper fraction/mixed number formatting
+ * Handles: "2/3", "1 1/2", "2/3 + 1/4", "3a + 2b", etc.
+ */
+export function renderMathExpression(expr: string): ReactElement {
+  const tokens = tokenizeMathExpression(expr);
+
+  return (
+    <span className="inline-flex flex-row items-center flex-wrap [-webkit-font-smoothing:auto]">
+      {tokens.map((token, idx) => {
+        const cleanedToken = token.trim();
+
+        if (!cleanedToken) {
+          return <span key={`whitespace-${idx}`} className="mx-0.5" />;
+        }
+
+        // Check for mixed numbers (e.g., "1 1/2")
+        const mixed = parseMixedNumber(cleanedToken);
+        if (mixed) {
+          return (
+            <MixedNumber
+              key={`mixed-${idx}`}
+              whole={mixed.whole}
+              numerator={mixed.numerator}
+              denominator={mixed.denominator}
+            />
+          );
+        }
+
+        // Check for fractions (e.g., "2/3")
+        const frac = parseFraction(cleanedToken);
+        if (frac) {
+          return (
+            <Fraction
+              key={`fraction-${idx}`}
+              numerator={frac.numerator}
+              denominator={frac.denominator}
+            />
+          );
+        }
+
+        // Fill-in blank
+        if (cleanedToken === "___") {
+          return (
+            <span
+              key={`fill-${idx}`}
+              className="inline-block border-b border-dashed border-blue-300 w-16 align-middle mx-2 min-h-[1.5em]"
+            />
+          );
+        }
+
+        // Regular token (operator, number, variable)
+        return (
+          <span
+            key={`token-${idx}`}
+            className="mx-0.5 select-none font-math text-xl leading-tight min-w-[0.8em] text-center inline-block align-middle"
+          >
+            {cleanedToken}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+```
+
+**What this does:**
+- Created in a `.tsx` file (required for JSX syntax)
+- Imports helper functions from `utils.ts`
+- Tokenizes math expressions into fractions, mixed numbers, operators, etc.
+- Renders fractions and mixed numbers using custom components for proper formatting
+- Handles algebraic expressions with variables (e.g., "2a + 3b")
+- Now reusable across route components
+
+## Step 11: Create Worksheet Route
 
 **File:** `apps/web/src/routes/worksheet.tsx`
 
@@ -508,7 +626,7 @@ import { getCategories, getProblems, getTags } from '@/api/client';
 import { type Difficulty } from '@/api';
 import { Download, Loader2 } from 'lucide-react';
 import DifficultyFilter from '@/components/DifficultyFilter';
-import { renderMathExpression } from '@/utils/utils';
+import { renderMathExpression } from '@/utils/mathRenderer';
 import { usePDFGenerator } from '@/hooks';
 import { getProblemType, getCachedTypeMap, buildTypeMap, setCachedTypeMap } from '@/utils/routing';
 import { PrintableWorksheet } from '@/components/PrintableWorksheet';
@@ -599,7 +717,7 @@ export function HydrateFallback() {
 }
 
 // COMPONENT
-export default function Worksheet({ loaderData }: { loaderData: LoaderData }) {
+export default function Worksheet() {
   const {
     category,
     subcategory,
@@ -608,7 +726,7 @@ export default function Worksheet({ loaderData }: { loaderData: LoaderData }) {
     problems,
     availableTags,
     appliedFilters,
-  } = loaderData;
+  } = useLoaderData<LoaderData>();
 
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -923,7 +1041,7 @@ export default function Worksheet({ loaderData }: { loaderData: LoaderData }) {
 - `useNavigate` for programmatic navigation
 - PDF generation integrated
 
-## Step 11: Update main.tsx
+## Step 12: Create Router in main.tsx
 
 **File:** `apps/web/src/main.tsx`
 
@@ -933,10 +1051,45 @@ Replace with:
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router';
-import routes from './routes';
+import Root from './routes/root';
+import Home from './routes/home';
+import Category from './routes/category';
+import Worksheet from './routes/worksheet';
 import './index.css';
 
-const router = createBrowserRouter(routes);
+// Define routes as RouteObject[]
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+        loader: () => import('./routes/home').then(m => m.clientLoader()),
+      },
+      {
+        path: ':category',
+        element: <Category />,
+        loader: ({ params }) =>
+          import('./routes/category').then(m =>
+            m.clientLoader({ params: params as { category: string } })
+          ),
+      },
+      {
+        path: ':category/:subcategory',
+        element: <Worksheet />,
+        loader: ({ params, request }) =>
+          import('./routes/worksheet').then(m =>
+            m.clientLoader({
+              params: params as { category: string; subcategory: string },
+              request
+            })
+          ),
+      },
+    ],
+  },
+]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -945,12 +1098,15 @@ createRoot(document.getElementById('root')!).render(
 );
 ```
 
-**What changed:**
-- Import `createBrowserRouter` from `'react-router'` (not `'react-router-dom'`)
-- Import route config from `./routes`
-- Create router and pass to `RouterProvider`
+**What this does:**
+- Creates router with `createBrowserRouter` (not using framework mode)
+- Defines routes as `RouteObject[]` inline
+- Manually imports route components
+- Manually wires up `clientLoader` functions
+- **Type assertions** - `params as { category: string }` tells TypeScript the param types (safe because route path guarantees these params exist)
+- Root layout wraps all child routes via `<Outlet />`
 
-## Step 12: Backup Old App.tsx
+## Step 13: Backup Old App.tsx
 
 ```bash
 mv src/App.tsx src/App.tsx.backup
@@ -958,19 +1114,22 @@ mv src/App.tsx src/App.tsx.backup
 
 **Why:** Keep the old file as reference. Delete later after testing.
 
-## Step 13: Update Vite Config (REQUIRED)
+## Step 14: Update Vite Config (Revert to React Plugin)
+
+Since we're using library mode (not framework mode), we don't need the `reactRouter()` Vite plugin.
 
 **File:** `apps/web/vite.config.ts`
 
-Replace with React Router's Vite plugin to fix Fast Refresh errors:
+Make sure it looks like this:
 
 ```typescript
 import { defineConfig } from 'vite';
-import { reactRouter } from '@react-router/dev/vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [reactRouter()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -978,18 +1137,21 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'http://localhost:3001',
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
     },
   },
 });
 ```
 
 **What changed:**
-- Using `reactRouter()` from `@react-router/dev/vite` instead of `@vitejs/plugin-react`
-- This plugin understands React Router 7's route module pattern (exporting both loaders and components)
-- Fixes the "Fast refresh only works when a file only exports components" error
+- Using standard `react()` plugin (not `reactRouter()`)
+- This is simpler for library mode
+- Fast Refresh will work fine because we're using standard route components
 
-## Step 14: Test TypeScript Compilation
+## Step 15: Test TypeScript Compilation
 
 ```bash
 npx tsc --noEmit
@@ -1000,7 +1162,7 @@ npx tsc --noEmit
 - Type annotations match
 - All route files are saved
 
-## Step 15: Start Servers
+## Step 16: Start Servers
 
 **Terminal 1 - API Server:**
 ```bash
@@ -1016,7 +1178,7 @@ npm run dev
 
 Wait for: "Local: http://localhost:5173"
 
-## Step 16: Test Basic Navigation
+## Step 17: Test Basic Navigation
 
 Open http://localhost:5173
 
@@ -1044,7 +1206,7 @@ Open http://localhost:5173
 - [ ] Browser forward button works
 - [ ] Refresh page maintains URL/state
 
-## Step 17: Test Filter Functionality
+## Step 18: Test Filter Functionality
 
 On worksheet page (`/fractions/addition`):
 
@@ -1065,7 +1227,7 @@ On worksheet page (`/fractions/addition`):
    - URL resets to `/fractions/addition`
    - All problems load again
 
-## Step 18: Test Mobile Responsiveness
+## Step 19: Test Mobile Responsiveness
 
 1. Open DevTools (F12)
 2. Click device toolbar (Ctrl+Shift+M / Cmd+Shift+M)
@@ -1078,7 +1240,7 @@ On worksheet page (`/fractions/addition`):
 - [ ] Sidebar hidden by default on mobile (use `md:` breakpoint)
 - [ ] Browser back works
 
-## Step 19: Test Direct URLs
+## Step 20: Test Direct URLs
 
 Test deep linking by manually entering URLs:
 
@@ -1087,7 +1249,7 @@ Test deep linking by manually entering URLs:
 - `http://localhost:5173/fractions/addition?difficulty=EASY,MEDIUM`
 - `http://localhost:5173/invalid-category` → Should redirect to home
 
-## Step 20: Clean Up
+## Step 21: Clean Up
 
 If everything works:
 
@@ -1102,29 +1264,106 @@ git commit -m "Implement React Router 7 with URL-based navigation"
 
 ## Troubleshooting
 
-### Error: "Fast refresh only works when a file only exports components"
+### Error: "Argument of type 'RouteConfigEntry[]' is not assignable to parameter of type 'RouteObject[]'"
 
-**Location:** Route files (home.tsx, category.tsx, worksheet.tsx)
+**Cause:** You created a `routes.ts` file using the framework mode pattern
 
-**Cause:** Using standard `@vitejs/plugin-react` instead of React Router's Vite plugin
+**Solution:** Delete `apps/web/src/routes.ts` - we're using library mode (Step 4), which defines routes directly in main.tsx (Step 12)
 
-**Solution:** Update `vite.config.ts` to use `reactRouter()` plugin (see Step 13):
-
-```typescript
-import { reactRouter } from '@react-router/dev/vite';
-
-export default defineConfig({
-  plugins: [reactRouter()],  // Not react()
-  // ... rest of config
-});
+```bash
+rm src/routes.ts  # If you accidentally created this file
 ```
 
 ### Error: Cannot find module '@react-router/dev/routes'
 
-**Solution:** The routes config imports from `@react-router/dev`. Install it:
+**Cause:** You created a `routes.ts` file (framework mode pattern)
+
+**Solution:** We're using library mode - delete `src/routes.ts` and define routes in main.tsx (Step 12)
+
+### Error: Property 'category' is missing in type 'Params<string>' but required in type '{ category: string; }'
+
+**Location:** main.tsx loader functions
+
+**Cause:** Router's `params` has type `Params<string>` (all keys optional), but `clientLoader` expects specific required params
+
+**Solution:** Add type assertions in the loader functions:
+
+```typescript
+// Category route
+loader: ({ params }) =>
+  import('./routes/category').then(m =>
+    m.clientLoader({ params: params as { category: string } })
+  ),
+
+// Worksheet route
+loader: ({ params, request }) =>
+  import('./routes/worksheet').then(m =>
+    m.clientLoader({
+      params: params as { category: string; subcategory: string },
+      request
+    })
+  ),
+```
+
+This is safe because the route path (`:category`, `:category/:subcategory`) guarantees these params will exist.
+
+### Error: Component not receiving data / undefined loaderData
+
+**Cause:** Using props pattern instead of `useLoaderData()` hook
+
+**Wrong:**
+```typescript
+export default function Home({ loaderData }: { loaderData: LoaderData }) {
+  // loaderData is undefined!
+}
+```
+
+**Correct:**
+```typescript
+export default function Home() {
+  const data = useLoaderData<LoaderData>();
+  // data is properly typed and populated
+}
+```
+
+### Error: "The requested module does not provide an export named 'healthCheck'" or 'ApiError'
+
+**Location:** Browser console, main page is blank
+
+**Cause:** Old files trying to import/export things that don't exist in simplified client (Step 6)
+
+**Solution 1:** Update `src/api/index.ts` to only export what exists:
+
+```typescript
+export { getCategories, getProblems, getTags } from './client';
+export {
+  type CategoryInfo,
+  type Problem,
+  type ProblemFilters,
+  type ProblemType,
+  type Difficulty,
+} from './types';
+```
+
+**Solution 2:** Update `src/hooks/index.ts` to only export what's needed:
+
+```typescript
+// Only export usePDFGenerator - other hooks not needed with route loaders
+export { usePDFGenerator } from './usePDFGenerator';
+```
+
+The old hooks (`useCategories`, `useProblems`, `useTags`) aren't needed anymore since we're using route loaders.
+
+### Error: "Operator '>' cannot be applied to types..." (JSX in .ts file)
+
+**Cause:** JSX syntax in a `.ts` file instead of `.tsx`
+
+**Solution:** Rename the file to use `.tsx` extension or create a separate `.tsx` file for JSX-returning functions:
 
 ```bash
-npm install -D @react-router/dev
+# If you put renderMathExpression in utils.ts, move it to:
+touch src/utils/mathRenderer.tsx
+# Then move the function and update imports
 ```
 
 ### Error: Page is blank
@@ -1188,10 +1427,16 @@ export async function clientLoader() {
   const data = await fetchData();
   return { data };
 }
+
+export default function Component() {
+  const { data } = useLoaderData<LoaderData>();
+  // Use data here
+}
 ```
-- Runs before component renders
+- `clientLoader` runs before component renders
 - Data ready when component mounts
-- No loading states in component
+- Access data with `useLoaderData()` hook
+- No loading states needed in component
 
 ### URL as State
 ```typescript
@@ -1209,11 +1454,13 @@ const [searchParams, setSearchParams] = useSearchParams();
 ```typescript
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 
-export default function Component({ loaderData }: { loaderData: LoaderData }) {
-  // loaderData is fully typed!
+export default function Component() {
+  const data = useLoaderData<LoaderData>();
+  // data is fully typed!
 }
 ```
-- TypeScript infers types
+- TypeScript infers types from `clientLoader`
+- Use `useLoaderData<LoaderData>()` hook (NOT props)
 - Refactor-safe
 - Autocomplete works
 

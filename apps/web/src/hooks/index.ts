@@ -1,9 +1,7 @@
-/**
- * Custom React Hooks
- * Hooks for fetching data from the API with loading and error states
- */
+  /**
+   * Custom React Hooks
+   * Hooks for fetching data from the API with loading and error states
+   */
 
-export { useCategories } from './useCategories';
-export { useProblems } from './useProblems';
-export { useTags } from './useTags';
-export { usePDFGenerator } from './usePDFGenerator';
+  // Only export usePDFGenerator - other hooks not needed with route loaders
+  export { usePDFGenerator } from './usePDFGenerator';

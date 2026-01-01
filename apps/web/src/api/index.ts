@@ -3,7 +3,7 @@
  * Central exports for all API-related functionality
  */
 
-export { getCategories, getProblems, getTags, healthCheck, ApiError } from './client';
+export { getCategories, getProblems, getTags } from './client';
 export {
   type CategoryInfo,
   type Problem,
