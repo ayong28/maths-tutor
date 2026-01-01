@@ -32,7 +32,13 @@ git commit -m "Before React Router 7 implementation"
 cd apps/web
 
 npm install react-router@7 react-router-dom@7
+npm install -D @react-router/dev
 ```
+
+**What you're installing:**
+- `react-router@7` - Core routing library
+- `react-router-dom@7` - DOM bindings for React Router
+- `@react-router/dev` - Development tools (provides route config utilities)
 
 **Expected output:** Package installation (warnings about engine version are OK)
 
@@ -116,138 +122,141 @@ export default function Root() {
 Replace the entire file with:
 
 ```typescript
-import { type ProblemFilters, type CategoryInfo, type Problem } from './types';
+  import { type ProblemFilters, type CategoryInfo, type Problem } from './types';
 
-const API_BASE = '/api';
+  const API_BASE = '/api';
 
-class ApiError extends Error {
-  constructor(
-    message: string,
-    public status: number,
-    public statusText: string
-  ) {
-    super(message);
-    this.name = 'ApiError';
+  async function handleResponse<T>(response: Response): Promise<T> {
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.statusText}`);
+    }
+    return response.json();
   }
-}
 
-async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    throw new ApiError(
-      `API request failed: ${response.statusText}`,
-      response.status,
-      response.statusText
-    );
+  export async function getCategories(): Promise<CategoryInfo[]> {
+    const response = await fetch(`${API_BASE}/categories`);
+    return handleResponse<CategoryInfo[]>(response);
   }
-  return response.json();
-}
 
-export async function getCategories(): Promise<CategoryInfo[]> {
-  const response = await fetch(`${API_BASE}/categories`);
-  return handleResponse<CategoryInfo[]>(response);
-}
+  export async function getProblems(filters: ProblemFilters): Promise<Problem[]> {
+    const params = new URLSearchParams();
 
-export async function getProblems(filters: ProblemFilters): Promise<Problem[]> {
-  const params = new URLSearchParams();
+    if (filters.type) params.set('type', filters.type);
+    if (filters.difficulty) params.set('difficulty', filters.difficulty.join(','));
+    if (filters.tags) params.set('tags', filters.tags.join(','));
+    if (filters.limit) params.set('limit', filters.limit.toString());
+    if (filters.seed) params.set('seed', filters.seed);
 
-  if (filters.type) params.set('type', filters.type);
-  if (filters.difficulty) params.set('difficulty', filters.difficulty.join(','));
-  if (filters.tags) params.set('tags', filters.tags.join(','));
-  if (filters.limit) params.set('limit', filters.limit.toString());
-  if (filters.seed) params.set('seed', filters.seed);
+    const response = await fetch(`${API_BASE}/problems?${params}`);
+    return handleResponse<Problem[]>(response);
+  }
 
-  const response = await fetch(`${API_BASE}/problems?${params}`);
-  return handleResponse<Problem[]>(response);
-}
+  export async function getTags(type: string): Promise<string[]> {
+    const response = await fetch(`${API_BASE}/tags/${type}`);
+    return handleResponse<string[]>(response);
+  }
 
-export async function getTags(type: string): Promise<string[]> {
-  const response = await fetch(`${API_BASE}/tags/${type}`);
-  return handleResponse<string[]>(response);
-}
 ```
 
 **What changed:**
 - Functions now return Promises directly (no React hooks)
-- Added proper error handling with ApiError class
+- Simple error handling that works with `isolatedModules: true`
 - Ready for use in route loaders
 
-## Step 7: Create Helper File for Problem Type Mapping
+## Step 7: Create Dynamic Routing Helper
+
+**Why dynamic?** Instead of manually maintaining a TYPE_MAP with 25+ entries, we auto-generate it from the `/api/categories` endpoint. When you add a new problem type to the database, it automatically works - zero code changes needed!
 
 **File:** `apps/web/src/utils/routing.ts`
 
 ```typescript
-import { type ProblemType } from '@/api';
+import { type ProblemType, type CategoryInfo } from '@/api';
 
-const TYPE_MAP: Record<string, Record<string, ProblemType>> = {
-  'fractions': {
-    'addition': 'FRACTION_ADDITION',
-    'subtraction': 'FRACTION_SUBTRACTION',
-    'multiplication': 'FRACTION_MULTIPLICATION',
-    'division': 'FRACTION_DIVISION',
-    'reduction': 'FRACTION_REDUCTION',
-  },
-  'percentages': {
-    'conversion': 'PERCENTAGE_CONVERSION',
-    'of-quantity': 'PERCENTAGE_OF_QUANTITY',
-  },
-  'integers': {
-    'addition': 'INTEGERS_ADDITION',
-    'subtraction': 'INTEGERS_SUBTRACTION',
-    'multiplication': 'INTEGERS_MULTIPLICATION',
-    'division': 'INTEGERS_DIVISION',
-  },
-  'decimals': {
-    'addition': 'DECIMALS_ADDITION',
-    'subtraction': 'DECIMALS_SUBTRACTION',
-    'multiplication': 'DECIMALS_MULTIPLICATION',
-    'division': 'DECIMALS_DIVISION',
-  },
-  'index-notation': {
-    'powers': 'INDEX_POWERS',
-    'square-roots': 'INDEX_SQUARE_ROOTS',
-    'laws': 'INDEX_LAWS',
-  },
-  'algebra': {
-    'collecting-terms': 'ALGEBRA_COLLECTING_TERMS',
-    'multiplication': 'ALGEBRA_MULTIPLICATION',
-    'substitution': 'ALGEBRA_SUBSTITUTION',
-    'word-problems': 'ALGEBRA_WORD_PROBLEMS',
-    'distributive-law': 'ALGEBRA_DISTRIBUTIVE_LAW',
-    'linear-equations-simple': 'ALGEBRA_LINEAR_EQUATIONS_SIMPLE',
-    'linear-equations-complex': 'ALGEBRA_LINEAR_EQUATIONS_COMPLEX',
-    'expanding-brackets': 'ALGEBRA_EXPANDING_BRACKETS',
-    'factorising': 'ALGEBRA_FACTORISING',
-  },
-  'coordinates': {
-    'plotting': 'COORDINATES_PLOTTING',
-  },
-  'linear-graphs': {
-    'graphing': 'LINEAR_GRAPHING',
-  },
-  'ratio-rates': {
-    'ratio-rates': 'RATIO_RATES',
-  },
-  'geometry': {
-    'area': 'AREA',
-    'angles': 'ANGLES',
-  },
-  'statistics': {
-    'probability': 'PROBABILITY',
-    'data-analysis': 'DATA_ANALYSIS',
-  },
-};
+// Cache for the type map (built once from API data)
+let cachedTypeMap: Record<string, Record<string, ProblemType>> | null = null;
 
+/**
+ * Convert string to URL-friendly slug
+ * "Fractions" → "fractions"
+ * "Linear Graphs" → "linear-graphs"
+ * "Ratio & Rates" → "ratio-rates"
+ */
+function toSlug(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, '-')       // spaces to hyphens
+    .replace(/&/g, '')          // remove ampersands
+    .replace(/[^a-z0-9-]/g, '') // remove special chars
+    .replace(/-+/g, '-')        // collapse multiple hyphens
+    .replace(/^-|-$/g, '');     // trim hyphens
+}
+
+/**
+ * Build TYPE_MAP from categories data
+ * This auto-generates URL mappings from the API
+ */
+export function buildTypeMap(categories: CategoryInfo[]): Record<string, Record<string, ProblemType>> {
+  const typeMap: Record<string, Record<string, ProblemType>> = {};
+
+  categories.forEach((cat) => {
+    const categorySlug = toSlug(cat.mainCategory);
+    const subcategorySlug = toSlug(cat.subCategory);
+
+    if (!typeMap[categorySlug]) {
+      typeMap[categorySlug] = {};
+    }
+
+    typeMap[categorySlug][subcategorySlug] = cat.type;
+  });
+
+  return typeMap;
+}
+
+/**
+ * Get ProblemType from URL params
+ * Uses cached type map if available
+ */
 export function getProblemType(
   category: string,
-  subcategory: string
+  subcategory: string,
+  typeMap?: Record<string, Record<string, ProblemType>>
 ): ProblemType | null {
-  return TYPE_MAP[category]?.[subcategory] || null;
+  // Use provided typeMap or cached version
+  const map = typeMap || cachedTypeMap;
+
+  if (!map) {
+    console.error('TYPE_MAP not initialized. Call buildTypeMap() first.');
+    return null;
+  }
+
+  return map[category]?.[subcategory] || null;
+}
+
+/**
+ * Set cached type map (call this once when app loads)
+ */
+export function setCachedTypeMap(typeMap: Record<string, Record<string, ProblemType>>): void {
+  cachedTypeMap = typeMap;
+}
+
+/**
+ * Get cached type map
+ */
+export function getCachedTypeMap(): Record<string, Record<string, ProblemType>> | null {
+  return cachedTypeMap;
 }
 ```
 
-**What this does:**
-- Maps URL slugs (`fractions/addition`) to database enums (`FRACTION_ADDITION`)
-- Handles URL-to-API type conversion
+**How it works:**
+1. **Home route** - Fetches categories from API, builds TYPE_MAP, caches it
+2. **Other routes** - Use cached TYPE_MAP (no extra API calls)
+3. **Zero maintenance** - Add problem type to DB → automatically works in UI
+
+**Benefits:**
+- ✅ Add new problem types without touching code
+- ✅ Single source of truth (database)
+- ✅ No manual mapping maintenance
+- ✅ Type-safe
 
 ## Step 8: Create Home Route
 
@@ -256,6 +265,7 @@ export function getProblemType(
 ```typescript
 import { useLoaderData, Link } from 'react-router';
 import { getCategories } from '@/api/client';
+import { buildTypeMap, setCachedTypeMap } from '@/utils/routing';
 import HeroSection from '@/components/HeroSection';
 import { Loader2 } from 'lucide-react';
 
@@ -265,6 +275,10 @@ type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 // Fetch data before rendering
 export async function clientLoader() {
   const categories = await getCategories();
+
+  // Build and cache the TYPE_MAP for use in other routes
+  const typeMap = buildTypeMap(categories);
+  setCachedTypeMap(typeMap);
 
   // Build category structure
   const categoryStructure: Record<string, Set<string>> = {};
@@ -342,6 +356,8 @@ export default function Home({ loaderData }: { loaderData: LoaderData }) {
 
 **Key patterns:**
 - `clientLoader` runs first, fetches data
+- `buildTypeMap()` auto-generates URL mappings from API data
+- `setCachedTypeMap()` caches it for other routes (no extra API calls)
 - `HydrateFallback` shows loading UI
 - Component receives data via `loaderData` prop
 - Type safety with `Awaited<ReturnType<typeof clientLoader>>`
@@ -353,6 +369,7 @@ export default function Home({ loaderData }: { loaderData: LoaderData }) {
 ```typescript
 import { useLoaderData, Link, redirect } from 'react-router';
 import { getCategories } from '@/api/client';
+import { buildTypeMap, getCachedTypeMap, setCachedTypeMap } from '@/utils/routing';
 import { Loader2, ChevronRight } from 'lucide-react';
 
 // Type for loader data
@@ -365,7 +382,20 @@ export async function clientLoader({
   params: { category: string }
 }) {
   const { category } = params;
-  const categories = await getCategories();
+
+  // Try to use cached typeMap, otherwise fetch and build
+  let typeMap = getCachedTypeMap();
+  let categories;
+
+  if (!typeMap) {
+    // Cache miss - fetch and build TYPE_MAP
+    categories = await getCategories();
+    typeMap = buildTypeMap(categories);
+    setCachedTypeMap(typeMap);
+  } else {
+    // Cache hit - still need categories for display
+    categories = await getCategories();
+  }
 
   // Build category structure
   const categoryMap: Record<string, {
@@ -474,13 +504,13 @@ export default function Category({ loaderData }: { loaderData: LoaderData }) {
 ```typescript
 import { useLoaderData, useNavigate, useSearchParams, Link, redirect } from 'react-router';
 import { useState, useMemo } from 'react';
-import { getProblems, getTags } from '@/api/client';
+import { getCategories, getProblems, getTags } from '@/api/client';
 import { type Difficulty } from '@/api';
 import { Download, Loader2 } from 'lucide-react';
 import DifficultyFilter from '@/components/DifficultyFilter';
 import { renderMathExpression } from '@/utils/utils';
 import { usePDFGenerator } from '@/hooks';
-import { getProblemType } from '@/utils/routing';
+import { getProblemType, getCachedTypeMap, buildTypeMap, setCachedTypeMap } from '@/utils/routing';
 import { PrintableWorksheet } from '@/components/PrintableWorksheet';
 
 // Type for loader data
@@ -502,7 +532,18 @@ export async function clientLoader({
   const tagsParam = url.searchParams.get('tags');
   const limitParam = url.searchParams.get('limit');
 
-  const problemType = getProblemType(category, subcategory);
+  // Try to use cached typeMap, otherwise fetch and build
+  let typeMap = getCachedTypeMap();
+
+  if (!typeMap) {
+    // Cache miss - fetch and build TYPE_MAP
+    const categories = await getCategories();
+    typeMap = buildTypeMap(categories);
+    setCachedTypeMap(typeMap);
+  }
+
+  // Get problem type using the dynamic map
+  const problemType = getProblemType(category, subcategory, typeMap);
 
   if (!problemType) {
     throw redirect('/');
@@ -917,19 +958,19 @@ mv src/App.tsx src/App.tsx.backup
 
 **Why:** Keep the old file as reference. Delete later after testing.
 
-## Step 13: Update Vite Config (Optional)
+## Step 13: Update Vite Config (REQUIRED)
 
-**File:** `vite.config.ts`
+**File:** `apps/web/vite.config.ts`
 
-Ensure you have the API proxy (should already exist):
+Replace with React Router's Vite plugin to fix Fast Refresh errors:
 
 ```typescript
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { reactRouter } from '@react-router/dev/vite';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [reactRouter()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -942,6 +983,11 @@ export default defineConfig({
   },
 });
 ```
+
+**What changed:**
+- Using `reactRouter()` from `@react-router/dev/vite` instead of `@vitejs/plugin-react`
+- This plugin understands React Router 7's route module pattern (exporting both loaders and components)
+- Fixes the "Fast refresh only works when a file only exports components" error
 
 ## Step 14: Test TypeScript Compilation
 
@@ -1055,6 +1101,23 @@ git commit -m "Implement React Router 7 with URL-based navigation"
 ```
 
 ## Troubleshooting
+
+### Error: "Fast refresh only works when a file only exports components"
+
+**Location:** Route files (home.tsx, category.tsx, worksheet.tsx)
+
+**Cause:** Using standard `@vitejs/plugin-react` instead of React Router's Vite plugin
+
+**Solution:** Update `vite.config.ts` to use `reactRouter()` plugin (see Step 13):
+
+```typescript
+import { reactRouter } from '@react-router/dev/vite';
+
+export default defineConfig({
+  plugins: [reactRouter()],  // Not react()
+  // ... rest of config
+});
+```
 
 ### Error: Cannot find module '@react-router/dev/routes'
 
