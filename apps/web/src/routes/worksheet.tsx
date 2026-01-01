@@ -108,7 +108,7 @@ export default function Worksheet() {
   } = useLoaderData<LoaderData>();
 
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   // Staged filters (not yet applied to URL)
   const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>(
