@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useLoaderData, Link } from 'react-router';
 import { getCategories } from '@/api/client';
 import { buildTypeMap, setCachedTypeMap } from '@/utils/routing';

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useLoaderData, useNavigate, useSearchParams, Link, redirect } from 'react-router';
 import { useState, useMemo } from 'react';
 import { getCategories, getProblems, getTags } from '@/api/client';
