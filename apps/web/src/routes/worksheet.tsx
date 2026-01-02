@@ -1,14 +1,25 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useLoaderData, useNavigate, useSearchParams, Link, redirect } from 'react-router';
-import { useState, useMemo } from 'react';
-import { getCategories, getProblems, getTags } from '@/api/client';
-import { type Difficulty } from '@/api';
-import { Download, Loader2 } from 'lucide-react';
-import DifficultyFilter from '@/components/DifficultyFilter';
-import { renderMathExpression } from '@/utils/mathRenderer';
-import { usePDFGenerator } from '@/hooks';
-import { getProblemType, getCachedTypeMap, buildTypeMap, setCachedTypeMap } from '@/utils/routing';
-import { PrintableWorksheet } from '@/components/PrintableWorksheet';
+import {
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+  Link,
+  redirect,
+} from "react-router";
+import { useState, useMemo } from "react";
+import { getCategories, getProblems, getTags } from "@/api/client";
+import { type Difficulty } from "@/api";
+import { Download, Loader2 } from "lucide-react";
+import DifficultyFilter from "@/components/DifficultyFilter";
+import { renderMathExpression } from "@/utils/mathRenderer";
+import { usePDFGenerator } from "@/hooks";
+import {
+  getProblemType,
+  getCachedTypeMap,
+  buildTypeMap,
+  setCachedTypeMap,
+} from "@/utils/routing";
+import { PrintableWorksheet } from "@/components/PrintableWorksheet";
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -16,7 +27,7 @@ type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 // CLIENT LOADER - Fetch problems and tags
 export async function clientLoader({
   params,
-  request
+  request,
 }: {
   params: { category: string; subcategory: string };
   request: Request;
@@ -25,9 +36,9 @@ export async function clientLoader({
   const url = new URL(request.url);
 
   // Get filters from URL search params
-  const difficultyParam = url.searchParams.get('difficulty');
-  const tagsParam = url.searchParams.get('tags');
-  const limitParam = url.searchParams.get('limit');
+  const difficultyParam = url.searchParams.get("difficulty");
+  const tagsParam = url.searchParams.get("tags");
+  const limitParam = url.searchParams.get("limit");
 
   // Try to use cached typeMap, otherwise fetch and build
   let typeMap = getCachedTypeMap();
@@ -43,17 +54,15 @@ export async function clientLoader({
   const problemType = getProblemType(category, subcategory, typeMap);
 
   if (!problemType) {
-    throw redirect('/');
+    throw redirect("/");
   }
 
   // Parse filters
   const difficulty = difficultyParam
-    ? difficultyParam.split(',') as Difficulty[]
+    ? (difficultyParam.split(",") as Difficulty[])
     : [];
 
-  const tags = tagsParam
-    ? tagsParam.split(',')
-    : [];
+  const tags = tagsParam ? tagsParam.split(",") : [];
 
   const limit = limitParam ? parseInt(limitParam, 10) : 30;
 
@@ -71,8 +80,11 @@ export async function clientLoader({
   return {
     category,
     subcategory,
-    categoryDisplay: category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' '),
-    subcategoryDisplay: subcategory.charAt(0).toUpperCase() + subcategory.slice(1).replace(/-/g, ' '),
+    categoryDisplay:
+      category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, " "),
+    subcategoryDisplay:
+      subcategory.charAt(0).toUpperCase() +
+      subcategory.slice(1).replace(/-/g, " "),
     problemType,
     problems,
     availableTags,
@@ -112,13 +124,17 @@ export default function Worksheet() {
 
   // Staged filters (not yet applied to URL)
   const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>(
-    appliedFilters.difficulty
+    appliedFilters.difficulty,
   );
   const [stagedTags, setStagedTags] = useState<string[]>(appliedFilters.tags);
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
 
   // PDF generation
-  const { generating: generatingPDF, error: pdfError, generatePDF } = usePDFGenerator();
+  const {
+    generating: generatingPDF,
+    error: pdfError,
+    generatePDF,
+  } = usePDFGenerator();
 
   // Detect unapplied changes
   const hasUnappliedChanges = useMemo(() => {
@@ -129,18 +145,23 @@ export default function Worksheet() {
       JSON.stringify([...stagedTags].sort()) !==
       JSON.stringify([...appliedFilters.tags].sort());
     return diffChanged || tagsChanged;
-  }, [stagedDifficulties, appliedFilters.difficulty, stagedTags, appliedFilters.tags]);
+  }, [
+    stagedDifficulties,
+    appliedFilters.difficulty,
+    stagedTags,
+    appliedFilters.tags,
+  ]);
 
   // Apply filters by updating URL
   const applyFilters = (): void => {
     const params = new URLSearchParams();
 
     if (stagedDifficulties.length > 0) {
-      params.set('difficulty', stagedDifficulties.join(','));
+      params.set("difficulty", stagedDifficulties.join(","));
     }
 
     if (stagedTags.length > 0) {
-      params.set('tags', stagedTags.join(','));
+      params.set("tags", stagedTags.join(","));
     }
 
     setSearchParams(params);
@@ -158,14 +179,14 @@ export default function Worksheet() {
     setStagedDifficulties((prev) =>
       prev.includes(difficulty)
         ? prev.filter((d) => d !== difficulty)
-        : [...prev, difficulty]
+        : [...prev, difficulty],
     );
   };
 
   // Toggle tag
   const toggleTag = (tag: string): void => {
     setStagedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
 
@@ -176,12 +197,7 @@ export default function Worksheet() {
     const title = `${categoryDisplay} - ${subcategoryDisplay}`;
     const filename = `${category}-${subcategory}-worksheet.pdf`;
 
-    const document = (
-      <PrintableWorksheet
-        title={title}
-        problems={problems}
-      />
-    );
+    const document = <PrintableWorksheet title={title} problems={problems} />;
 
     await generatePDF(document, filename);
   };
@@ -192,7 +208,9 @@ export default function Worksheet() {
       <aside className="md:w-1/3 border-r border-blue-100 bg-blue-50 px-6 py-6 print:hidden">
         {/* Breadcrumb */}
         <nav className="mb-4 text-sm text-blue-600">
-          <Link to="/" className="hover:underline">Home</Link>
+          <Link to="/" className="hover:underline">
+            Home
+          </Link>
           <span className="mx-2">/</span>
           <Link to={`/${category}`} className="hover:underline">
             {categoryDisplay}
@@ -246,8 +264,8 @@ export default function Worksheet() {
               disabled={!hasUnappliedChanges}
               className={`w-full px-4 py-2 rounded-lg font-medium transition ${
                 hasUnappliedChanges
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                  : 'bg-gray-200 text-gray-700 cursor-not-allowed'
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-gray-200 text-gray-700 cursor-not-allowed"
               }`}
             >
               Apply Filters
@@ -259,11 +277,13 @@ export default function Worksheet() {
             </button>
             <button
               onClick={clearFilters}
-              disabled={stagedDifficulties.length === 0 && stagedTags.length === 0}
+              disabled={
+                stagedDifficulties.length === 0 && stagedTags.length === 0
+              }
               className={`w-full px-4 py-2 rounded-lg font-medium transition ${
                 stagedDifficulties.length > 0 || stagedTags.length > 0
-                  ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                  : 'bg-gray-50 text-gray-700 cursor-not-allowed'
+                  ? "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                  : "bg-gray-50 text-gray-700 cursor-not-allowed"
               }`}
             >
               Clear Filters
@@ -317,15 +337,14 @@ export default function Worksheet() {
             </h2>
             <div className="flex justify-between items-center text-sm text-gray-700 print:text-black mb-4 border-b border-gray-300 print:border-black pb-2">
               <div>
-                <span className="font-semibold">Name:</span>{' '}
+                <span className="font-semibold">Name:</span>{" "}
                 ___________________________
               </div>
               <div>
-                <span className="font-semibold">Date:</span>{' '}
-                _______________
+                <span className="font-semibold">Date:</span> _______________
               </div>
               <div>
-                <span className="font-semibold">Problems:</span>{' '}
+                <span className="font-semibold">Problems:</span>{" "}
                 {problems.length}
               </div>
             </div>
@@ -338,16 +357,17 @@ export default function Worksheet() {
                 {problems.map((problem) => (
                   <li key={problem.id} className="mb-3">
                     <span className="font-math text-blue-900 print:text-black">
-                      {categoryDisplay === 'Fractions' ? (
+                      {categoryDisplay === "Fractions" ? (
                         <>
-                          {renderMathExpression(problem.question + ' = ')}
+                          {renderMathExpression(problem.question + " = ")}
                           <span className="inline-answer print:hidden">
-                            {answerKeyOpen && renderMathExpression(problem.answer)}
+                            {answerKeyOpen &&
+                              renderMathExpression(problem.answer)}
                           </span>
                         </>
                       ) : (
                         <>
-                          {problem.question + ' = '}
+                          {problem.question + " = "}
                           <span className="inline-answer print:hidden">
                             {answerKeyOpen && problem.answer}
                           </span>
@@ -357,28 +377,6 @@ export default function Worksheet() {
                   </li>
                 ))}
               </ol>
-
-              {/* Answer Key - hidden on screen, shows on page 2 when printing */}
-              <div className="print-answer-key">
-                <h2 className="text-xl font-bold text-black text-center mb-6 mt-8">
-                  Answer Key
-                </h2>
-                <ol className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                  {problems.map((problem, idx) => (
-                    <li
-                      key={`answer-${problem.id}`}
-                      className="flex items-baseline"
-                    >
-                      <span className="font-semibold mr-2">{idx + 1}.</span>
-                      <span className="font-math">
-                        {categoryDisplay === 'Fractions'
-                          ? renderMathExpression(problem.answer)
-                          : problem.answer}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
 
               {/* Buttons */}
               <div className="mt-8 flex gap-4 print:hidden">
@@ -392,7 +390,7 @@ export default function Worksheet() {
                   className="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 w-48 rounded transition"
                   onClick={() => setAnswerKeyOpen(!answerKeyOpen)}
                 >
-                  {answerKeyOpen ? 'Hide Answer Key' : 'Show Answer Key'}
+                  {answerKeyOpen ? "Hide Answer Key" : "Show Answer Key"}
                 </button>
               </div>
             </>
