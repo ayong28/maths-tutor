@@ -1,97 +1,101 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import type { FC } from 'react';
-import type { Problem } from '@/api';
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import type { FC } from "react";
+import type { Problem } from "@/api";
+import { renderPDFMathExpressionAdvanced } from "@/utils/pdfMathRenderer";
 
 // Define styles for PDF
 const styles = StyleSheet.create({
   page: {
-    padding: '1cm',
-    fontFamily: 'Times-Roman',
+    padding: "1cm",
+    fontFamily: "Times-Roman",
     fontSize: 12,
   },
   header: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   metadata: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     fontSize: 10,
     marginBottom: 20,
     paddingBottom: 10,
-    borderBottom: '1px solid black',
+    borderBottom: "1px solid black",
   },
   metadataItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   metadataLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 5,
   },
   problemsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   problemColumn: {
-    width: '48%',
+    width: "48%",
   },
   problem: {
     marginBottom: 16,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   problemNumber: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 8,
     minWidth: 25,
   },
   problemText: {
     flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   fraction: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    flexDirection: "column",
+    alignItems: "center",
     marginHorizontal: 2,
   },
   fractionNumerator: {
     fontSize: 10,
-    textAlign: 'center',
-    borderBottom: '1px solid black',
+    textAlign: "center",
+    borderBottom: "1px solid black",
     paddingBottom: 1,
     paddingHorizontal: 3,
   },
   fractionDenominator: {
     fontSize: 10,
-    textAlign: 'center',
+    textAlign: "center",
     paddingTop: 1,
     paddingHorizontal: 3,
   },
   answerKeyTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
     marginTop: 20,
   },
   answerGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   answerColumn: {
-    width: '48%',
+    width: "48%",
   },
   answer: {
     marginBottom: 8,
-    flexDirection: 'row',
+    flexDirection: "row",
     fontSize: 9,
   },
   answerNumber: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 5,
     minWidth: 20,
   },
@@ -105,24 +109,14 @@ interface PrintableWorksheetProps {
 }
 
 /**
- * Convert fraction notation to a readable format
- * Handles: "a/b", "w a/b" (mixed numbers)
- */
-function formatFraction(text: string): string {
-  // For now, keep as-is. @react-pdf/renderer will render it as text
-  // We could enhance this to use special Unicode fraction characters
-  return text;
-}
-
-/**
  * Printable worksheet component using @react-pdf/renderer
  * Generates a 2-page PDF: Page 1 (problems), Page 2 (answer key)
  */
 export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
   title,
   problems,
-  studentName = '_____________________________',
-  date = '_______________',
+  studentName = "_____________________________",
+  date = "_______________",
 }) => {
   // Split problems into two columns for better layout
   const half = Math.ceil(problems.length / 2);
@@ -159,9 +153,10 @@ export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
             {leftColumnProblems.map((problem, idx) => (
               <View key={problem.id} style={styles.problem}>
                 <Text style={styles.problemNumber}>{idx + 1}.</Text>
-                <Text style={styles.problemText}>
-                  {formatFraction(problem.question)} =
-                </Text>
+                <View style={styles.problemText}>
+                  {renderPDFMathExpressionAdvanced(problem.question)}
+                  <Text> =</Text>
+                </View>
               </View>
             ))}
           </View>
@@ -171,9 +166,10 @@ export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
             {rightColumnProblems.map((problem, idx) => (
               <View key={problem.id} style={styles.problem}>
                 <Text style={styles.problemNumber}>{half + idx + 1}.</Text>
-                <Text style={styles.problemText}>
-                  {formatFraction(problem.question)} =
-                </Text>
+                <View style={styles.problemText}>
+                  {renderPDFMathExpressionAdvanced(problem.question)}
+                  <Text> =</Text>
+                </View>
               </View>
             ))}
           </View>
@@ -191,7 +187,11 @@ export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
             {leftColumnProblems.map((problem, idx) => (
               <View key={`answer-${problem.id}`} style={styles.answer}>
                 <Text style={styles.answerNumber}>{idx + 1}.</Text>
-                <Text>{formatFraction(problem.question)} = {formatFraction(problem.answer)}</Text>
+                <View style={styles.problemText}>
+                  {renderPDFMathExpressionAdvanced(problem.question)}
+                  <Text> = </Text>
+                  {renderPDFMathExpressionAdvanced(problem.answer)}
+                </View>
               </View>
             ))}
           </View>
@@ -201,7 +201,11 @@ export const PrintableWorksheet: FC<PrintableWorksheetProps> = ({
             {rightColumnProblems.map((problem, idx) => (
               <View key={`answer-${problem.id}`} style={styles.answer}>
                 <Text style={styles.answerNumber}>{half + idx + 1}.</Text>
-                <Text>{formatFraction(problem.question)} = {formatFraction(problem.answer)}</Text>
+                <View style={styles.problemText}>
+                  {renderPDFMathExpressionAdvanced(problem.question)}
+                  <Text> = </Text>
+                  {renderPDFMathExpressionAdvanced(problem.answer)}
+                </View>
               </View>
             ))}
           </View>
