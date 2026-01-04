@@ -2,6 +2,133 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
+## Current Session (2026-01-03 - React Router 7 Implementation)
+
+**Session Summary**: Implemented React Router 7 using library mode with URL-based routing, dynamic TYPE_MAP generation, and comprehensive step-by-step tutorial documentation. App now supports deep linking, browser navigation, and filter persistence via URL query params.
+
+### React Router 7 Migration ✅
+
+**Goal**: Replace state-based navigation with URL-based routing for better UX (shareable URLs, browser back/forward, deep linking).
+
+**Implementation Approach**: Library mode (routes defined in main.tsx) instead of framework mode (routes.ts file).
+
+**Key Files Created:**
+- `apps/web/src/routes/root.tsx` - Layout wrapper with header
+- `apps/web/src/routes/home.tsx` - Home page with category grid + clientLoader
+- `apps/web/src/routes/category.tsx` - Subcategory list + clientLoader
+- `apps/web/src/routes/worksheet.tsx` - Worksheet view + clientLoader
+- `apps/web/src/utils/routing.ts` - Dynamic TYPE_MAP generation helpers
+- `apps/web/src/utils/mathRenderer.tsx` - Extracted renderMathExpression (JSX)
+- `docs/REACT-ROUTER-7-TUTORIAL.md` - Complete step-by-step implementation guide
+
+**Key Files Modified:**
+- `apps/web/src/main.tsx` - Router creation with createBrowserRouter
+- `apps/web/src/api/client.ts` - Simplified async functions (removed hooks pattern)
+- `apps/web/src/api/index.ts` - Removed healthCheck/ApiError exports
+- `apps/web/src/hooks/index.ts` - Only export usePDFGenerator (others unused)
+- `apps/web/vite.config.ts` - Exclude route files from Fast Refresh
+- `apps/web/src/App.tsx` - Backed up as App.tsx.backup
+
+**Route Structure:**
+```
+/ (root)
+├── / (home) - Category grid
+├── /:category (category) - Subcategory list
+└── /:category/:subcategory (worksheet) - Problems + filters
+```
+
+**Example URLs:**
+- `/fractions/addition`
+- `/algebra/collecting-terms`
+- `/fractions/addition?difficulty=EASY,MEDIUM&tags=like-denominators`
+
+**Dynamic TYPE_MAP Generation:**
+
+Eliminated manual maintenance by auto-generating URL mappings from `/api/categories`:
+
+```typescript
+// Before: 25+ manual entries
+const TYPE_MAP = {
+  fractions: { addition: 'FRACTION_ADDITION', ... },
+  // ... all 25 types manually mapped
+}
+
+// After: Auto-generated from API data
+buildTypeMap(categories) // Zero maintenance!
+```
+
+**Benefits:**
+- Add new problem types to DB → automatically works in UI
+- Cached in memory (no redundant API calls)
+- Single source of truth (database)
+- Type-safe
+
+**clientLoader Pattern:**
+
+Data fetched before component renders (no loading states in components):
+
+```typescript
+export async function clientLoader() {
+  const data = await getCategories();
+  return { data };
+}
+
+export default function Component() {
+  const { data } = useLoaderData<LoaderData>();
+  // Data ready when component mounts
+}
+```
+
+**Key Implementation Details:**
+
+1. **Vite Config** - Use standard `react()` plugin with route file exclusion:
+   ```typescript
+   react({ exclude: /routes\/.*.tsx$/ })
+   ```
+
+2. **Type Assertions** - Router params need casting:
+   ```typescript
+   params as { category: string; subcategory: string }
+   ```
+
+3. **JSX Separation** - `renderMathExpression` moved to `.tsx` file (utils/mathRenderer.tsx)
+
+4. **API Client** - Simplified to async functions (no React hooks):
+   ```typescript
+   export async function getCategories(): Promise<CategoryInfo[]>
+   ```
+
+**Issues Encountered & Fixed:**
+
+1. **Fast Refresh Warning** - Route files export loaders + components
+   - Fixed: Exclude route files from Fast Refresh
+
+2. **Missing Exports** - healthCheck/ApiError didn't exist in simplified client
+   - Fixed: Updated api/index.ts and hooks/index.ts
+
+3. **Type Errors** - params type mismatch in main.tsx loaders
+   - Fixed: Added type assertions `params as { category: string }`
+
+4. **JSX in .ts File** - renderMathExpression caused syntax error
+   - Fixed: Created mathRenderer.tsx for JSX functions
+
+**Tutorial Documentation:**
+
+Created comprehensive `docs/REACT-ROUTER-7-TUTORIAL.md` (21 steps):
+- Step-by-step manual implementation guide
+- All fixes documented in Troubleshooting section
+- Code examples for all route files
+- Testing procedures and checklists
+
+**Testing Status:**
+
+⚠️ E2E tests need updating for route-based navigation (previously state-based)
+
+**Next Steps:**
+- Update E2E tests for new routing structure
+- Delete App.tsx.backup after verification
+- Consider adding route transitions
+
 ## Recent Session Changes (2025-12-31 - Afternoon)
 
 **Session Summary**: Mobile Responsiveness - Implemented view-switching UX for iPhone screens where aside menu shows initially, switches to worksheet content on subcategory selection, and "Back to Categories" returns to menu. Desktop behavior unchanged (side-by-side). E2E tests updated.

@@ -2,7 +2,7 @@
 
 Guidance for Claude Code when working with this repository.
 
-**Full Docs:** `PROJECT-SETUP.md` | `PROJECT-HISTORY.md` | `E2E-TEST-PLAN.md`
+**Full Docs:** `docs/PROJECT-SETUP.md` | `docs/PROJECT-HISTORY.md` | `docs/E2E-TEST-PLAN.md`
 
 ## Quick Start
 
@@ -30,7 +30,8 @@ npm run generate:tags -- --type FRACTION_ADDITION
 Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
 - **4828 problems** in PostgreSQL (25 types - all VCAA Level 7 topics)
-- **Web UI**: React + Tailwind + Express API (localhost:5173 + localhost:3001)
+- **Web UI**: React Router 7 + Tailwind + Express API (localhost:5173 + localhost:3001)
+- **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters in URL
 - **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
 
 ## Testing
@@ -83,4 +84,4 @@ generated/         # Prisma client output (root level)
 - API: `import { prisma } from '../db/prisma'` (packages/api/src/services/*)
 - Client: `import { PrismaClient } from '../../../../generated/prisma'` (packages/api/src/db/prisma.ts)
 
-See `PROJECT-SETUP.md` for details.
+See `docs/PROJECT-SETUP.md` for details.
