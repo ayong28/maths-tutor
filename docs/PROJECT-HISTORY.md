@@ -2,7 +2,177 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-01-03 - React Router 7 Implementation)
+## Current Session (2026-01-04 - Testing Documentation & Cleanup)
+
+**Session Summary**: Created comprehensive testing documentation suite after React Router 7 migration. Identified unused hooks and provided cleanup recommendations. Organized all documentation into `/docs` folder with central index.
+
+### Testing Documentation Suite ✅
+
+**Goal**: Provide clear guidance for fixing failing tests and writing new tests after React Router 7 migration.
+
+**Key Files Created:**
+- `docs/README.md` - Central documentation index with quick reference
+- `docs/FIX-FAILING-TESTS.md` - Step-by-step fix for 4 failing tests
+- `docs/CLEANUP-UNUSED-CODE.md` - Recommended cleanup of unused hooks
+- `docs/TESTING-IMPLEMENTATION-GUIDE.md` - Guide for testing components
+- `docs/REACT-ROUTER-TESTING-GUIDE.md` - React Router 7 testing patterns
+
+**Key Findings:**
+
+**Unused Hooks After Migration:**
+- ❌ `useCategories` - Replaced by React Router `clientLoader` in home.tsx
+- ❌ `useProblems` - Replaced by React Router `clientLoader` in worksheet.tsx
+- ❌ `useTags` - Replaced by React Router `clientLoader` in worksheet.tsx
+- ✅ `usePDFGenerator` - Still used in worksheet.tsx
+
+**Root Cause:**
+React Router 7's `clientLoader` pattern fetches data before component renders, eliminating need for custom hooks with useEffect patterns.
+
+**Before (Custom Hooks):**
+```typescript
+function App() {
+  const { categories, loading, error } = useCategories();
+  // Hooks manage state, loading, errors
+}
+```
+
+**After (React Router Loaders):**
+```typescript
+export async function clientLoader() {
+  const categories = await getCategories();
+  return { categories };
+}
+
+export default function Component() {
+  const { categories } = useLoaderData();
+  // Data ready when component mounts
+}
+```
+
+**Failing Tests:**
+- `useCategories.test.ts` - Imports `ApiError` that doesn't exist
+- `useProblems.test.ts` - Imports `ApiError` that doesn't exist
+- `useTags.test.ts` - Imports `ApiError` that doesn't exist
+- `App.test.tsx` - Imports `App.tsx` which is now `App.tsx.backup`
+
+**Recommended Action:**
+Delete unused hooks and their tests (see `docs/CLEANUP-UNUSED-CODE.md`)
+
+**Alternative:**
+Fix imports to keep hooks for future use (see `docs/FIX-FAILING-TESTS.md`)
+
+**Testing Guides Created:**
+
+1. **REACT-ROUTER-TESTING-GUIDE.md** - Comprehensive guide for testing React Router 7:
+   - Test file organization (`__tests__/` folders)
+   - `renderWithRouter` utility
+   - Testing route params, search params, navigation
+   - E2E testing with Playwright
+   - Common errors and solutions
+   - Migration checklist
+
+2. **TESTING-IMPLEMENTATION-GUIDE.md** - Step-by-step guide for testing components:
+   - Test strategies for different component types
+   - Copy-paste ready examples
+   - Testing hooks with `renderHook`
+   - Error boundary testing
+   - Common patterns and anti-patterns
+
+3. **FIX-FAILING-TESTS.md** - Quick fix instructions:
+   - Remove `ApiError` from imports (3 hook tests)
+   - Restore `App.tsx` from backup
+   - One-command automated fix
+   - Manual step-by-step instructions
+
+4. **CLEANUP-UNUSED-CODE.md** - Recommended cleanup approach:
+   - Delete unused hooks and tests
+   - Complete cleanup script
+   - Before/after file structure comparison
+   - Alternative approaches (keep, archive)
+
+**Documentation Organization:**
+
+Moved all documentation to `/docs` folder:
+- `E2E-TEST-PLAN.md` → `docs/E2E-TEST-PLAN.md`
+- `NETLIFY-DEPLOYMENT-GUIDE.md` → `docs/NETLIFY-DEPLOYMENT-GUIDE.md`
+- `PROJECT-HISTORY.md` → `docs/PROJECT-HISTORY.md`
+- `PROJECT-SETUP.md` → `docs/PROJECT-SETUP.md`
+- `session-activity-journal.md` → `docs/session-activity-journal.md`
+
+Created `docs/README.md` as central index:
+- Quick reference tables
+- Documentation organization tree
+- "I want to..." guide for finding docs
+- Known issues section
+- Test status overview
+
+**CLAUDE.md Updates:**
+
+Updated to reflect current state:
+- Added testing guides references
+- Noted failing tests with ⚠️ warnings
+- Listed unused hooks
+- Added current tasks section
+- Referenced docs/README.md as documentation hub
+
+**Key Patterns Documented:**
+
+**TypeScript with verbatimModuleSyntax:**
+```typescript
+// Use type-only imports
+import { type RenderOptions } from '@testing-library/react';
+import { type ReactElement } from 'react';
+```
+
+**Type instead of Interface:**
+```typescript
+// Modern pattern
+type Props = {
+  name: string;
+};
+
+// Avoid
+interface Props {
+  name: string;
+}
+```
+
+**Nullish Coalescing over Logical OR:**
+```typescript
+// Better - only null/undefined trigger default
+const value = param.get('difficulty') ?? 'all';
+
+// Avoid - empty string would trigger default
+const value = param.get('difficulty') || 'all';
+```
+
+**ReactElement instead of JSX.Element:**
+```typescript
+// Better - explicit import
+import { type ReactElement } from 'react';
+function Component(): ReactElement { }
+
+// Avoid - requires namespace
+function Component(): JSX.Element { }
+```
+
+**Test File Organization:**
+```
+src/
+  components/
+    Button.tsx
+    __tests__/
+      Button.test.tsx  # Collocated with source
+```
+
+**Benefits:**
+- Clear separation between code and tests
+- Easy to find tests for any component
+- Matches Jest conventions
+
+---
+
+## Previous Session (2026-01-03 - React Router 7 Implementation)
 
 **Session Summary**: Implemented React Router 7 using library mode with URL-based routing, dynamic TYPE_MAP generation, and comprehensive step-by-step tutorial documentation. App now supports deep linking, browser navigation, and filter persistence via URL query params.
 

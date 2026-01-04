@@ -2,15 +2,17 @@
 
 Guidance for Claude Code when working with this repository.
 
-**Full Docs:** `docs/PROJECT-SETUP.md` | `docs/PROJECT-HISTORY.md` | `docs/E2E-TEST-PLAN.md`
+**Full Docs:** `docs/README.md` | `docs/PROJECT-SETUP.md` | `docs/PROJECT-HISTORY.md` | `docs/E2E-TEST-PLAN.md`
+
+**Testing Guides:** `docs/CLEANUP-UNUSED-CODE.md` | `docs/TESTING-IMPLEMENTATION-GUIDE.md` | `docs/REACT-ROUTER-TESTING-GUIDE.md`
 
 ## Quick Start
 
 ```bash
-# Testing (153 tests total: 32 PDF + 74 Web + 47 E2E)
+# Testing (153 tests: 32 PDF + 74 Web + 47 E2E) ⚠️ 4 failing - see docs/CLEANUP-UNUSED-CODE.md
 npm test                       # All: 32 PDF + 74 Web tests (~3s)
 npm run test:integration       # App integration tests (21)
-npm run test:hooks             # React hooks tests (53)
+npm run test:hooks             # React hooks tests (53) ⚠️ 3 failing
 npm run test:e2e:chromium      # Playwright E2E (47 tests, Chromium only)
 npm run test:e2e               # Playwright E2E (all browsers)
 
@@ -38,14 +40,33 @@ Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
 ```bash
 # Web tests (apps/web/)
-npm test                    # All web (74 tests)
-npm run test:integration    # App integration (21)
-npm run test:hooks          # React hooks (53)
+npm test                    # All web (74 tests) ⚠️ 4 failing
+npm run test:integration    # App integration (21) ⚠️ 1 failing
+npm run test:hooks          # React hooks (53) ⚠️ 3 failing
 
 # Root tests
 npm test                    # PDF generator (32)
 npm run test:e2e:chromium   # E2E (47 tests)
 ```
+
+**⚠️ Action Required:** Fix or cleanup failing tests after React Router 7 migration.
+
+**Recommended:** Delete unused hooks → See [`docs/CLEANUP-UNUSED-CODE.md`](docs/CLEANUP-UNUSED-CODE.md)
+
+**Failing Tests (hooks no longer used):**
+- `useCategories.test.ts` - Replaced by React Router loaders
+- `useProblems.test.ts` - Replaced by React Router loaders
+- `useTags.test.ts` - Replaced by React Router loaders
+- `App.test.tsx` - Component replaced by route files
+
+**Still Used:**
+- ✅ `usePDFGenerator` - Active in worksheet route
+
+**Testing Guides:**
+- Quick fix: `docs/FIX-FAILING-TESTS.md` (if keeping hooks)
+- Cleanup: `docs/CLEANUP-UNUSED-CODE.md` (recommended)
+- New tests: `docs/TESTING-IMPLEMENTATION-GUIDE.md`
+- Router tests: `docs/REACT-ROUTER-TESTING-GUIDE.md`
 
 **Critical Patterns:** Multi-term algebra (2a+3b+4a) | Mixed numbers (1 5/6)
 
@@ -60,6 +81,12 @@ npx prisma migrate dev              # Update schema
 
 **Phase 10 Complete ✅** - All VCAA Level 7 topics (4828 problems across 25 types)
 
+**React Router 7 Migration Complete ✅** - URL-based routing with deep linking
+
+**Current Tasks:**
+- ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
+- Add component tests - See `docs/TESTING-IMPLEMENTATION-GUIDE.md`
+
 **Future Enhancements:**
 - Try to remove CATEGORY_OVERRIDES (packages/api/src/services/problems.service.ts) by improving auto-derivation logic
 - Add more advanced filtering options
@@ -73,10 +100,15 @@ npx prisma migrate dev              # Update schema
 
 ```
 apps/web/          # React (Vite + TS + Tailwind)
+  src/routes/      # React Router 7 routes (home, category, worksheet)
+  src/hooks/       # Custom hooks (usePDFGenerator - others unused after migration)
+  src/components/  # UI components
+  src/__tests__/   # Integration tests
 packages/api/      # Express API + Prisma client (packages/api/src/db/prisma.ts)
 src/               # CLI + PDF generator
 prisma/            # DB schema
-e2e/               # Playwright tests
+e2e/               # Playwright tests (47 E2E tests)
+docs/              # Documentation (see docs/README.md for index)
 generated/         # Prisma client output (root level)
 ```
 
