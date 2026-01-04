@@ -26,6 +26,24 @@ Deploy your React + Express + PostgreSQL monorepo to Netlify + Supabase:
    - **Plan**: Free tier (sufficient for this project)
 5. Click **Create new project** (takes ~2 minutes)
 
+### 1.1b Use Netlify's Supabase Integration (Alternative - Easier)
+
+**If you prefer automated setup, use the official Netlify-Supabase integration:**
+
+1. In Netlify dashboard: **Integrations** > **Add integration**
+2. Search for "Supabase" and click **Install**
+3. Select your Supabase project
+4. Choose your frontend framework (React/Vite)
+5. Netlify auto-configures environment variables
+
+**Benefits:**
+- No manual environment variable entry in Step 5.4
+- Auto-syncs Supabase settings
+- Simplified maintenance
+- Uses Netlify's Secrets Controller for enhanced security
+
+**Note:** If using this integration, you can skip manual environment variable setup in Step 5.4. However, you'll still need the connection strings for local development (Steps 1.2-1.3).
+
 ### 1.2 Get Connection Strings
 
 Once provisioned, go to **Settings** > **Database**:
@@ -44,17 +62,39 @@ Once provisioned, go to **Settings** > **Database**:
 
 **Important**: Replace `[PASSWORD]` with your actual database password
 
+### Why Two Connection Strings?
+
+**Transaction Mode (port 6543):**
+- Uses Supavisor connection pooler
+- Required for serverless (Netlify Functions)
+- Limits connections to prevent exhaustion
+- **Limitation:** No prepared statements (hence `?pgbouncer=true`)
+
+**Session Mode (port 5432):**
+- Direct database connection
+- Required for migrations (Prisma needs full session)
+- Not suitable for serverless (too many connections)
+
+**Best Practice:** In serverless, use `connection_limit=1` and increase cautiously if needed.
+
 ### 1.3 Run Migrations on Supabase
 
 Open terminal in your project root:
 
 ```bash
+# IMPORTANT: Verify .gitignore includes .env.production BEFORE creating file
+echo ".env.production" >> .gitignore
+
 # Create .env.production file (DO NOT COMMIT THIS)
 cat > .env.production << 'EOF'
-DATABASE_URL="postgresql://postgres.xxxx:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
-DIRECT_URL="postgresql://postgres.xxxx:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"
+DATABASE_URL="YOUR_TRANSACTION_MODE_CONNECTION_STRING_HERE"
+DIRECT_URL="YOUR_SESSION_MODE_CONNECTION_STRING_HERE"
 NODE_ENV=production
 EOF
+
+# Now edit .env.production and replace placeholders with actual values from Step 1.2
+# Transaction Mode: postgresql://postgres.xxxx:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
+# Session Mode: postgresql://postgres.xxxx:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
 
 # Load environment variables
 export $(cat .env.production | xargs)
@@ -63,11 +103,28 @@ export $(cat .env.production | xargs)
 npx prisma migrate deploy
 ```
 
+⚠️ **SECURITY WARNING**:
+- Never commit `.env.production` to Git
+- Verify it's in `.gitignore` before adding connection strings
+- Use a password manager to store database credentials securely
+
 **Expected output**: "All migrations have been successfully applied"
 
 ### 1.4 Export Data from Local Database
 
-Create a data export script:
+Choose one of the following methods to export your data:
+
+**Method 1: Supabase CLI (Recommended if using Supabase locally)**
+
+```bash
+# Install Supabase CLI (if not already installed)
+npm install -g supabase
+
+# Export data only
+supabase db dump --data-only > prisma/data/export.sql
+```
+
+**Method 2: Prisma Studio (Interactive - Good for JSON export)**
 
 ```bash
 # Export all problems as JSON
@@ -76,7 +133,7 @@ npx prisma studio
 # Save as prisma/data/problems.json
 ```
 
-**Alternative method** (using psql if available):
+**Method 3: pg_dump (Traditional PostgreSQL approach)**
 
 ```bash
 # Find PostgreSQL installation
@@ -88,6 +145,8 @@ npx prisma studio
   --inserts \
   > prisma/data/export.sql
 ```
+
+**Note:** Methods 1 and 3 produce SQL files, Method 2 produces JSON. The seed script in Step 1.5 uses JSON format.
 
 ### 1.5 Create Seed Script
 
@@ -133,6 +192,39 @@ main()
   });
 ```
 
+### Alternative: Use Supabase's Standard Seeding Pattern
+
+If you prefer Supabase's recommended approach, create a SQL seed file instead:
+
+**Create: `supabase/seed.sql`**
+
+```sql
+-- Seed data for Problem table
+-- If you exported SQL using Method 1 or 3, you can use that file:
+\i prisma/data/export.sql
+
+-- Or insert data directly:
+-- INSERT INTO "Problem" (id, type, category, difficulty, ...) VALUES (...);
+```
+
+**Run with Supabase CLI:**
+
+```bash
+# This approach works best if you're using Supabase CLI for local development
+supabase db reset  # Recreates database and runs migrations + seed
+```
+
+**Benefits:**
+- Standard Supabase pattern
+- Integrates with `supabase db reset` workflow
+- Better for SQL exports (Methods 1 & 3)
+
+**Trade-offs:**
+- Requires Supabase CLI
+- Less flexible than TypeScript for complex data transformations
+
+**Recommendation:** Use TypeScript seed (Step 1.5) for JSON exports or if you need data transformation. Use SQL seed for simple SQL dumps.
+
 ### 1.6 Run Seed Script
 
 ```bash
@@ -169,7 +261,10 @@ Find the `generator client` block and update:
 generator client {
   provider      = "prisma-client-js"
   output        = "../generated/prisma"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]  // Add this line
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]  // Critical for Netlify Functions
+  // Alternative options:
+  // engineType = "binary"  // Default - uses Query Engine binaries (current approach)
+  // engineType = "library" // Smaller bundle size (Prisma 5.15+), may have compatibility issues
 }
 ```
 
@@ -184,8 +279,20 @@ datasource db {
 ```
 
 **Why these changes**:
-- `rhel-openssl-3.0.x`: Netlify Functions run on Amazon Linux 2, need compatible binary
-- `directUrl`: Required for migrations when using connection pooling
+
+**binaryTargets Configuration:**
+- `"native"`: Query engine for your local development (macOS/Windows/Linux)
+- `"rhel-openssl-3.0.x"`: Query engine for Netlify Functions (Amazon Linux 2 with Node 20)
+- **Node 18+** requires `openssl-3.0.x`
+- **Node 16 or earlier** required `openssl-1.0.x` (now deprecated)
+
+**Why binaryTargets matters:**
+Prisma needs a Query Engine binary that matches the deployment platform. Without `rhel-openssl-3.0.x`, your Netlify Functions will crash with "Query engine binary not found" errors.
+
+**directUrl for Connection Pooling:**
+- `DATABASE_URL`: Used by Prisma Client for queries (pooled via Supavisor on port 6543)
+- `DIRECT_URL`: Used by Prisma Migrate for schema changes (direct connection on port 5432)
+- Required because connection poolers don't support all migration commands
 
 ### 2.2 Regenerate Prisma Client
 
@@ -195,6 +302,62 @@ npx prisma generate
 
 **Expected output**: "Generated Prisma Client"
 
+### 2.3 Add Netlify Vite Plugin (Optional but Recommended)
+
+Install the official Netlify Vite plugin for better local development experience:
+
+```bash
+# In the apps/web directory
+cd apps/web
+npm install -D @netlify/vite-plugin
+cd ../..
+```
+
+**Update: `apps/web/vite.config.ts`**
+
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import netlify from '@netlify/vite-plugin';  // ADD THIS IMPORT
+import path from 'path';
+
+export default defineConfig({
+  plugins: [
+    react({
+      exclude: /routes\/.*.tsx$/,
+    }),
+    tailwindcss(),
+    netlify()  // ADD THIS PLUGIN
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
+});
+```
+
+**Benefits:**
+- ✅ Emulates Netlify Functions, redirects, and headers locally
+- ✅ No need to run `netlify dev` CLI separately
+- ✅ Faster development iteration
+- ✅ Access to Netlify Blobs, Cache API, and Image CDN in development
+- ✅ Environment variables work the same locally and in production
+
+**Alternative for React Router 7 projects:**
+If you're using React Router 7 server features, install `@netlify/vite-plugin-react-router` instead.
+
+**Note:** This step is optional but highly recommended for production parity in local development.
+
 ---
 
 ## Step 3: Convert Express API to Netlify Function (1 hour)
@@ -202,8 +365,17 @@ npx prisma generate
 ### 3.1 Install Dependencies
 
 ```bash
-npm install serverless-http
+# Install required dependencies for Express on Netlify Functions
+npm install serverless-http @netlify/functions
+
+# TypeScript type definitions (should already be installed)
+npm install -D @types/express
 ```
+
+**What these do:**
+- `serverless-http`: Wraps Express app to work as a serverless function
+- `@netlify/functions`: Netlify Functions SDK for TypeScript types and context
+- `@types/express`: TypeScript definitions for Express (development only)
 
 ### 3.2 Create Netlify Functions Directory
 
@@ -283,7 +455,9 @@ export const handler = serverless(app);
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ES2020",
+    "lib": ["ES2020"],
     "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "../../dist/functions",
     "rootDir": ".",
     "esModuleInterop": true,
@@ -293,6 +467,12 @@ export const handler = serverless(app);
   "exclude": ["node_modules"]
 }
 ```
+
+**Configuration notes:**
+- `module: "commonjs"`: Required for Netlify Functions (Node.js runtime)
+- `lib: ["ES2020"]`: Explicitly defines available JavaScript features
+- `moduleResolution: "node"`: Standard Node.js module resolution
+- `esModuleInterop`: Allows importing CommonJS modules with ES6 syntax
 
 ---
 
@@ -313,8 +493,9 @@ export const handler = serverless(app);
 
 [functions]
   directory = "netlify/functions"
-  node_bundler = "esbuild"             # Fast bundling
-  included_files = ["generated/prisma/**"]  # Include Prisma client
+  node_bundler = "esbuild"                      # Fast bundling
+  external_node_modules = ["express"]           # Keep Express external (required)
+  included_files = ["generated/prisma/**"]      # Include Prisma client
 
 # Redirect API requests to serverless function
 [[redirects]]
@@ -357,10 +538,13 @@ Also add to `dependencies` (move from devDependencies if needed):
 ```json
 {
   "dependencies": {
-    "serverless-http": "^3.2.0"
+    "serverless-http": "^3.2.0",
+    "@netlify/functions": "^2.8.0"
   }
 }
 ```
+
+**Note:** These must be in `dependencies` (not `devDependencies`) so they're available during Netlify build.
 
 ### 4.3 Update .gitignore
 
@@ -384,10 +568,70 @@ npm run build:netlify
 # Verify outputs
 ls -la apps/web/dist/        # Should have index.html, assets/
 ls -la dist/functions/       # Should have api.js
-
-# Test locally with Netlify CLI (optional)
-npx netlify-cli dev
 ```
+
+**Expected results:**
+- `apps/web/dist/` contains `index.html` and `assets/` folder
+- `dist/functions/` contains `api.js` (compiled function)
+
+### 4.5 Local Development Options
+
+Choose the development approach that works best for you:
+
+#### **Option A: Standard Development (Current Setup)**
+
+```bash
+# Terminal 1: Run React dev server
+npm run dev
+
+# Terminal 2: Run Express API
+npm run api:dev
+```
+
+**When to use:**
+- ✅ Fastest iteration during active development
+- ✅ Familiar workflow (separate frontend/backend)
+- ⚠️ Doesn't emulate Netlify features
+
+#### **Option B: Netlify Vite Plugin (Recommended if installed Step 2.3)**
+
+```bash
+# Single terminal - runs everything with Netlify emulation
+npm run dev
+```
+
+**When to use:**
+- ✅ After installing `@netlify/vite-plugin` in Step 2.3
+- ✅ Want to test Netlify redirects/headers locally
+- ✅ Need access to Netlify Blobs, Cache API, or Image CDN
+- ✅ Prefer single-command startup
+
+**Benefits:**
+- Functions, redirects, and environment variables work like production
+- No separate API server needed
+- Faster than Netlify CLI
+
+#### **Option C: Netlify CLI (Most accurate production simulation)**
+
+```bash
+# Install Netlify CLI globally (one-time)
+npm install -g netlify-cli
+
+# Run full Netlify environment
+netlify dev
+```
+
+**When to use:**
+- ✅ Testing deployment-specific issues
+- ✅ Need exact production parity
+- ✅ Debugging edge cases before deploying
+
+**Trade-offs:**
+- ⚠️ Slower startup than other options
+- ⚠️ Requires Netlify CLI installation
+- ⚠️ May need Netlify account login
+
+**Recommendation:** Use Option A or B during development, Option C for pre-deployment testing.
 
 ---
 
@@ -400,10 +644,12 @@ git add .
 git commit -m "Configure Netlify deployment with Supabase
 
 - Add netlify.toml with monorepo build config and redirects
+- Configure external_node_modules for Express compatibility
 - Create Netlify function wrapper for Express API
 - Update Prisma schema for serverless (binaryTargets, directUrl)
 - Add build:netlify scripts for deployment
-- Add serverless-http dependency
+- Add serverless-http and @netlify/functions dependencies
+- Optional: Add @netlify/vite-plugin for local Netlify emulation
 
 🤖 Generated with Claude Code"
 ```
@@ -557,8 +803,10 @@ Free tier includes basic traffic stats.
 **Solution**: Ensure all dependencies are in `dependencies`, not `devDependencies`:
 
 ```bash
-npm install --save express cors dotenv serverless-http
+npm install --save express cors dotenv serverless-http @netlify/functions
 ```
+
+**Check:** Verify these are in the `dependencies` section of your root `package.json`, not `devDependencies`.
 
 ### Issue: API Returns 500 Error
 
@@ -586,6 +834,32 @@ npm install --save express cors dotenv serverless-http
 ### Issue: CORS Errors
 
 **Check**: `FRONTEND_URL` environment variable matches your actual Netlify URL
+
+### Issue: Express Function Fails with Module Errors
+
+**Symptoms**: API returns errors like "Cannot find module 'express'" or function doesn't start
+
+**Solution**: Verify `netlify.toml` has `external_node_modules`:
+
+```toml
+[functions]
+  external_node_modules = ["express"]
+```
+
+**Why this matters**: Without this, esbuild may bundle Express incorrectly, causing runtime failures.
+
+### Issue: Prisma Client Not Found in Functions
+
+**Symptoms**: "Cannot find module '@prisma/client'" or "PrismaClient is not a constructor"
+
+**Solution**: Ensure `netlify.toml` includes Prisma files:
+
+```toml
+[functions]
+  included_files = ["generated/prisma/**"]
+```
+
+Also verify `binaryTargets = ["native", "rhel-openssl-3.0.x"]` in `prisma/schema.prisma`.
 
 ---
 
@@ -637,16 +911,20 @@ git push origin master
 ## Critical Files Modified/Created
 
 **Created**:
-- `netlify.toml` - Netlify build configuration
+- `netlify.toml` - Netlify build configuration with external_node_modules
 - `netlify/functions/api.ts` - Serverless Express wrapper
-- `netlify/functions/tsconfig.json` - TypeScript config for functions
-- `prisma/seed.ts` - Database seeding script
+- `netlify/functions/tsconfig.json` - TypeScript config for functions (enhanced)
+- `prisma/seed.ts` - Database seeding script (or `supabase/seed.sql` if using SQL approach)
 - `.env.production` - Production environment variables (not committed)
 
 **Modified**:
-- `prisma/schema.prisma` - Added binaryTargets and directUrl
-- `package.json` - Added build:netlify scripts and serverless-http
-- `.gitignore` - Added Netlify build artifacts
+- `prisma/schema.prisma` - Added binaryTargets and directUrl for serverless
+- `package.json` - Added build:netlify scripts, serverless-http, and @netlify/functions
+- `.gitignore` - Added Netlify build artifacts and .env.production
+- `apps/web/vite.config.ts` - Optional: Added @netlify/vite-plugin for local development
+
+**Optional but Recommended**:
+- `apps/web/package.json` - Add @netlify/vite-plugin to devDependencies
 
 **No changes needed**:
 - `apps/web/src/api/client.ts` - Already uses `/api` prefix (works with redirects)
