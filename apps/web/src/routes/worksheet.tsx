@@ -24,6 +24,8 @@ import { PrintableWorksheet } from "@/components/PrintableWorksheet";
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 
+const MAX_PROBLEMS = 20;
+
 // CLIENT LOADER - Fetch problems and tags
 export async function clientLoader({
   params,
@@ -64,7 +66,7 @@ export async function clientLoader({
 
   const tags = tagsParam ? tagsParam.split(",") : [];
 
-  const limit = limitParam ? parseInt(limitParam, 10) : 30;
+  const limit = limitParam ? parseInt(limitParam, 10) : MAX_PROBLEMS;
 
   // Fetch data in parallel
   const [problems, availableTags] = await Promise.all([
