@@ -31,7 +31,7 @@ npm run generate:tags -- --type FRACTION_ADDITION
 
 Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
-- **4828 problems** in PostgreSQL (25 types - all VCAA Level 7 topics)
+- **4,628 problems** in PostgreSQL (29 types - all VCAA Level 7 topics)
 - **Web UI**: React Router 7 + Tailwind + Express API (localhost:5173 + localhost:3001)
 - **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters in URL
 - **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
@@ -73,13 +73,19 @@ npm run test:e2e:chromium   # E2E (47 tests)
 ## Database
 
 ```bash
-brew services start postgresql@16  # maths_tutor_dev on localhost:5432
-npx prisma migrate dev              # Update schema
+brew services start postgresql@16  # Start PostgreSQL
+npx prisma migrate dev              # Create DB + run migrations
+
+# Populate with 4,628 problems (run once)
+npx tsx scripts/import-json-to-db.ts       # Import JSON (3,758 problems)
+npx tsx scripts/migrate-markdown-to-db.ts  # Import markdown (870 problems)
 ```
+
+**Full setup guide:** See `docs/PROJECT-SETUP.md` → Database Setup section
 
 ## Status
 
-**Phase 10 Complete ✅** - All VCAA Level 7 topics (4828 problems across 25 types)
+**Phase 10 Complete ✅** - All VCAA Level 7 topics (4,628 problems across 29 types)
 
 **React Router 7 Migration Complete ✅** - URL-based routing with deep linking
 

@@ -279,20 +279,273 @@ curl "http://localhost:3001/api/problems?type=FRACTION_ADDITION&difficulty=EASY,
 
 ## Database Setup
 
-**PostgreSQL 16 via Homebrew:**
+### Complete Setup Guide
+
+This guide covers setting up PostgreSQL, creating the database, running migrations, and populating with all 4,628 problems.
+
+#### 1. Start PostgreSQL Server
+
+**Via Homebrew (macOS):**
 ```bash
 brew services start postgresql@16
 ```
 
+**Verify it's running:**
+```bash
+brew services list | grep postgresql
+# Should show: postgresql@16 started
+```
+
 **Connection Details:**
 - Database: `maths_tutor_dev`
-- Host: localhost:5432
-- Schema: Managed by Prisma (`npx prisma migrate dev`)
+- Host: `localhost:5432`
+- User: Your system username (default)
+- Schema: Managed by Prisma
 
-**Environment Variables:**
+#### 2. Create Database & Run Migrations
+
+```bash
+# This creates the database and applies all migrations
+npx prisma migrate dev
+```
+
+**What this does:**
+- Creates `maths_tutor_dev` database if it doesn't exist
+- Applies all migrations from `prisma/migrations/`
+- Generates Prisma Client to `generated/prisma/`
+
+**Expected output:**
+```
+PostgreSQL database maths_tutor_dev created at localhost:5432
+
+Applying migration `20251209103210_init`
+Applying migration `20251210031940_schema_improvements`
+...
+
+Your database is now in sync with your schema.
+✔ Generated Prisma Client (v6.19.0)
+```
+
+#### 3. Populate Database with Problems
+
+The project has **two data sources**:
+
+1. **JSON files** (17 files in `temp/`) - 3,758 problems
+2. **Markdown files** (29 files in `worksheets/`) - 870 problems
+
+**Total: 4,628 problems across 29 problem types**
+
+##### Import JSON Problems
+
+```bash
+npx tsx scripts/import-json-to-db.ts
+```
+
+**What it imports:**
+- `angles-problems.json` - 250 problems (ANGLES)
+- `area-problems.json` - 250 problems (AREA)
+- `coordinates-problems.json` - 250 problems (COORDINATES_PLOTTING)
+- `data-analysis-problems.json` - 250 problems (DATA_ANALYSIS)
+- `decimals-problems.json` - 250 problems (DECIMALS_*)
+- `fraction-division-problems.json` - 150 problems (FRACTION_DIVISION)
+- `fraction-multiplication-problems.json` - 150 problems (FRACTION_MULTIPLICATION)
+- `index-problems.json` - 250 problems (INDEX_*)
+- `integers-problems.json` - 250 problems (INTEGERS_*)
+- `linear-equations-problems.json` - 224 problems (ALGEBRA_LINEAR_EQUATIONS_SIMPLE)
+- `linear-graphing-problems.json` - 250 problems (LINEAR_GRAPHING)
+- `mixed-number-addition-problems.json` - 118 problems (FRACTION_ADDITION)
+- `mixed-number-subtraction-problems.json` - 196 problems (FRACTION_SUBTRACTION)
+- `percentage-problems.json` - 250 problems (PERCENTAGE_*)
+- `probability-problems.json` - 250 problems (PROBABILITY)
+- `ratio-rates-problems.json` - 250 problems (RATIO_RATES)
+- `substitution-problems.json` - 170 problems (ALGEBRA_SUBSTITUTION)
+
+**Expected output:**
+```
+Starting import of JSON problems to database...
+
+Found 17 JSON files
+
+Processing: angles-problems.json
+  ✓ Inserted 250 problems
+...
+
+==================================================
+Import Summary:
+==================================================
+Total files: 17
+Total problems inserted: 3758
+Successful: 3758
+Errors: 0
+```
+
+##### Import Markdown Worksheets
+
+```bash
+npx tsx scripts/migrate-markdown-to-db.ts
+```
+
+**What it imports:**
+- `algebra-collecting-terms-*.md` - 150 problems (5 files × 30 problems)
+- `algebra-multiplication-*.md` - 120 problems (4 files × 30 problems)
+- `fraction-addition-*.md` - 210 problems (7 files × 30 problems)
+- `fraction-reduction-*.md` - 180 problems (6 files × 30 problems)
+- `fraction-subtraction-*.md` - 210 problems (7 files × 30 problems)
+
+**Expected output:**
+```
+Starting migration of markdown worksheets to database...
+
+Found 29 worksheet files
+
+Processing: algebra-collecting-terms-01.md
+  ✓ Inserted 30 problems (ALGEBRA_COLLECTING_TERMS)
+...
+
+==================================================
+Migration Summary:
+==================================================
+Total worksheets: 29
+Total problems inserted: 870
+Successful: 870
+Errors: 0
+```
+
+#### 4. Verify Database Population
+
+**Check total count:**
+```bash
+psql -d maths_tutor_dev -c "SELECT COUNT(*) as total_problems FROM \"Problem\";"
+```
+
+**Expected output:**
+```
+ total_problems
+----------------
+           4628
+(1 row)
+```
+
+**Check problems by type:**
+```bash
+psql -d maths_tutor_dev -c "SELECT type, COUNT(*) as count FROM \"Problem\" GROUP BY type ORDER BY type;"
+```
+
+**Expected output:**
+```
+              type               | count
+---------------------------------+-------
+ ALGEBRA_COLLECTING_TERMS        |   150
+ ALGEBRA_MULTIPLICATION          |   120
+ ALGEBRA_SUBSTITUTION            |   170
+ ALGEBRA_LINEAR_EQUATIONS_SIMPLE |   224
+ ANGLES                          |   250
+ AREA                            |   250
+ COORDINATES_PLOTTING            |   250
+ DATA_ANALYSIS                   |   250
+ DECIMALS_ADDITION               |   100
+ DECIMALS_SUBTRACTION            |    50
+ DECIMALS_MULTIPLICATION         |    50
+ DECIMALS_DIVISION               |    50
+ FRACTION_ADDITION               |   328
+ FRACTION_SUBTRACTION            |   406
+ FRACTION_REDUCTION              |   180
+ FRACTION_MULTIPLICATION         |   150
+ FRACTION_DIVISION               |   150
+ INDEX_POWERS                    |    75
+ INDEX_SQUARE_ROOTS              |    97
+ INDEX_LAWS                      |    78
+ INTEGERS_ADDITION               |   100
+ INTEGERS_SUBTRACTION            |    50
+ INTEGERS_MULTIPLICATION         |    50
+ INTEGERS_DIVISION               |    50
+ LINEAR_GRAPHING                 |   250
+ PERCENTAGE_CONVERSION           |   160
+ PERCENTAGE_OF_QUANTITY          |    90
+ PROBABILITY                     |   250
+ RATIO_RATES                     |   250
+(29 rows)
+```
+
+**Check problems by difficulty:**
+```bash
+psql -d maths_tutor_dev -c "SELECT difficulty, COUNT(*) as count FROM \"Problem\" GROUP BY difficulty ORDER BY difficulty;"
+```
+
+**Expected output:**
+```
+ difficulty | count
+------------+-------
+ EASY       |  1748
+ MEDIUM     |  1810
+ HARD       |  1070
+(3 rows)
+```
+
+### Troubleshooting
+
+#### Problem: Database already exists but is empty
+
+**Solution: Clear and re-import**
+```bash
+# Clear all problems
+psql -d maths_tutor_dev -c "TRUNCATE TABLE \"Problem\" CASCADE;"
+
+# Re-import
+npx tsx scripts/import-json-to-db.ts
+npx tsx scripts/migrate-markdown-to-db.ts
+```
+
+#### Problem: Import script fails with "Unknown argument denominators"
+
+This happened with older JSON files that had extra fields not in the schema.
+
+**Solution: The import script now auto-cleans data**
+
+The `import-json-to-db.ts` script strips invalid fields:
+```typescript
+const cleanedProblems = problems.map((p: any) => ({
+  question: p.question,
+  answer: p.answer,
+  type: p.type,
+  difficulty: p.difficulty,
+  tags: p.tags || [],
+  hasVariables: p.hasVariables || false,
+  sourceWorksheet: p.sourceWorksheet,
+  sourceProblemNumber: p.sourceProblemNumber,
+}));
+```
+
+#### Problem: "Database maths_tutor_dev does not exist"
+
+**Solution: Run migrations**
+```bash
+npx prisma migrate dev
+```
+
+This creates the database automatically.
+
+#### Problem: Mixed-number files missing 'type' field
+
+This was fixed with `scripts/fix-mixed-number-types.ts`:
+
+```bash
+npx tsx scripts/fix-mixed-number-types.ts
+```
+
+This adds the missing `type` field to:
+- `temp/mixed-number-addition-problems.json` → `FRACTION_ADDITION`
+- `temp/mixed-number-subtraction-problems.json` → `FRACTION_SUBTRACTION`
+
+**Note:** This script has already been run. The JSON files in `temp/` are now correct.
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
 ```bash
 # API
-DATABASE_URL=postgresql://user:password@localhost:5432/maths_tutor_dev
+DATABASE_URL=postgresql://localhost:5432/maths_tutor_dev
 API_PORT=3001
 FRONTEND_URL=http://localhost:5173
 NODE_ENV=development
@@ -300,6 +553,25 @@ NODE_ENV=development
 # Frontend
 VITE_API_URL=http://localhost:3001
 ```
+
+**Note:** Default PostgreSQL connection uses your system username with no password.
+
+### Data Sources Overview
+
+**temp/ folder (JSON files):**
+- Generated problems covering 17 problem types
+- Pre-processed with tags, difficulty, and metadata
+- Includes newer topics: angles, area, coordinates, data analysis, probability, ratio/rates
+
+**worksheets/ folder (Markdown files):**
+- Original hand-crafted worksheets (29 files)
+- Covers foundational topics: fractions and basic algebra
+- Each file has 30 problems with answer key
+
+**Why both?**
+- Markdown worksheets are the original source (hand-crafted, high quality)
+- JSON files expanded coverage to all VCAA Level 7 topics
+- Both are now in the database for querying via API
 
 ## Tech Stack
 
