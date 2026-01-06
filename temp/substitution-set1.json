@@ -1,0 +1,352 @@
+[
+  {
+    "question": "If x = 5, find 3x + 7",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 4, find 2x + 3",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 6, find 5x",
+    "answer": "30",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 3, find 4x + 5",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 7, find 2x - 5",
+    "answer": "9",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 8, find 3x - 10",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 2, find 6x + 1",
+    "answer": "13",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 9, find x + 15",
+    "answer": "24",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 10, find 2x",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 5, find 7x",
+    "answer": "35",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 4, find x + 12",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 6, find 4x - 8",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 3, find 5x + 2",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 7, find 3x - 6",
+    "answer": "15",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 8, find 2x + 9",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 2, find 8x",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 5, find x - 3",
+    "answer": "2",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 9, find 4x - 12",
+    "answer": "24",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 10, find x + 8",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 4, find 3x + 6",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 6, find 2x - 4",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 3, find 7x + 1",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 7, find 5x - 10",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 8, find x - 5",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 2, find 5x + 4",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 9, find 3x",
+    "answer": "27",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 5, find 6x - 8",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 4, find 7x + 3",
+    "answer": "31",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 6, find x + 9",
+    "answer": "15",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 3, find 9x",
+    "answer": "27",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 7, find x + 11",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 8, find 4x - 15",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 2, find 10x",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 9, find 2x + 7",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 10, find 3x - 5",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 5, find 4x + 8",
+    "answer": "28",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 4, find x - 1",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 6, find 3x + 4",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 3, find 8x - 4",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 7, find 6x",
+    "answer": "42",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 8, find 5x + 6",
+    "answer": "46",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 2, find 7x - 3",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 9, find x - 4",
+    "answer": "5",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 10, find 4x + 10",
+    "answer": "50",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 5, find 8x - 12",
+    "answer": "28",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 4, find 9x",
+    "answer": "36",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "multiplication-only", "set-1"]
+  },
+  {
+    "question": "If x = 6, find x + 7",
+    "answer": "13",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 3, find 6x + 9",
+    "answer": "27",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  },
+  {
+    "question": "If x = 7, find 4x - 7",
+    "answer": "21",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "subtraction", "set-1"]
+  },
+  {
+    "question": "If x = 8, find x + 6",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": ["single-variable", "addition", "set-1"]
+  }
+]

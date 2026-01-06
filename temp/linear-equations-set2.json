@@ -1,0 +1,352 @@
+[
+  {
+    "question": "2x = 10",
+    "answer": "x = 5",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "3x = 15",
+    "answer": "x = 5",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "4x = 20",
+    "answer": "x = 5",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "5x = 25",
+    "answer": "x = 5",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "6x = 30",
+    "answer": "x = 5",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "2x = 14",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "3x = 21",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "4x = 28",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "5x = 35",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "7x = 49",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "2x = 18",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "3x = 27",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "4x = 36",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "6x = 54",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "8x = 72",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "2x = 16",
+    "answer": "x = 8",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "3x = 24",
+    "answer": "x = 8",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "4x = 32",
+    "answer": "x = 8",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "5x = 40",
+    "answer": "x = 8",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "7x = 56",
+    "answer": "x = 8",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "9x = 63",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "9x = 81",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "10x = 50",
+    "answer": "x = 5",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "10x = 70",
+    "answer": "x = 7",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "10x = 90",
+    "answer": "x = 9",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "multiplication", "set-2"]
+  },
+  {
+    "question": "x/2 = 5",
+    "answer": "x = 10",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/3 = 4",
+    "answer": "x = 12",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/4 = 3",
+    "answer": "x = 12",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/5 = 2",
+    "answer": "x = 10",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/2 = 7",
+    "answer": "x = 14",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/3 = 6",
+    "answer": "x = 18",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/4 = 5",
+    "answer": "x = 20",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/5 = 4",
+    "answer": "x = 20",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/6 = 3",
+    "answer": "x = 18",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/2 = 9",
+    "answer": "x = 18",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/3 = 8",
+    "answer": "x = 24",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/4 = 6",
+    "answer": "x = 24",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/5 = 6",
+    "answer": "x = 30",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/6 = 5",
+    "answer": "x = 30",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/7 = 4",
+    "answer": "x = 28",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/8 = 3",
+    "answer": "x = 24",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/2 = 10",
+    "answer": "x = 20",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/3 = 10",
+    "answer": "x = 30",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/4 = 7",
+    "answer": "x = 28",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/5 = 8",
+    "answer": "x = 40",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/6 = 6",
+    "answer": "x = 36",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/7 = 5",
+    "answer": "x = 35",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/8 = 4",
+    "answer": "x = 32",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/9 = 4",
+    "answer": "x = 36",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  },
+  {
+    "question": "x/10 = 5",
+    "answer": "x = 50",
+    "type": "ALGEBRA_LINEAR_EQUATIONS_SIMPLE",
+    "difficulty": "EASY",
+    "tags": ["one-step", "division", "set-2"]
+  }
+]

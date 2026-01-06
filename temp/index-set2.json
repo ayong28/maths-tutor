@@ -1,0 +1,352 @@
+[
+  {
+    "question": "√4",
+    "answer": "2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√9",
+    "answer": "3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√16",
+    "answer": "4",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√25",
+    "answer": "5",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√36",
+    "answer": "6",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√49",
+    "answer": "7",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√64",
+    "answer": "8",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√81",
+    "answer": "9",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√100",
+    "answer": "10",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√121",
+    "answer": "11",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√144",
+    "answer": "12",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√169",
+    "answer": "13",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√196",
+    "answer": "14",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√225",
+    "answer": "15",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√256",
+    "answer": "16",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√289",
+    "answer": "17",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√324",
+    "answer": "18",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√361",
+    "answer": "19",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√400",
+    "answer": "20",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√1",
+    "answer": "1",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√0",
+    "answer": "0",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√625",
+    "answer": "25",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√900",
+    "answer": "30",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√1000",
+    "answer": "10√10",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√8",
+    "answer": "2√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√12",
+    "answer": "2√3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√18",
+    "answer": "3√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√20",
+    "answer": "2√5",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√27",
+    "answer": "3√3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√32",
+    "answer": "4√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√45",
+    "answer": "3√5",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√48",
+    "answer": "4√3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√50",
+    "answer": "5√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√72",
+    "answer": "6√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√75",
+    "answer": "5√3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√98",
+    "answer": "7√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√125",
+    "answer": "5√5",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√128",
+    "answer": "8√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√147",
+    "answer": "7√3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√162",
+    "answer": "9√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√200",
+    "answer": "10√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√242",
+    "answer": "11√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√288",
+    "answer": "12√2",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√300",
+    "answer": "10√3",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√500",
+    "answer": "10√5",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["simplify-roots", "set-2"]
+  },
+  {
+    "question": "√441",
+    "answer": "21",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√484",
+    "answer": "22",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√529",
+    "answer": "23",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√576",
+    "answer": "24",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  },
+  {
+    "question": "√729",
+    "answer": "27",
+    "type": "INDEX_SQUARE_ROOTS",
+    "difficulty": "EASY",
+    "tags": ["perfect-squares", "set-2"]
+  }
+]

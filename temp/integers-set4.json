@@ -1,0 +1,352 @@
+[
+  {
+    "question": "12 ÷ 3",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-division", "set-4"]
+  },
+  {
+    "question": "20 ÷ 4",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-division", "set-4"]
+  },
+  {
+    "question": "24 ÷ 6",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-division", "set-4"]
+  },
+  {
+    "question": "30 ÷ 5",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-division", "set-4"]
+  },
+  {
+    "question": "36 ÷ 9",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-division", "set-4"]
+  },
+  {
+    "question": "12 ÷ (-3)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "20 ÷ (-4)",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "24 ÷ (-6)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "30 ÷ (-5)",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "36 ÷ (-9)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "42 ÷ (-7)",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "18 ÷ (-2)",
+    "answer": "-9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "40 ÷ (-8)",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "50 ÷ (-10)",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "44 ÷ (-11)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "(-12) ÷ 3",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-20) ÷ 4",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-24) ÷ 6",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-30) ÷ 5",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-36) ÷ 9",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-42) ÷ 7",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-18) ÷ 2",
+    "answer": "-9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-40) ÷ 8",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-50) ÷ 10",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-44) ÷ 11",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  },
+  {
+    "question": "(-12) ÷ (-3)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-20) ÷ (-4)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-24) ÷ (-6)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-30) ÷ (-5)",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-36) ÷ (-9)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-42) ÷ (-7)",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-18) ÷ (-2)",
+    "answer": "9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-40) ÷ (-8)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-50) ÷ (-10)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "(-44) ÷ (-11)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "0 ÷ 5",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["zero-divided", "set-4"]
+  },
+  {
+    "question": "0 ÷ 7",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["zero-divided", "set-4"]
+  },
+  {
+    "question": "0 ÷ (-3)",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["zero-divided", "set-4"]
+  },
+  {
+    "question": "0 ÷ (-8)",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["zero-divided", "set-4"]
+  },
+  {
+    "question": "6 ÷ 1",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-one", "set-4"]
+  },
+  {
+    "question": "9 ÷ 1",
+    "answer": "9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-one", "set-4"]
+  },
+  {
+    "question": "(-5) ÷ 1",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-one", "set-4"]
+  },
+  {
+    "question": "(-8) ÷ 1",
+    "answer": "-8",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-one", "set-4"]
+  },
+  {
+    "question": "6 ÷ (-1)",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-negative-one", "set-4"]
+  },
+  {
+    "question": "9 ÷ (-1)",
+    "answer": "-9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-negative-one", "set-4"]
+  },
+  {
+    "question": "(-5) ÷ (-1)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-negative-one", "set-4"]
+  },
+  {
+    "question": "(-8) ÷ (-1)",
+    "answer": "8",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["divide-by-negative-one", "set-4"]
+  },
+  {
+    "question": "(-20) ÷ (-2)",
+    "answer": "10",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-negative", "set-4"]
+  },
+  {
+    "question": "26 ÷ (-2)",
+    "answer": "-13",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["positive-div-negative", "set-4"]
+  },
+  {
+    "question": "(-60) ÷ 12",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": ["negative-div-positive", "set-4"]
+  }
+]

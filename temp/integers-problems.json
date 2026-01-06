@@ -1,0 +1,2572 @@
+[
+  {
+    "question": "5 + 3",
+    "answer": "8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "7 + 2",
+    "answer": "9",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "4 + 6",
+    "answer": "10",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "8 + 5",
+    "answer": "13",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "3 + 9",
+    "answer": "12",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "5 + (-2)",
+    "answer": "3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "8 + (-3)",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "10 + (-4)",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "7 + (-5)",
+    "answer": "2",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "9 + (-6)",
+    "answer": "3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "6 + (-1)",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "12 + (-7)",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "15 + (-8)",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "11 + (-9)",
+    "answer": "2",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "13 + (-5)",
+    "answer": "8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-3) + 7",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-5) + 9",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-2) + 8",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-4) + 10",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-6) + 11",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-1) + 5",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-7) + 12",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-8) + 15",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-9) + 14",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-3) + 6",
+    "answer": "3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-2) + (-3)",
+    "answer": "-5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-4) + (-5)",
+    "answer": "-9",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-6) + (-2)",
+    "answer": "-8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-1) + (-7)",
+    "answer": "-8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-3) + (-4)",
+    "answer": "-7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-5) + (-3)",
+    "answer": "-8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-8) + (-2)",
+    "answer": "-10",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-7) + (-3)",
+    "answer": "-10",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-6) + (-5)",
+    "answer": "-11",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-4) + (-8)",
+    "answer": "-12",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "5 + 0",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "adding-zero",
+      "set-1"
+    ]
+  },
+  {
+    "question": "0 + 7",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "adding-zero",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-3) + 0",
+    "answer": "-3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "adding-zero",
+      "set-1"
+    ]
+  },
+  {
+    "question": "0 + (-5)",
+    "answer": "-5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "adding-zero",
+      "set-1"
+    ]
+  },
+  {
+    "question": "3 + (-3)",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "opposites",
+      "set-1"
+    ]
+  },
+  {
+    "question": "5 + (-5)",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "opposites",
+      "set-1"
+    ]
+  },
+  {
+    "question": "8 + (-8)",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "opposites",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-7) + 7",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "opposites",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-10) + 10",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "opposites",
+      "set-1"
+    ]
+  },
+  {
+    "question": "12 + (-5)",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-9) + 13",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "14 + (-6)",
+    "answer": "8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-11) + 15",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-plus-positive",
+      "set-1"
+    ]
+  },
+  {
+    "question": "(-9) + (-6)",
+    "answer": "-15",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "16 + (-9)",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-plus-negative",
+      "set-1"
+    ]
+  },
+  {
+    "question": "8 - 3",
+    "answer": "5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-subtraction",
+      "set-2"
+    ]
+  },
+  {
+    "question": "10 - 4",
+    "answer": "6",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-subtraction",
+      "set-2"
+    ]
+  },
+  {
+    "question": "12 - 5",
+    "answer": "7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-subtraction",
+      "set-2"
+    ]
+  },
+  {
+    "question": "15 - 7",
+    "answer": "8",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-subtraction",
+      "set-2"
+    ]
+  },
+  {
+    "question": "9 - 2",
+    "answer": "7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-subtraction",
+      "set-2"
+    ]
+  },
+  {
+    "question": "5 - (-2)",
+    "answer": "7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "8 - (-3)",
+    "answer": "11",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "10 - (-4)",
+    "answer": "14",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "6 - (-5)",
+    "answer": "11",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "7 - (-1)",
+    "answer": "8",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "12 - (-6)",
+    "answer": "18",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "9 - (-7)",
+    "answer": "16",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "15 - (-5)",
+    "answer": "20",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "11 - (-8)",
+    "answer": "19",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "4 - (-3)",
+    "answer": "7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "3 - 7",
+    "answer": "-4",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "5 - 9",
+    "answer": "-4",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "2 - 8",
+    "answer": "-6",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "4 - 10",
+    "answer": "-6",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "6 - 11",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "1 - 6",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "7 - 12",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "8 - 15",
+    "answer": "-7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "3 - 10",
+    "answer": "-7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "5 - 13",
+    "answer": "-8",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "positive-result-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-3) - 5",
+    "answer": "-8",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-5) - 4",
+    "answer": "-9",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-2) - 6",
+    "answer": "-8",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-4) - 7",
+    "answer": "-11",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-6) - 3",
+    "answer": "-9",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-1) - 8",
+    "answer": "-9",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-7) - 5",
+    "answer": "-12",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-8) - 2",
+    "answer": "-10",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-9) - 6",
+    "answer": "-15",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-3) - 9",
+    "answer": "-12",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-5) - (-2)",
+    "answer": "-3",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-8) - (-3)",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-10) - (-4)",
+    "answer": "-6",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-7) - (-5)",
+    "answer": "-2",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-6) - (-1)",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-12) - (-7)",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-15) - (-8)",
+    "answer": "-7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-9) - (-6)",
+    "answer": "-3",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-4) - (-4)",
+    "answer": "0",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "same-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "5 - 5",
+    "answer": "0",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "same-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "7 - 0",
+    "answer": "7",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-zero",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-5) - 0",
+    "answer": "-5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "subtracting-zero",
+      "set-2"
+    ]
+  },
+  {
+    "question": "0 - 6",
+    "answer": "-6",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "zero-minus",
+      "set-2"
+    ]
+  },
+  {
+    "question": "0 - (-4)",
+    "answer": "4",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "zero-minus-negative",
+      "set-2"
+    ]
+  },
+  {
+    "question": "(-3) - (-8)",
+    "answer": "5",
+    "type": "INTEGERS_SUBTRACTION",
+    "difficulty": "EASY",
+    "tags": [
+      "negative-minus-negative-positive",
+      "set-2"
+    ]
+  },
+  {
+    "question": "3 × 4",
+    "answer": "12",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-multiplication",
+      "set-3"
+    ]
+  },
+  {
+    "question": "5 × 6",
+    "answer": "30",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-multiplication",
+      "set-3"
+    ]
+  },
+  {
+    "question": "7 × 3",
+    "answer": "21",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-multiplication",
+      "set-3"
+    ]
+  },
+  {
+    "question": "8 × 5",
+    "answer": "40",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-multiplication",
+      "set-3"
+    ]
+  },
+  {
+    "question": "4 × 9",
+    "answer": "36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-multiplication",
+      "set-3"
+    ]
+  },
+  {
+    "question": "3 × (-4)",
+    "answer": "-12",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "5 × (-6)",
+    "answer": "-30",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "7 × (-3)",
+    "answer": "-21",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "8 × (-5)",
+    "answer": "-40",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "4 × (-9)",
+    "answer": "-36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "6 × (-7)",
+    "answer": "-42",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "9 × (-2)",
+    "answer": "-18",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "12 × (-3)",
+    "answer": "-36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "10 × (-5)",
+    "answer": "-50",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "11 × (-4)",
+    "answer": "-44",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-3) × 4",
+    "answer": "-12",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-5) × 6",
+    "answer": "-30",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-7) × 3",
+    "answer": "-21",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-8) × 5",
+    "answer": "-40",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-4) × 9",
+    "answer": "-36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-6) × 7",
+    "answer": "-42",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-9) × 2",
+    "answer": "-18",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-12) × 3",
+    "answer": "-36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-10) × 5",
+    "answer": "-50",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-11) × 4",
+    "answer": "-44",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-3) × (-4)",
+    "answer": "12",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-5) × (-6)",
+    "answer": "30",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-7) × (-3)",
+    "answer": "21",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-8) × (-5)",
+    "answer": "40",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-4) × (-9)",
+    "answer": "36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-6) × (-7)",
+    "answer": "42",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-9) × (-2)",
+    "answer": "18",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-12) × (-3)",
+    "answer": "36",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-10) × (-5)",
+    "answer": "50",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-11) × (-4)",
+    "answer": "44",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "5 × 0",
+    "answer": "0",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-zero",
+      "set-3"
+    ]
+  },
+  {
+    "question": "0 × 7",
+    "answer": "0",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-zero",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-3) × 0",
+    "answer": "0",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-zero",
+      "set-3"
+    ]
+  },
+  {
+    "question": "0 × (-8)",
+    "answer": "0",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-zero",
+      "set-3"
+    ]
+  },
+  {
+    "question": "6 × 1",
+    "answer": "6",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "1 × 9",
+    "answer": "9",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-4) × 1",
+    "answer": "-4",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "1 × (-7)",
+    "answer": "-7",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "5 × (-1)",
+    "answer": "-5",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-negative-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-1) × 8",
+    "answer": "-8",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-negative-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-6) × (-1)",
+    "answer": "6",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-negative-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-1) × (-9)",
+    "answer": "9",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "multiply-by-negative-one",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-2) × (-10)",
+    "answer": "20",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "13 × (-2)",
+    "answer": "-26",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-times-negative",
+      "set-3"
+    ]
+  },
+  {
+    "question": "(-15) × 2",
+    "answer": "-30",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-times-positive",
+      "set-3"
+    ]
+  },
+  {
+    "question": "12 ÷ 3",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-division",
+      "set-4"
+    ]
+  },
+  {
+    "question": "20 ÷ 4",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-division",
+      "set-4"
+    ]
+  },
+  {
+    "question": "24 ÷ 6",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-division",
+      "set-4"
+    ]
+  },
+  {
+    "question": "30 ÷ 5",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-division",
+      "set-4"
+    ]
+  },
+  {
+    "question": "36 ÷ 9",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-division",
+      "set-4"
+    ]
+  },
+  {
+    "question": "12 ÷ (-3)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "20 ÷ (-4)",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "24 ÷ (-6)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "30 ÷ (-5)",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "36 ÷ (-9)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "42 ÷ (-7)",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "18 ÷ (-2)",
+    "answer": "-9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "40 ÷ (-8)",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "50 ÷ (-10)",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "44 ÷ (-11)",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-12) ÷ 3",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-20) ÷ 4",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-24) ÷ 6",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-30) ÷ 5",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-36) ÷ 9",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-42) ÷ 7",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-18) ÷ 2",
+    "answer": "-9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-40) ÷ 8",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-50) ÷ 10",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-44) ÷ 11",
+    "answer": "-4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-12) ÷ (-3)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-20) ÷ (-4)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-24) ÷ (-6)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-30) ÷ (-5)",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-36) ÷ (-9)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-42) ÷ (-7)",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-18) ÷ (-2)",
+    "answer": "9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-40) ÷ (-8)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-50) ÷ (-10)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-44) ÷ (-11)",
+    "answer": "4",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "0 ÷ 5",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "zero-divided",
+      "set-4"
+    ]
+  },
+  {
+    "question": "0 ÷ 7",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "zero-divided",
+      "set-4"
+    ]
+  },
+  {
+    "question": "0 ÷ (-3)",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "zero-divided",
+      "set-4"
+    ]
+  },
+  {
+    "question": "0 ÷ (-8)",
+    "answer": "0",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "zero-divided",
+      "set-4"
+    ]
+  },
+  {
+    "question": "6 ÷ 1",
+    "answer": "6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "9 ÷ 1",
+    "answer": "9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-5) ÷ 1",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-8) ÷ 1",
+    "answer": "-8",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "6 ÷ (-1)",
+    "answer": "-6",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-negative-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "9 ÷ (-1)",
+    "answer": "-9",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-negative-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-5) ÷ (-1)",
+    "answer": "5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-negative-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-8) ÷ (-1)",
+    "answer": "8",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "divide-by-negative-one",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-20) ÷ (-2)",
+    "answer": "10",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "26 ÷ (-2)",
+    "answer": "-13",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "positive-div-negative",
+      "set-4"
+    ]
+  },
+  {
+    "question": "(-60) ÷ 12",
+    "answer": "-5",
+    "type": "INTEGERS_DIVISION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "negative-div-positive",
+      "set-4"
+    ]
+  },
+  {
+    "question": "5 + 3 × 2",
+    "answer": "11",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "order-of-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "10 - 2 × 3",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "order-of-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "12 ÷ 3 + 4",
+    "answer": "8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "order-of-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "20 ÷ 4 - 2",
+    "answer": "3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "order-of-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "6 × 2 + 3",
+    "answer": "15",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "order-of-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(5 + 3) × 2",
+    "answer": "16",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(10 - 2) × 3",
+    "answer": "24",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(12 + 4) ÷ 4",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(20 - 5) ÷ 3",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(6 + 2) × 4",
+    "answer": "32",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-3) + 5 × 2",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "8 - (-2) × 3",
+    "answer": "14",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-12) ÷ 3 + 7",
+    "answer": "3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "15 + (-4) × 2",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-6) × 2 + 15",
+    "answer": "3",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "((-3) + 5) × 4",
+    "answer": "8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(8 - (-2)) × 2",
+    "answer": "20",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "((-12) + 4) ÷ 2",
+    "answer": "-4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(15 - (-5)) ÷ 4",
+    "answer": "5",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "((-6) + 14) × 2",
+    "answer": "16",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "3 + 4 × 2 - 5",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "10 - 2 × 3 + 4",
+    "answer": "8",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "12 ÷ 2 + 3 × 2",
+    "answer": "12",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "20 ÷ 4 - 2 + 3",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "8 + 6 ÷ 2 - 4",
+    "answer": "7",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-3) + 4 × 2 - 1",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "10 - (-2) × 3 + 1",
+    "answer": "17",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-12) ÷ 3 + 2 × 4",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "15 + (-4) × 2 - 3",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-6) × 2 + 15 - 1",
+    "answer": "2",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "three-operations",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "5 × (3 + 2)",
+    "answer": "25",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "18 ÷ (6 - 3)",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "24 ÷ (2 + 4)",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "4 × (8 - 3)",
+    "answer": "20",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "30 ÷ (10 - 5)",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-3) × (4 + 2)",
+    "answer": "-18",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "20 ÷ ((-2) + 7)",
+    "answer": "4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-24) ÷ (2 + 4)",
+    "answer": "-4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-5) × (8 - 3)",
+    "answer": "-25",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "36 ÷ ((-2) + 8)",
+    "answer": "6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-3) × 4 + (-2) × 5",
+    "answer": "-22",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "multiple-negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "8 ÷ (-2) + 12 ÷ 3",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "multiple-negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-6) × 2 + (-3) × 4",
+    "answer": "-24",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "multiple-negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "15 ÷ (-3) + 20 ÷ 4",
+    "answer": "0",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "multiple-negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "(-4) × 3 + (-2) × 6",
+    "answer": "-24",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "multiple-negatives",
+      "set-5"
+    ]
+  },
+  {
+    "question": "2 × (5 - 8)",
+    "answer": "-6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "result-negative",
+      "set-5"
+    ]
+  },
+  {
+    "question": "18 ÷ (3 - 6)",
+    "answer": "-6",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "result-negative",
+      "set-5"
+    ]
+  },
+  {
+    "question": "4 × (2 - 7)",
+    "answer": "-20",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "result-negative",
+      "set-5"
+    ]
+  },
+  {
+    "question": "24 ÷ (4 - 10)",
+    "answer": "-4",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "result-negative",
+      "set-5"
+    ]
+  },
+  {
+    "question": "3 × (6 - 11)",
+    "answer": "-15",
+    "type": "INTEGERS_ADDITION",
+    "difficulty": "HARD",
+    "tags": [
+      "mixed-operations",
+      "brackets",
+      "result-negative",
+      "set-5"
+    ]
+  }
+]

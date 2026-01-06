@@ -1,0 +1,352 @@
+[
+  {
+    "question": "0.5 + 0.3 × 2",
+    "answer": "1.1",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "1.2 - 0.4 × 2",
+    "answer": "0.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "2.4 ÷ 2 + 0.6",
+    "answer": "1.8",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "3.6 ÷ 3 - 0.2",
+    "answer": "1",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "0.8 × 2 + 0.4",
+    "answer": "2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "(0.5 + 0.3) × 2",
+    "answer": "1.6",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(1.2 - 0.4) × 3",
+    "answer": "2.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(2.4 + 0.6) ÷ 2",
+    "answer": "1.5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(3.6 - 1.2) ÷ 4",
+    "answer": "0.6",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(1.5 + 2.5) × 0.5",
+    "answer": "2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "1.5 + 0.4 × 3 - 0.3",
+    "answer": "2.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "three-operations", "set-5"]
+  },
+  {
+    "question": "2 - 0.5 × 2 + 0.5",
+    "answer": "1.5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "three-operations", "set-5"]
+  },
+  {
+    "question": "3.6 ÷ 2 + 0.4 × 3",
+    "answer": "3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "three-operations", "set-5"]
+  },
+  {
+    "question": "4.8 ÷ 3 - 0.2 + 0.6",
+    "answer": "2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "three-operations", "set-5"]
+  },
+  {
+    "question": "1.2 + 1.8 ÷ 2 - 0.3",
+    "answer": "1.8",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "three-operations", "set-5"]
+  },
+  {
+    "question": "0.6 × (0.5 + 1.5)",
+    "answer": "1.2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "3.6 ÷ (1.2 + 0.6)",
+    "answer": "2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "4.8 ÷ (2.4 - 0.8)",
+    "answer": "3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "0.8 × (3 - 1.5)",
+    "answer": "1.2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "6 ÷ (2.5 + 1.5)",
+    "answer": "1.5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(0.8 + 0.4) × 2 - 0.6",
+    "answer": "1.8",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets-and-more", "set-5"]
+  },
+  {
+    "question": "(1.5 - 0.3) × 2 + 0.4",
+    "answer": "2.8",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets-and-more", "set-5"]
+  },
+  {
+    "question": "(2.4 + 1.6) ÷ 2 - 0.5",
+    "answer": "1.5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets-and-more", "set-5"]
+  },
+  {
+    "question": "(3.6 - 1.2) ÷ 3 + 0.2",
+    "answer": "1",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets-and-more", "set-5"]
+  },
+  {
+    "question": "(4 + 2) × 0.5 - 1.5",
+    "answer": "1.5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets-and-more", "set-5"]
+  },
+  {
+    "question": "0.5 × 4 + 0.6 × 3",
+    "answer": "3.8",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "multiple-multiplications", "set-5"]
+  },
+  {
+    "question": "0.8 × 2 + 0.4 × 5",
+    "answer": "3.6",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "multiple-multiplications", "set-5"]
+  },
+  {
+    "question": "1.2 × 3 - 0.6 × 2",
+    "answer": "2.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "multiple-multiplications", "set-5"]
+  },
+  {
+    "question": "2.4 ÷ 2 + 3.6 ÷ 3",
+    "answer": "2.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "multiple-divisions", "set-5"]
+  },
+  {
+    "question": "4.8 ÷ 4 - 1.8 ÷ 3",
+    "answer": "0.6",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "multiple-divisions", "set-5"]
+  },
+  {
+    "question": "0.25 + 0.5 × 4",
+    "answer": "2.25",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "0.75 - 0.25 × 2",
+    "answer": "0.25",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "1.5 + 2.4 ÷ 3",
+    "answer": "2.3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "2.5 - 1.2 ÷ 4",
+    "answer": "2.2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "order-of-operations", "set-5"]
+  },
+  {
+    "question": "3.2 + 0.6 × 2 - 0.8",
+    "answer": "3.6",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "three-operations", "set-5"]
+  },
+  {
+    "question": "(0.6 + 0.4) × 5",
+    "answer": "5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(1.8 - 0.6) ÷ 2",
+    "answer": "0.6",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(2.5 + 1.5) ÷ 4",
+    "answer": "1",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(3.6 - 1.2) × 0.5",
+    "answer": "1.2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "(5 - 2.5) ×  2",
+    "answer": "5",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "1.5 × 2 + 2.4 ÷ 3 - 0.5",
+    "answer": "3.3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "four-operations", "set-5"]
+  },
+  {
+    "question": "3 - 0.6 × 2 + 1.8 ÷ 3",
+    "answer": "2.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "four-operations", "set-5"]
+  },
+  {
+    "question": "4.5 ÷ 3 + 0.5 × 4 - 0.5",
+    "answer": "3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "four-operations", "set-5"]
+  },
+  {
+    "question": "2.4 + 1.6 × 0.5 - 0.8 ÷ 2",
+    "answer": "2.8",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "four-operations", "set-5"]
+  },
+  {
+    "question": "3.6 - 1.2 ÷ 3 + 0.4 × 2",
+    "answer": "4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "four-operations", "set-5"]
+  },
+  {
+    "question": "0.5 × (2.4 + 1.6)",
+    "answer": "2",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "0.4 × (5 - 2.5)",
+    "answer": "1",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "2.4 ÷ (0.6 + 0.2)",
+    "answer": "3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "3.6 ÷ (1.8 - 0.6)",
+    "answer": "3",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets", "set-5"]
+  },
+  {
+    "question": "1.2 × (3 - 1.5) + 0.6",
+    "answer": "2.4",
+    "type": "DECIMALS_ADDITION",
+    "difficulty": "HARD",
+    "tags": ["mixed-operations", "brackets-and-more", "set-5"]
+  }
+]

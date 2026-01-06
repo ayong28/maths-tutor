@@ -1,0 +1,1885 @@
+[
+  {
+    "question": "If x = 5, find 3x + 7",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 4, find 2x + 3",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 6, find 5x",
+    "answer": "30",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 3, find 4x + 5",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 7, find 2x - 5",
+    "answer": "9",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 8, find 3x - 10",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 2, find 6x + 1",
+    "answer": "13",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 9, find x + 15",
+    "answer": "24",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 10, find 2x",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 5, find 7x",
+    "answer": "35",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 4, find x + 12",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 6, find 4x - 8",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 3, find 5x + 2",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 7, find 3x - 6",
+    "answer": "15",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 8, find 2x + 9",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 2, find 8x",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 5, find x - 3",
+    "answer": "2",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 9, find 4x - 12",
+    "answer": "24",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 10, find x + 8",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 4, find 3x + 6",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 6, find 2x - 4",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 3, find 7x + 1",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 7, find 5x - 10",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 8, find x - 5",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 2, find 5x + 4",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 9, find 3x",
+    "answer": "27",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 5, find 6x - 8",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 4, find 7x + 3",
+    "answer": "31",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 6, find x + 9",
+    "answer": "15",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 3, find 9x",
+    "answer": "27",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 7, find x + 11",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 8, find 4x - 15",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 2, find 10x",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 9, find 2x + 7",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 10, find 3x - 5",
+    "answer": "25",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 5, find 4x + 8",
+    "answer": "28",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 4, find x - 1",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 6, find 3x + 4",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 3, find 8x - 4",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 7, find 6x",
+    "answer": "42",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 8, find 5x + 6",
+    "answer": "46",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 2, find 7x - 3",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 9, find x - 4",
+    "answer": "5",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 10, find 4x + 10",
+    "answer": "50",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 5, find 8x - 12",
+    "answer": "28",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 4, find 9x",
+    "answer": "36",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "multiplication-only",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 6, find x + 7",
+    "answer": "13",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 3, find 6x + 9",
+    "answer": "27",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 7, find 4x - 7",
+    "answer": "21",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "subtraction",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = 8, find x + 6",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "EASY",
+    "tags": [
+      "single-variable",
+      "addition",
+      "set-1"
+    ]
+  },
+  {
+    "question": "If x = -3, find 2x + 5",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -2, find 3x + 10",
+    "answer": "4",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -5, find 4x - 3",
+    "answer": "-23",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -4, find 2x + 12",
+    "answer": "4",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -1, find 5x + 8",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -6, find 3x - 4",
+    "answer": "-22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -2, find -2x + 7",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -3, find -4x - 5",
+    "answer": "7",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -5, find -3x + 2",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -4, find -5x - 8",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 12, find 3x - 15",
+    "answer": "21",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 15, find 2x + 8",
+    "answer": "38",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 20, find 4x - 25",
+    "answer": "55",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 11, find 5x + 12",
+    "answer": "67",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 13, find 6x - 18",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -7, find 2x + 20",
+    "answer": "6",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -8, find 3x + 30",
+    "answer": "6",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -10, find 5x - 10",
+    "answer": "-60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -1, find -6x + 4",
+    "answer": "10",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -2, find -7x - 3",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 14, find 4x + 16",
+    "answer": "72",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 16, find 3x - 20",
+    "answer": "28",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 18, find 2x + 14",
+    "answer": "50",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -3, find 5x + 18",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -4, find 6x + 28",
+    "answer": "4",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -5, find -2x + 3",
+    "answer": "13",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -6, find -3x - 2",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 25, find 2x - 30",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 22, find 3x + 6",
+    "answer": "72",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 17, find 5x - 25",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -9, find 4x + 40",
+    "answer": "4",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -7, find -5x + 10",
+    "answer": "45",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -8, find -4x - 12",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 19, find 4x - 26",
+    "answer": "50",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 21, find 3x + 9",
+    "answer": "72",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -10, find 2x + 25",
+    "answer": "5",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -12, find 3x + 40",
+    "answer": "4",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = -11, find -6x + 6",
+    "answer": "72",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "negative-value",
+      "negative-coefficient",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 24, find 5x - 40",
+    "answer": "80",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 23, find 2x + 4",
+    "answer": "50",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "single-variable",
+      "larger-numbers",
+      "set-2"
+    ]
+  },
+  {
+    "question": "If x = 3 and y = 4, find 2x + 3y",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 5 and y = 2, find 4x + 5y",
+    "answer": "30",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 6 and b = 3, find 3a - 2b",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 4 and y = 7, find 5x - 3y",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 2 and b = 8, find 6a + b",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 7 and y = 5, find 2x - y",
+    "answer": "9",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If p = 3 and q = 6, find 4p + 2q",
+    "answer": "24",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 8 and y = 3, find 3x + 4y",
+    "answer": "36",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 5 and b = 9, find 7a - 4b",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 10 and y = 4, find x + 6y",
+    "answer": "34",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If m = 6 and n = 2, find 5m - 8n",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 4 and y = 5, find 3x + y",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 9 and b = 7, find 2a - 3b",
+    "answer": "-3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 2 and y = 11, find 6x + 2y",
+    "answer": "34",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If p = 7 and q = 4, find 4p - 5q",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 3 and y = 8, find x + y",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "simple",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 12 and b = 5, find a - b",
+    "answer": "7",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "simple",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 6 and y = 9, find 5x + 3y",
+    "answer": "57",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If m = 8 and n = 6, find 3m - 2n",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 5 and y = 10, find 2x + y",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 11 and b = 4, find 4a - 6b",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 7 and y = 3, find 6x + 5y",
+    "answer": "57",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If p = 4 and q = 8, find 7p - 2q",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 9 and y = 6, find 3x - 4y",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 2 and b = 13, find 8a + b",
+    "answer": "29",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 10 and y = 7, find 2x - 3y",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If m = 5 and n = 12, find 4m + 3n",
+    "answer": "56",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 6 and y = 11, find 5x - 2y",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 8 and b = 9, find 3a + 2b",
+    "answer": "42",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 12 and y = 8, find 4x - 5y",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If p = 3 and q = 14, find 7p + q",
+    "answer": "35",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 11 and y = 5, find 3x - 6y",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 4 and b = 10, find 6a + 4b",
+    "answer": "64",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 13 and y = 9, find 2x - y",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If m = 7 and n = 8, find 5m + 2n",
+    "answer": "51",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 9 and y = 12, find 4x - 3y",
+    "answer": "0",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If a = 5 and b = 6, find 8a - 7b",
+    "answer": "-2",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 14 and y = 2, find 3x + 7y",
+    "answer": "56",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If p = 10 and q = 11, find 2p - q",
+    "answer": "9",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "subtraction",
+      "set-3"
+    ]
+  },
+  {
+    "question": "If x = 4 and y = 15, find 9x + y",
+    "answer": "51",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": [
+      "two-variables",
+      "addition",
+      "set-3"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 5 and w = 3",
+    "answer": "16",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 8 and w = 4",
+    "answer": "32",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 60 and t = 3",
+    "answer": "180",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 3, w = 4, and h = 5",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 7 and w = 4",
+    "answer": "22",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 12 and w = 5",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 50 and t = 4",
+    "answer": "200",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 5, w = 6, and h = 2",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 10 and w = 6",
+    "answer": "32",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 9 and w = 7",
+    "answer": "63",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 75 and t = 2",
+    "answer": "150",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 4, w = 3, and h = 7",
+    "answer": "84",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 4s. Find P when s = 8",
+    "answer": "32",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = s². Find A when s = 6",
+    "answer": "36",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "C = 2πr. Find C when r = 5 (use π = 3.14)",
+    "answer": "31.4",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "circumference",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 12 and w = 8",
+    "answer": "40",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 15 and w = 4",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 80 and t = 5",
+    "answer": "400",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 6, w = 5, and h = 4",
+    "answer": "120",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 4s. Find P when s = 12",
+    "answer": "48",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = s². Find A when s = 9",
+    "answer": "81",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "C = 2πr. Find C when r = 7 (use π = 3.14)",
+    "answer": "43.96",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "circumference",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 9 and w = 5",
+    "answer": "28",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 11 and w = 6",
+    "answer": "66",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 45 and t = 6",
+    "answer": "270",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 7, w = 8, and h = 3",
+    "answer": "168",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 4s. Find P when s = 15",
+    "answer": "60",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = s². Find A when s = 10",
+    "answer": "100",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "C = 2πr. Find C when r = 10 (use π = 3.14)",
+    "answer": "62.8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "circumference",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 14 and w = 7",
+    "answer": "42",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 13 and w = 8",
+    "answer": "104",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 55 and t = 7",
+    "answer": "385",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 8, w = 7, and h = 6",
+    "answer": "336",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 4s. Find P when s = 9",
+    "answer": "36",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = s². Find A when s = 11",
+    "answer": "121",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-square",
+      "set-4"
+    ]
+  },
+  {
+    "question": "C = 2πr. Find C when r = 4 (use π = 3.14)",
+    "answer": "25.12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "circumference",
+      "set-4"
+    ]
+  },
+  {
+    "question": "P = 2l + 2w. Find P when l = 11 and w = 9",
+    "answer": "40",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "perimeter",
+      "set-4"
+    ]
+  },
+  {
+    "question": "A = lw. Find A when l = 14 and w = 9",
+    "answer": "126",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "area-rectangle",
+      "set-4"
+    ]
+  },
+  {
+    "question": "d = rt. Find d when r = 65 and t = 4",
+    "answer": "260",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "distance",
+      "set-4"
+    ]
+  },
+  {
+    "question": "V = lwh. Find V when l = 9, w = 6, and h = 8",
+    "answer": "432",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "HARD",
+    "tags": [
+      "formula",
+      "volume",
+      "set-4"
+    ]
+  }
+]

@@ -1,0 +1,282 @@
+[
+  {
+    "question": "If x = 3 and y = 4, find 2x + 3y",
+    "answer": "18",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 5 and y = 2, find 4x + 5y",
+    "answer": "30",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If a = 6 and b = 3, find 3a - 2b",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 4 and y = 7, find 5x - 3y",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If a = 2 and b = 8, find 6a + b",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 7 and y = 5, find 2x - y",
+    "answer": "9",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If p = 3 and q = 6, find 4p + 2q",
+    "answer": "24",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 8 and y = 3, find 3x + 4y",
+    "answer": "36",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If a = 5 and b = 9, find 7a - 4b",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 10 and y = 4, find x + 6y",
+    "answer": "34",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If m = 6 and n = 2, find 5m - 8n",
+    "answer": "14",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 4 and y = 5, find 3x + y",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If a = 9 and b = 7, find 2a - 3b",
+    "answer": "-3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 2 and y = 11, find 6x + 2y",
+    "answer": "34",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If p = 7 and q = 4, find 4p - 5q",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 3 and y = 8, find x + y",
+    "answer": "11",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "simple", "set-3"]
+  },
+  {
+    "question": "If a = 12 and b = 5, find a - b",
+    "answer": "7",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "simple", "set-3"]
+  },
+  {
+    "question": "If x = 6 and y = 9, find 5x + 3y",
+    "answer": "57",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If m = 8 and n = 6, find 3m - 2n",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 5 and y = 10, find 2x + y",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If a = 11 and b = 4, find 4a - 6b",
+    "answer": "20",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 7 and y = 3, find 6x + 5y",
+    "answer": "57",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If p = 4 and q = 8, find 7p - 2q",
+    "answer": "12",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 9 and y = 6, find 3x - 4y",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If a = 2 and b = 13, find 8a + b",
+    "answer": "29",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 10 and y = 7, find 2x - 3y",
+    "answer": "-1",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If m = 5 and n = 12, find 4m + 3n",
+    "answer": "56",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 6 and y = 11, find 5x - 2y",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If a = 8 and b = 9, find 3a + 2b",
+    "answer": "42",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 12 and y = 8, find 4x - 5y",
+    "answer": "8",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If p = 3 and q = 14, find 7p + q",
+    "answer": "35",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 11 and y = 5, find 3x - 6y",
+    "answer": "3",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If a = 4 and b = 10, find 6a + 4b",
+    "answer": "64",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 13 and y = 9, find 2x - y",
+    "answer": "17",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If m = 7 and n = 8, find 5m + 2n",
+    "answer": "51",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If x = 9 and y = 12, find 4x - 3y",
+    "answer": "0",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If a = 5 and b = 6, find 8a - 7b",
+    "answer": "-2",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 14 and y = 2, find 3x + 7y",
+    "answer": "56",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  },
+  {
+    "question": "If p = 10 and q = 11, find 2p - q",
+    "answer": "9",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "subtraction", "set-3"]
+  },
+  {
+    "question": "If x = 4 and y = 15, find 9x + y",
+    "answer": "51",
+    "type": "ALGEBRA_SUBSTITUTION",
+    "difficulty": "MEDIUM",
+    "tags": ["two-variables", "addition", "set-3"]
+  }
+]
