@@ -228,10 +228,6 @@ async function migrateWorksheets() {
           sourceWorksheet: file,
           sourceProblemNumber: position,
           hasVariables: hasVariables(question),
-          hasFractions: hasFractions(question),
-          hasMixedNumbers: hasMixedNumbers(question),
-          denominators: extractDenominators(question),
-          requiresLCD: requiresLCD(question),
         };
       });
 
@@ -294,7 +290,6 @@ async function migrateWorksheets() {
       type: true,
       difficulty: true,
       tags: true,
-      denominators: true,
     },
   });
 
@@ -302,7 +297,6 @@ async function migrateWorksheets() {
     console.log(`  Q: ${sample.question} = ${sample.answer}`);
     console.log(`     Type: ${sample.type}, Difficulty: ${sample.difficulty}`);
     console.log(`     Tags: ${sample.tags.join(', ')}`);
-    console.log(`     Denominators: ${sample.denominators.join(', ') || 'N/A'}`);
     console.log();
   }
 }
