@@ -2,20 +2,20 @@
 
 import { Command } from 'commander';
 import { ProblemType } from '../../generated/prisma';
-import { selectProblems, getAvailableCounts, getAvailableTags } from '../generators/problem-selector';
+import { selectProblems, getAvailableCounts, getAvailableTags } from '../cli/problem-selector';
 import {
   SelectionCriteria,
   parseDifficultyMix,
   validateDifficultyMix,
-} from '../types/worksheet.types';
+} from '../cli/worksheet.types';
 import {
   createWorksheetPDF,
   savePDFToFile,
   validateFilePath,
   WorksheetData,
   Problem,
-} from '../../generate-worksheet-pdf';
-import { prisma } from '../db/prisma';
+} from './generate-worksheet-pdf';
+import { prisma } from '../../src/db/prisma';
 
 // Constants
 const DEFAULT_COUNT = 30;

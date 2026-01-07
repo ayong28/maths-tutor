@@ -1,11 +1,11 @@
 import { Difficulty, ProblemType } from '../../generated/prisma';
-import { prisma } from '../db/prisma';
+import { prisma } from '../../src/db/prisma';
 import {
   SelectionCriteria,
   SelectedProblem,
   SelectionResult,
   DifficultyMix,
-} from '../types/worksheet.types';
+} from '../cli/worksheet.types';
 
 /**
  * Simple seeded random number generator (mulberry32)

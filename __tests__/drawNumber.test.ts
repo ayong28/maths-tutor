@@ -1,4 +1,4 @@
-import { drawNumber } from '../generate-worksheet-pdf';
+import { drawNumber } from '../packages/api/scripts/cli/generate-worksheet-pdf';
 import { MockPDFDocument } from '../__mocks__/pdfkit';
 
 describe('drawNumber', () => {

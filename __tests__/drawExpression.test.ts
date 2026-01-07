@@ -1,4 +1,4 @@
-import { drawExpression } from '../generate-worksheet-pdf';
+import { drawExpression } from '../packages/api/scripts/cli/generate-worksheet-pdf';
 import { MockPDFDocument } from '../__mocks__/pdfkit';
 
 describe('drawExpression', () => {

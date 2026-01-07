@@ -1,4 +1,4 @@
-import { parseMarkdownWorksheet } from '../generate-worksheet-pdf';
+import { parseMarkdownWorksheet } from '../packages/api/scripts/cli/generate-worksheet-pdf';
 import path from 'path';
 
 describe('parseMarkdownWorksheet', () => {
