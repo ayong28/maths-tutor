@@ -1,5 +1,5 @@
 import { prisma } from '../db/prisma';
-import { ProblemType, Difficulty } from '../../../../generated/prisma';
+import { ProblemType, Difficulty } from '../../generated/prisma';
 
 export type ProblemFilters = {
   type?: ProblemType;

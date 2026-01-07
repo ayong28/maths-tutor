@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { ProblemType, Difficulty } from '../../../../generated/prisma';
+import { ProblemType, Difficulty } from '../../generated/prisma';
 import {
   getCategories,
   getProblems,
