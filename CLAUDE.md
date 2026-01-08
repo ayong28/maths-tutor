@@ -96,6 +96,11 @@ npx tsx packages/api/scripts/data/migrate-markdown-to-db.ts
 **React Router 7 Migration Complete ✅** - URL-based routing with deep linking
 
 **Current Tasks:**
+- 🔥 **HIGH PRIORITY:** Move PDF generation to backend API (reduce client bundle from 1.5MB to ~300KB)
+  - Currently: pdfkit/fontkit/png-js loaded in browser (worksheet chunk = 1.5MB gzipped to 500KB)
+  - Target: Create `POST /api/generate-pdf` endpoint in Express API
+  - Benefits: ~1.2MB smaller client bundle, faster page loads, better mobile performance
+  - Implementation: Move PDF logic from `apps/web/src/hooks/usePDFGenerator.ts` to `packages/api/src/routes/`
 - ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
 - Add component tests - See `docs/TESTING-IMPLEMENTATION-GUIDE.md`
 
