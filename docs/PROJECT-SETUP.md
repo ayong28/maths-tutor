@@ -36,6 +36,7 @@ maths-tutor/
 │       ├── prisma/             # Database schema & migrations
 │       │   ├── migrations/     # Migration files
 │       │   └── schema.prisma   # Prisma schema
+│       ├── math-data/          # Source JSON files (NOT in git)
 │       ├── scripts/            # Backend scripts
 │       │   └── data/           # Data import scripts
 │       ├── src/
@@ -46,9 +47,14 @@ maths-tutor/
 │       ├── package.json
 │       └── tsconfig.json
 ├── src/                        # CLI tools & shared code
-├── generated/                  # Prisma client output (root level)
+├── generated/                  # Prisma client output (NOT in git)
 └── package.json                # Root workspace config
 ```
+
+**Files Not Tracked in Git:**
+- `generated/` - Prisma client files (regenerated locally via `npx prisma generate`)
+- `packages/api/generated/` - Alternative Prisma output location (not used)
+- `packages/api/math-data/` - Source JSON data files (data already imported to PostgreSQL)
 
 ## Markdown-to-PDF Worksheet Generator
 
@@ -359,10 +365,12 @@ Your database is now in sync with your schema.
 
 The project has **two data sources**:
 
-1. **JSON files** (17 files in `temp/`) - 3,758 problems
+1. **JSON files** (17 files in `packages/api/math-data/`) - 3,758 problems
 2. **Markdown files** (29 files in `worksheets/`) - 870 problems
 
 **Total: 4,628 problems across 29 problem types**
+
+**Note:** The `math-data/` folder is not tracked in git (already imported to PostgreSQL).
 
 ##### Import JSON Problems
 
@@ -375,7 +383,7 @@ npm run data:import-json
 npx tsx packages/api/scripts/data/import-json-to-db.ts
 ```
 
-**What it imports:**
+**What it imports (from `packages/api/math-data/`):**
 - `angles-problems.json` - 250 problems (ANGLES)
 - `area-problems.json` - 250 problems (AREA)
 - `coordinates-problems.json` - 250 problems (COORDINATES_PLOTTING)
@@ -577,10 +585,10 @@ npx tsx packages/api/scripts/fix-mixed-number-types.ts
 ```
 
 This adds the missing `type` field to:
-- `temp/mixed-number-addition-problems.json` → `FRACTION_ADDITION`
-- `temp/mixed-number-subtraction-problems.json` → `FRACTION_SUBTRACTION`
+- `packages/api/math-data/mixed-number-addition-problems.json` → `FRACTION_ADDITION`
+- `packages/api/math-data/mixed-number-subtraction-problems.json` → `FRACTION_SUBTRACTION`
 
-**Note:** This script has already been run. The JSON files in `temp/` are now correct.
+**Note:** This script has already been run. The JSON files in `math-data/` are now correct.
 
 ### Environment Variables
 
@@ -601,10 +609,11 @@ VITE_API_URL=http://localhost:3001
 
 ### Data Sources Overview
 
-**temp/ folder (JSON files):**
+**packages/api/math-data/ folder (JSON files - NOT in git):**
 - Generated problems covering 17 problem types
 - Pre-processed with tags, difficulty, and metadata
 - Includes newer topics: angles, area, coordinates, data analysis, probability, ratio/rates
+- **Not tracked in git** - data already imported to PostgreSQL
 
 **worksheets/ folder (Markdown files):**
 - Original hand-crafted worksheets (29 files)
@@ -615,6 +624,7 @@ VITE_API_URL=http://localhost:3001
 - Markdown worksheets are the original source (hand-crafted, high quality)
 - JSON files expanded coverage to all VCAA Level 7 topics
 - Both are now in the database for querying via API
+- JSON source files not needed in git once imported
 
 ## Tech Stack
 

@@ -118,13 +118,14 @@ apps/web/          # React (Vite + TS + Tailwind)
   src/__tests__/   # Integration tests
 packages/api/      # Express API + Prisma
   prisma/          # DB schema + migrations
+  math-data/       # Source JSON files (not tracked - data in PostgreSQL)
   src/db/          # Prisma client singleton (packages/api/src/db/prisma.ts)
   src/services/    # Database business logic
   scripts/         # Data import scripts
 src/               # CLI + PDF generator
 e2e/               # Playwright tests (47 E2E tests)
 docs/              # Documentation (see docs/README.md for index)
-generated/         # Prisma client output (root level)
+generated/         # Prisma client output (not tracked - regenerated locally)
 ```
 
 **Backend Development:**
@@ -135,5 +136,9 @@ generated/         # Prisma client output (root level)
 **Prisma Imports:**
 - API: `import { prisma } from '../db/prisma'` (packages/api/src/services/*)
 - Client: `import { PrismaClient } from '../../../../generated/prisma'` (packages/api/src/db/prisma.ts)
+
+**Not Tracked in Git:**
+- `generated/` - Prisma client (regenerated via `npx prisma generate`)
+- `packages/api/math-data/` - Source JSON files (data already in PostgreSQL)
 
 See `docs/PROJECT-SETUP.md` for details.
