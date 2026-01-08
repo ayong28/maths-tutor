@@ -1,5 +1,6 @@
 node_modules
 .env
+packages/api/.env
 .DS_Store
 
 # Generated files
@@ -22,3 +23,7 @@ test-results/
 test-results/.last-run.json
 
 packages/api/dist/**
+
+# Prisma generated files
+/generated/
+/packages/api/generated/

@@ -74,11 +74,17 @@ npm run test:e2e:chromium   # E2E (47 tests)
 
 ```bash
 brew services start postgresql@16  # Start PostgreSQL
-npx prisma migrate dev              # Create DB + run migrations
 
-# Populate with 4,628 problems (run once)
-npx tsx scripts/import-json-to-db.ts       # Import JSON (3,758 problems)
-npx tsx scripts/migrate-markdown-to-db.ts  # Import markdown (870 problems)
+# From packages/api folder (recommended)
+cd packages/api
+npm run db:migrate                  # Create DB + run migrations
+npm run data:import-json            # Import JSON (3,758 problems)
+npm run data:import-markdown        # Import markdown (870 problems)
+
+# Or from root
+npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
+npx tsx packages/api/scripts/data/import-json-to-db.ts
+npx tsx packages/api/scripts/data/migrate-markdown-to-db.ts
 ```
 
 **Full setup guide:** See `docs/PROJECT-SETUP.md` → Database Setup section
@@ -110,13 +116,21 @@ apps/web/          # React (Vite + TS + Tailwind)
   src/hooks/       # Custom hooks (usePDFGenerator - others unused after migration)
   src/components/  # UI components
   src/__tests__/   # Integration tests
-packages/api/      # Express API + Prisma client (packages/api/src/db/prisma.ts)
+packages/api/      # Express API + Prisma
+  prisma/          # DB schema + migrations
+  src/db/          # Prisma client singleton (packages/api/src/db/prisma.ts)
+  src/services/    # Database business logic
+  scripts/         # Data import scripts
 src/               # CLI + PDF generator
-prisma/            # DB schema
 e2e/               # Playwright tests (47 E2E tests)
 docs/              # Documentation (see docs/README.md for index)
 generated/         # Prisma client output (root level)
 ```
+
+**Backend Development:**
+- Start API: `cd packages/api && npm run dev` (runs from packages/api folder)
+- Or from root: `npm run api:dev`
+- Prisma commands: Run from packages/api folder or use `--schema` flag
 
 **Prisma Imports:**
 - API: `import { prisma } from '../db/prisma'` (packages/api/src/services/*)

@@ -33,14 +33,20 @@ maths-tutor/
 │       └── tailwind.config.js
 ├── packages/
 │   └── api/                    # Express API backend
+│       ├── prisma/             # Database schema & migrations
+│       │   ├── migrations/     # Migration files
+│       │   └── schema.prisma   # Prisma schema
+│       ├── scripts/            # Backend scripts
+│       │   └── data/           # Data import scripts
 │       ├── src/
+│       │   ├── db/             # Prisma client singleton
 │       │   ├── routes/         # API route handlers
 │       │   ├── services/       # Database business logic
 │       │   └── index.ts        # Express server
 │       ├── package.json
 │       └── tsconfig.json
 ├── src/                        # CLI tools & shared code
-├── prisma/                     # Database schema (shared)
+├── generated/                  # Prisma client output (root level)
 └── package.json                # Root workspace config
 ```
 
@@ -267,15 +273,34 @@ curl "http://localhost:3001/api/problems?type=FRACTION_ADDITION&difficulty=EASY,
 
 ### Prisma Configuration Notes
 
+**Location:** All Prisma files are in `packages/api/`:
+- Schema: `packages/api/prisma/schema.prisma`
+- Migrations: `packages/api/prisma/migrations/`
+- Client singleton: `packages/api/src/db/prisma.ts`
+- Data scripts: `packages/api/scripts/data/`
+
 **Custom Client Location:**
-- Generator output: `../generated/prisma` (not default `node_modules/@prisma/client`)
-- All imports must use: `import { ... } from '../../../../generated/prisma'`
-- Prisma client singleton: `src/db/prisma.ts`
+- Generator output: `../../../../generated/prisma` (relative to packages/api/src/db/prisma.ts)
+- Client generated to root `generated/` folder for easy access from both CLI and API
+- All imports: `import { PrismaClient } from '../../../../generated/prisma'`
 
 **Database Connection:**
-- Currently Prisma 6.19.0 (requires `url` in schema.prisma)
-- Future Prisma 7: URL moves to `prisma.config.ts` only
-- Connection configured via `.env` file: `DATABASE_URL`
+- Prisma 6.19.0 (requires `url` in schema.prisma)
+- Connection configured via root `.env` file: `DATABASE_URL`
+- API loads .env from root via dotenv path resolution
+
+**Running Prisma Commands:**
+```bash
+# From packages/api (recommended)
+cd packages/api
+npm run db:migrate          # Run migrations
+npm run db:generate         # Generate client
+npm run db:studio           # Open Prisma Studio
+
+# From root (requires --schema flag)
+npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
+npx prisma generate --schema=packages/api/prisma/schema.prisma
+```
 
 ## Database Setup
 
@@ -305,14 +330,18 @@ brew services list | grep postgresql
 #### 2. Create Database & Run Migrations
 
 ```bash
-# This creates the database and applies all migrations
-npx prisma migrate dev
+# From packages/api folder (recommended)
+cd packages/api
+npm run db:migrate
+
+# Or from root
+npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 ```
 
 **What this does:**
 - Creates `maths_tutor_dev` database if it doesn't exist
-- Applies all migrations from `prisma/migrations/`
-- Generates Prisma Client to `generated/prisma/`
+- Applies all migrations from `packages/api/prisma/migrations/`
+- Generates Prisma Client to `generated/prisma/` (root level)
 
 **Expected output:**
 ```
@@ -338,7 +367,12 @@ The project has **two data sources**:
 ##### Import JSON Problems
 
 ```bash
-npx tsx scripts/import-json-to-db.ts
+# From packages/api folder (recommended)
+cd packages/api
+npm run data:import-json
+
+# Or from root
+npx tsx packages/api/scripts/data/import-json-to-db.ts
 ```
 
 **What it imports:**
@@ -382,7 +416,12 @@ Errors: 0
 ##### Import Markdown Worksheets
 
 ```bash
-npx tsx scripts/migrate-markdown-to-db.ts
+# From packages/api folder (recommended)
+cd packages/api
+npm run data:import-markdown
+
+# Or from root
+npx tsx packages/api/scripts/data/migrate-markdown-to-db.ts
 ```
 
 **What it imports:**
@@ -520,17 +559,21 @@ const cleanedProblems = problems.map((p: any) => ({
 
 **Solution: Run migrations**
 ```bash
-npx prisma migrate dev
+cd packages/api
+npm run db:migrate
+
+# Or from root
+npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 ```
 
 This creates the database automatically.
 
 #### Problem: Mixed-number files missing 'type' field
 
-This was fixed with `scripts/fix-mixed-number-types.ts`:
+This was fixed with `packages/api/scripts/fix-mixed-number-types.ts`:
 
 ```bash
-npx tsx scripts/fix-mixed-number-types.ts
+npx tsx packages/api/scripts/fix-mixed-number-types.ts
 ```
 
 This adds the missing `type` field to:
