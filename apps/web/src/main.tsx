@@ -1,11 +1,13 @@
-import { StrictMode } from 'react';
+import { StrictMode, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import Root from './routes/root';
-import Home from './routes/home';
-import Category from './routes/category';
-import Worksheet from './routes/worksheet';
 import './index.css';
+
+// Lazy load route components
+const Home = lazy(() => import('./routes/home'));
+const Category = lazy(() => import('./routes/category'));
+const Worksheet = lazy(() => import('./routes/worksheet'));
 
 // Define routes as RouteObject[]
 const router = createBrowserRouter([
