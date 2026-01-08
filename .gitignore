@@ -27,3 +27,6 @@ packages/api/dist/**
 # Prisma generated files
 /generated/
 /packages/api/generated/
+
+# Math data source files (data already in PostgreSQL)
+/packages/api/math-data/
