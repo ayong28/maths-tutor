@@ -2,6 +2,7 @@
   import react from '@vitejs/plugin-react';  // Changed from reactRouter
   import tailwindcss from '@tailwindcss/vite';
   import path from 'path';
+  import { visualizer } from 'rollup-plugin-visualizer';
 
   export default defineConfig({
     plugins: [
@@ -9,7 +10,12 @@
         // Disable Fast Refresh for route files to suppress warning
         exclude: /routes\/.*.tsx$/,
       }),
-      tailwindcss()
+      tailwindcss(),
+      visualizer({
+        open: true,
+        gzipSize: true,
+        filename: 'dist/stats.html'
+      })
     ],
     resolve: {
       alias: {
