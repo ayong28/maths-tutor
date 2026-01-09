@@ -56,11 +56,12 @@
 
 ## 🏗️ Architecture & Implementation
 
-### React Router 7 Migration
+### React Router 7 Migration & Deployment
 
 | Document | Purpose |
 |----------|---------|
 | [`REACT-ROUTER-7-TUTORIAL.md`](./REACT-ROUTER-7-TUTORIAL.md) | Complete migration guide (before/after examples) |
+| [`RAILWAY-DEPLOYMENT-GUIDE.md`](./RAILWAY-DEPLOYMENT-GUIDE.md) | Deploy SPA frontend to Railway (fixes `/app/build/client` error) |
 | [`NETLIFY-DEPLOYMENT-GUIDE.md`](./NETLIFY-DEPLOYMENT-GUIDE.md) | Deploy React Router 7 app to Netlify |
 
 **Key Changes:**
@@ -127,7 +128,8 @@ maths-tutor/
 │   │
 │   ├── Implementation Guides/
 │   │   ├── REACT-ROUTER-7-TUTORIAL.md     # React Router migration
-│   │   ├── NETLIFY-DEPLOYMENT-GUIDE.md    # Deployment guide
+│   │   ├── RAILWAY-DEPLOYMENT-GUIDE.md    # Railway deployment (SPA mode)
+│   │   ├── NETLIFY-DEPLOYMENT-GUIDE.md    # Netlify deployment
 │   │   ├── SESSION_HISTORY.md             # Session notes
 │   │   └── session-activity-journal.md    # Activity log
 │   │
@@ -148,7 +150,8 @@ maths-tutor/
 | **Write new tests** | [`TESTING-IMPLEMENTATION-GUIDE.md`](./TESTING-IMPLEMENTATION-GUIDE.md) |
 | **Test React Router** | [`REACT-ROUTER-TESTING-GUIDE.md`](./REACT-ROUTER-TESTING-GUIDE.md) |
 | **Understand routing** | [`REACT-ROUTER-7-TUTORIAL.md`](./REACT-ROUTER-7-TUTORIAL.md) |
-| **Deploy to production** | [`NETLIFY-DEPLOYMENT-GUIDE.md`](./NETLIFY-DEPLOYMENT-GUIDE.md) |
+| **Deploy to Railway** | [`RAILWAY-DEPLOYMENT-GUIDE.md`](./RAILWAY-DEPLOYMENT-GUIDE.md) |
+| **Deploy to Netlify** | [`NETLIFY-DEPLOYMENT-GUIDE.md`](./NETLIFY-DEPLOYMENT-GUIDE.md) |
 | **See project history** | [`PROJECT-HISTORY.md`](./PROJECT-HISTORY.md) |
 | **Run E2E tests** | [`E2E-TEST-PLAN.md`](./E2E-TEST-PLAN.md) |
 
@@ -197,4 +200,4 @@ maths-tutor/
 
 ---
 
-Last updated: 2026-01-04
+Last updated: 2026-01-08
