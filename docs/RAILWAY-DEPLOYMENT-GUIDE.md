@@ -26,6 +26,8 @@ Deploy the full stack application to Railway with separate services.
 
 ### Import Data to Railway Database
 
+**Note:** Deploy the backend service first (Step 2) - migrations will create the schema automatically.
+
 ```bash
 # Link to Railway project
 railway link
@@ -35,7 +37,7 @@ railway link
 railway variables
 # Copy the DATABASE_URL value
 
-# Import data using pg_restore
+# Import data using pg_restore (after backend is deployed)
 railway run pg_restore --no-owner --no-acl -d $DATABASE_URL database_data.dump
 ```
 
@@ -44,6 +46,8 @@ railway run pg_restore --no-owner --no-acl -d $DATABASE_URL database_data.dump
 railway run psql $DATABASE_URL -c 'SELECT COUNT(*) FROM "Problem";'
 # Expected: 4628 problems
 ```
+
+**Important:** If you get "relation does not exist" errors, ensure the backend service has deployed successfully first. The backend's start command runs migrations that create the database tables.
 
 ---
 
@@ -61,7 +65,7 @@ railway run psql $DATABASE_URL -c 'SELECT COUNT(*) FROM "Problem";'
 
 **Settings → Deploy:**
 - **Custom Build Command**: `npm install && npm run build`
-- **Custom Start Command**: `npm run start`
+- **Custom Start Command**: `npx prisma migrate deploy && npm run start`
 
 **Settings → Environment Variables:**
 ```
@@ -69,6 +73,12 @@ DATABASE_URL=[from Railway Postgres service - use 'railway variables' to get val
 PORT=3001
 NODE_ENV=production
 ```
+
+**Why include migrations in Start Command:**
+- Ensures database schema is up-to-date before app starts
+- Automatically runs migrations on every deployment
+- Avoids manual migration steps
+- Works with Railway's internal DATABASE_URL automatically
 
 **How to get DATABASE_URL:**
 ```bash
@@ -85,8 +95,10 @@ railway variables | grep DATABASE_URL
 
 1. Save settings
 2. Railway auto-deploys on push to main branch
-3. Check deployment logs for success
-4. Verify API is running (check logs for "Server listening on port 3001")
+3. Check deployment logs:
+   - Look for migration success: `Prisma Migrate applied...`
+   - Verify API starts: `Server listening on port 3001`
+4. Database schema is now ready for data import
 
 ---
 
@@ -146,17 +158,23 @@ ERROR: failed to build: "/app/build/client": not found
 
 ### Database
 - [ ] Create PostgreSQL service
-- [ ] Import data using pg_restore
-- [ ] Verify data count (4628 problems)
+- [ ] Note DATABASE_URL from service
 
 ### Backend
 - [ ] Create backend service from GitHub
 - [ ] Set Root Directory: `/packages/api`
 - [ ] Set Build Command: `npm install && npm run build`
-- [ ] Set Start Command: `npm run start`
-- [ ] Add environment variables (DATABASE_URL, PORT, NODE_ENV)
-- [ ] Deploy and verify logs show "Server listening"
+- [ ] Set Start Command: `npx prisma migrate deploy && npm run start`
+- [ ] Add environment variables (DATABASE_URL, PORT=3001, NODE_ENV=production)
+- [ ] Deploy and verify logs show:
+  - [ ] `Prisma Migrate applied...` (migrations ran)
+  - [ ] `Server listening on port 3001` (API started)
 - [ ] Generate domain if needed
+
+### Database Import (after backend deployed)
+- [ ] Link Railway CLI to Postgres service
+- [ ] Import data: `railway run pg_restore --no-owner --no-acl -d $DATABASE_URL database_data.dump`
+- [ ] Verify data count: 4628 problems
 
 ### Frontend
 - [ ] Create frontend service from GitHub
@@ -204,15 +222,28 @@ ERROR: failed to build: "/app/build/client": not found
 - Check `package.json` has `db:generate` in build script
 - Verify Prisma schema exists at `prisma/schema.prisma`
 
+**Migration fails on startup:**
+- Check Start Command: `npx prisma migrate deploy && npm run start`
+- Verify DATABASE_URL environment variable is set correctly
+- Check deployment logs for Prisma migration errors
+- Ensure DATABASE_URL points to Railway Postgres (not `postgres.railway.internal` from local .env)
+
 **API not responding:**
 - Check deployment logs for startup errors
-- Verify PORT environment variable is set (3001)
-- Ensure Express server is listening (check logs)
+- Verify migrations completed before server started (check logs)
+- Ensure PORT environment variable is set (3001)
+- Ensure Express server is listening (check logs for "Server listening")
 - Test internal Railway URL before generating public domain
 
 ### Database Issues
 
-**Data import fails:**
+**Data import fails with "relation does not exist":**
+- **Most common cause:** Backend service hasn't deployed yet
+- Ensure backend service deployed successfully first (migrations create tables)
+- Check backend deployment logs for `Prisma Migrate applied...`
+- Tables are created automatically by backend's start command, not manually
+
+**Data import fails (other reasons):**
 - Ensure Railway CLI is linked to correct project and Postgres service
 - Verify dump file exists and is not corrupted
 - Use `--no-owner --no-acl` flags with pg_restore
@@ -222,7 +253,6 @@ ERROR: failed to build: "/app/build/client": not found
 - Run verify command: `railway run psql $DATABASE_URL -c 'SELECT COUNT(*) FROM "Problem";'`
 - Expected: 4628 problems
 - If count is 0, re-import data
-- Check for migration issues (tables may not exist)
 
 ---
 
@@ -237,7 +267,7 @@ Railway Project: maths-tutor
 ├── Service 2: API (Backend)
 │   ├── Root: /packages/api
 │   ├── Build: npm install && npm run build
-│   ├── Start: npm run start
+│   ├── Start: npx prisma migrate deploy && npm run start
 │   └── Env: DATABASE_URL, PORT=3001, NODE_ENV=production
 └── Service 3: Web (Frontend)
     ├── Root: / (or /apps/web)
@@ -245,10 +275,11 @@ Railway Project: maths-tutor
     └── Env: NODE_ENV=production, VITE_API_URL
 ```
 
-**Service dependencies:**
-1. Deploy Database first
-2. Deploy Backend second (needs DATABASE_URL)
-3. Deploy Frontend last (needs backend URL)
+**Deployment workflow:**
+1. Deploy Database first (PostgreSQL service)
+2. Deploy Backend second (runs migrations automatically, creates schema)
+3. Import data using Railway CLI (after backend creates tables)
+4. Deploy Frontend last (connects to backend API)
 
 ---
 
