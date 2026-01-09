@@ -13,6 +13,35 @@ Deploy the full stack application to Railway with separate services.
 - 3 Railway services: Frontend (web), Backend (API), Database (Postgres)
 - Frontend outputs to `dist/` (SPA mode, not SSR)
 - Backend runs from `packages/api/` (monorepo structure)
+- Frontend calls backend via `VITE_API_URL` environment variable
+
+## Quick Reference
+
+**Backend Start Command:**
+```bash
+npx prisma migrate deploy && npm run start
+```
+
+**Backend Environment Variables:**
+```
+DATABASE_URL=[from Postgres service]
+PORT=3001
+NODE_ENV=production
+FRONTEND_URL=https://your-frontend.up.railway.app  # Required for CORS
+```
+
+**Frontend API Client (`apps/web/src/api/client.ts`):**
+```typescript
+const API_BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
+```
+
+**Frontend Environment Variables:**
+```
+NODE_ENV=production
+VITE_API_URL=https://your-backend.up.railway.app  # No /api suffix - client adds it
+```
 
 ---
 
@@ -72,6 +101,7 @@ railway run psql $DATABASE_URL -c 'SELECT COUNT(*) FROM "Problem";'
 DATABASE_URL=[from Railway Postgres service - use 'railway variables' to get value]
 PORT=3001
 NODE_ENV=production
+FRONTEND_URL=https://your-frontend.up.railway.app
 ```
 
 **Why include migrations in Start Command:**
@@ -80,7 +110,9 @@ NODE_ENV=production
 - Avoids manual migration steps
 - Works with Railway's internal DATABASE_URL automatically
 
-**How to get DATABASE_URL:**
+**How to get environment variable values:**
+
+1. **DATABASE_URL:**
 ```bash
 # In terminal, link Railway CLI to Postgres service
 railway link
@@ -90,6 +122,12 @@ railway link
 railway variables | grep DATABASE_URL
 # Copy the full connection string
 ```
+
+2. **FRONTEND_URL:**
+   - Go to Railway Dashboard → Frontend service → Settings → Networking
+   - Copy the generated domain (e.g., `https://frontend-production-0cb6.up.railway.app`)
+   - Add to backend environment variables as `FRONTEND_URL`
+   - **Purpose:** Required for CORS - allows backend to accept requests from frontend domain
 
 ### Deploy Backend
 
@@ -103,6 +141,21 @@ railway variables | grep DATABASE_URL
 ---
 
 ## 3. Frontend Deployment (React SPA)
+
+### Configure API Client for Production
+
+The frontend needs to call the backend API. Update the API client to use environment variables:
+
+**File: `apps/web/src/api/client.ts`**
+```typescript
+const API_BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
+```
+
+This allows the frontend to:
+- Use `/api` in development (Vite proxy forwards to localhost:3001)
+- Use backend Railway URL in production (via VITE_API_URL environment variable)
 
 ### Create Frontend Service
 
@@ -121,10 +174,17 @@ railway variables | grep DATABASE_URL
 **Settings → Environment Variables:**
 ```
 NODE_ENV=production
-VITE_API_URL=[your backend Railway URL]
+VITE_API_URL=https://your-backend-service.up.railway.app
 ```
 
-**Note:** Do NOT manually set `PORT` - Railway provides it automatically.
+**How to get backend URL:**
+1. Go to Railway Dashboard → Backend service → Settings → Networking
+2. Copy the generated domain (e.g., `https://maths-tutor-api-production.up.railway.app`)
+3. Add to frontend environment variables as `VITE_API_URL` (without `/api` suffix)
+
+**Important:**
+- Do NOT include `/api` in VITE_API_URL - the client code adds it automatically
+- Do NOT manually set `PORT` - Railway provides it automatically
 
 ### Common Issue: `/app/build/client` not found
 
@@ -165,7 +225,11 @@ ERROR: failed to build: "/app/build/client": not found
 - [ ] Set Root Directory: `/packages/api`
 - [ ] Set Build Command: `npm install && npm run build`
 - [ ] Set Start Command: `npx prisma migrate deploy && npm run start`
-- [ ] Add environment variables (DATABASE_URL, PORT=3001, NODE_ENV=production)
+- [ ] Add environment variables:
+  - [ ] `DATABASE_URL` (from Postgres service)
+  - [ ] `PORT=3001`
+  - [ ] `NODE_ENV=production`
+  - [ ] `FRONTEND_URL` (from frontend service domain - needed for CORS)
 - [ ] Deploy and verify logs show:
   - [ ] `Prisma Migrate applied...` (migrations ran)
   - [ ] `Server listening on port 3001` (API started)
@@ -177,18 +241,30 @@ ERROR: failed to build: "/app/build/client": not found
 - [ ] Verify data count: 4628 problems
 
 ### Frontend
+- [ ] Update `apps/web/src/api/client.ts` to use VITE_API_URL
 - [ ] Create frontend service from GitHub
 - [ ] Set Custom Start Command: `npx serve dist -s -p $PORT`
+- [ ] Get backend URL from backend service (Settings → Networking)
+- [ ] Add environment variables:
+  - [ ] `NODE_ENV=production`
+  - [ ] `VITE_API_URL=https://your-backend.up.railway.app` (no `/api` suffix)
 - [ ] Generate domain with port 8080
-- [ ] Add environment variables (VITE_API_URL)
 - [ ] Deploy and verify build succeeds
-- [ ] Test generated domain URL
+- [ ] Test generated domain URL - should load app without JSON errors
 
 ---
 
 ## 5. Troubleshooting
 
 ### Frontend Issues
+
+**Error: "Unexpected token '<', "<!doctype "... is not valid JSON":**
+- **Most common cause:** Frontend trying to fetch API but getting HTML instead
+- Check `VITE_API_URL` environment variable is set correctly
+- Verify `VITE_API_URL` points to backend Railway URL (without `/api` suffix)
+- Ensure backend service is deployed and running
+- Check `apps/web/src/api/client.ts` uses `import.meta.env.VITE_API_URL`
+- Test backend URL directly: `https://your-backend.up.railway.app/api/categories`
 
 **Build fails with `/app/build/client` not found:**
 - Verify build outputs to `dist/` not `build/client`
@@ -202,6 +278,8 @@ ERROR: failed to build: "/app/build/client": not found
 **Environment variables not working:**
 - Railway auto-provides `$PORT` - don't manually set it for frontend
 - Check variable names match exactly (case-sensitive)
+- Vite environment variables must start with `VITE_` prefix
+- Rebuild required after adding/changing environment variables
 
 ### Backend Issues
 
@@ -210,6 +288,21 @@ ERROR: failed to build: "/app/build/client": not found
 - Check Build Command includes: `npm install && npm run build`
 - Ensure Start Command is: `npm run start` (not `npm start`)
 - Verify `dist/index.js` exists after build
+
+**CORS errors (blocked by CORS policy):**
+- **Most common cause:** Backend not configured to allow frontend origin
+- Add `FRONTEND_URL` environment variable to backend service
+- Set to frontend Railway domain: `https://frontend-production-0cb6.up.railway.app`
+- Backend CORS is configured in `packages/api/src/index.ts`:
+  ```typescript
+  app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true,
+  }));
+  ```
+- Redeploy backend after adding environment variable
+- Check browser console for specific CORS error message
+- Typical error: "Access to fetch at '...' from origin '...' has been blocked by CORS policy"
 
 **Database connection fails:**
 - Verify DATABASE_URL is copied correctly from Railway Postgres service
@@ -268,18 +361,38 @@ Railway Project: maths-tutor
 │   ├── Root: /packages/api
 │   ├── Build: npm install && npm run build
 │   ├── Start: npx prisma migrate deploy && npm run start
-│   └── Env: DATABASE_URL, PORT=3001, NODE_ENV=production
+│   ├── Env: DATABASE_URL, PORT=3001, NODE_ENV=production, FRONTEND_URL
+│   ├── CORS: Configured to allow requests from FRONTEND_URL
+│   └── Domain: https://maths-tutor-api-production.up.railway.app
 └── Service 3: Web (Frontend)
     ├── Root: / (or /apps/web)
     ├── Start: npx serve dist -s -p $PORT
-    └── Env: NODE_ENV=production, VITE_API_URL
+    ├── Env: NODE_ENV=production, VITE_API_URL=[Backend Domain]
+    ├── API Client: Uses VITE_API_URL to connect to backend
+    └── Domain: https://maths-tutor-web-production.up.railway.app
 ```
+
+**Frontend-Backend Connection:**
+- Frontend's `client.ts` uses `VITE_API_URL` environment variable
+- `VITE_API_URL` points to backend Railway domain (without `/api` suffix)
+- Client code appends `/api` to create full API URLs
+- Example: `VITE_API_URL=https://backend.up.railway.app` → calls `https://backend.up.railway.app/api/categories`
+
+**CORS Configuration:**
+- Backend uses `FRONTEND_URL` environment variable for CORS
+- `FRONTEND_URL` contains frontend Railway domain
+- Allows backend to accept requests from frontend origin
+- Without this, browser blocks API requests with CORS errors
 
 **Deployment workflow:**
 1. Deploy Database first (PostgreSQL service)
 2. Deploy Backend second (runs migrations automatically, creates schema)
 3. Import data using Railway CLI (after backend creates tables)
-4. Deploy Frontend last (connects to backend API)
+4. Deploy Frontend to get its Railway domain
+5. Add `FRONTEND_URL` to backend environment variables (frontend domain)
+6. Update Frontend code (`client.ts`) to use VITE_API_URL
+7. Add `VITE_API_URL` to frontend environment variables (backend domain)
+8. Redeploy both services if needed
 
 ---
 
@@ -291,4 +404,4 @@ Railway Project: maths-tutor
 
 ---
 
-Last updated: 2026-01-08
+Last updated: 2026-01-09
