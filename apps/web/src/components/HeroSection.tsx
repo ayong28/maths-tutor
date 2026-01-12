@@ -33,8 +33,8 @@ const HeroSection = () => {
           <h1 className="mb-6 text-balance text-5xl font-bold leading-tight tracking-tight">
             <span className="text-foreground">Master Math with</span>
             <br />
-            <span className="bg-linear-to-r from-brand-purple-light via-brand-purple to-brand-purple-dark bg-clip-text text-[rgba(166,198,237,1)]">
-              Interactive Worksheets
+            <span className=" text-amber-400">
+              Year 7 Math Worksheets
             </span>
           </h1>
 
