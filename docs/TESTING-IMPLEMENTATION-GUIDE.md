@@ -573,9 +573,6 @@ describe('usePDFGenerator', () => {
       tags: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      sourceWorksheet: null,
-      sourceProblemNumber: null,
-      hasVariables: false,
     },
   ];
 

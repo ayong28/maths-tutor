@@ -609,7 +609,7 @@ npm run db:migrate
 
 # Test adding problem with new type
 psql -d maths_tutor_dev << EOF
-INSERT INTO "Problem" (id, question, answer, type, difficulty, tags, "sourceWorksheet", "sourceProblemNumber", "hasVariables", "createdAt", "updatedAt")
+INSERT INTO "Problem" (id, question, answer, type, difficulty, tags, "createdAt", "updatedAt")
 VALUES (
   gen_random_uuid()::text,
   'Solve: x^2 + 5x + 6 = 0',
@@ -617,9 +617,6 @@ VALUES (
   'ALGEBRA_QUADRATICS',
   'medium',
   ARRAY['factoring', 'quadratic-formula'],
-  'test_worksheet',
-  1,
-  true,
   NOW(),
   NOW()
 );

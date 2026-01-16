@@ -557,9 +557,6 @@ const cleanedProblems = problems.map((p: any) => ({
   type: p.type,
   difficulty: p.difficulty,
   tags: p.tags || [],
-  hasVariables: p.hasVariables || false,
-  sourceWorksheet: p.sourceWorksheet,
-  sourceProblemNumber: p.sourceProblemNumber,
 }));
 ```
 
