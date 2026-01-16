@@ -31,9 +31,6 @@ export type Problem = {
   type: ProblemType;
   difficulty: Difficulty;
   tags: string[];
-  sourceWorksheet: string | null;
-  sourceProblemNumber: number | null;
-  hasVariables: boolean;
 };
 
 export type ProblemFilters = {

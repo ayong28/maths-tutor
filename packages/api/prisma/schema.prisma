@@ -1,6 +1,3 @@
-// Prisma schema for maths-tutor worksheet generator
-// Learn more: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -8,69 +5,80 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // @ignore
   url      = env("DATABASE_URL")
 }
 
+model GeneratedWorksheet {
+  id                String             @id
+  createdAt         DateTime           @default(now())
+  title             String
+  templateId        String?
+  seed              String?
+  pdfPath           String?
+  WorksheetTemplate WorksheetTemplate? @relation(fields: [templateId], references: [id])
+  WorksheetProblem  WorksheetProblem[]
+
+  @@index([templateId])
+}
+
 model Problem {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String             @id
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime
+  question         String
+  answer           String
+  type             ProblemType
+  difficulty       Difficulty         @default(MEDIUM)
+  tags             String[]
+  WorksheetProblem WorksheetProblem[]
 
-  // Core content
-  question String
-  answer   String
-
-  // Categorization
-  type       ProblemType
-  difficulty Difficulty  @default(MEDIUM)
-  tags       String[]
-
-  // Source tracking (from markdown migration)
-  sourceWorksheet     String?
-  sourceProblemNumber Int?
-
-  // Metadata for filtering
-  hasVariables Boolean @default(false)
-
-  worksheetProblems WorksheetProblem[]
-
-  // Composite indexes for common query patterns
+  @@index([tags], type: Gin)
   @@index([type, difficulty])
-  @@index([type, difficulty, hasVariables])
-  @@index([tags], type: Gin) // GIN index for array operations
+}
+
+model WorksheetProblem {
+  id                 String             @id
+  worksheetId        String
+  problemId          String
+  position           Int
+  createdAt          DateTime           @default(now())
+  Problem            Problem            @relation(fields: [problemId], references: [id])
+  GeneratedWorksheet GeneratedWorksheet @relation(fields: [worksheetId], references: [id], onDelete: Cascade)
+
+  @@unique([worksheetId, position])
+  @@index([problemId])
+  @@index([worksheetId])
+}
+
+model WorksheetTemplate {
+  id                 String               @id
+  createdAt          DateTime             @default(now())
+  name               String               @unique
+  displayTitle       String
+  problemType        ProblemType
+  totalProblems      Int                  @default(30)
+  requiredTags       String[]
+  excludedTags       String[]
+  tips               String[]
+  easyCount          Int                  @default(10)
+  hardCount          Int                  @default(5)
+  mediumCount        Int                  @default(15)
+  updatedAt          DateTime
+  GeneratedWorksheet GeneratedWorksheet[]
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }
 
 enum ProblemType {
-  // Fractions (5 types)
   FRACTION_ADDITION
   FRACTION_SUBTRACTION
   FRACTION_REDUCTION
   FRACTION_MULTIPLICATION
   FRACTION_DIVISION
-
-  // Percentages (2 types)
-  PERCENTAGE_CONVERSION
-  PERCENTAGE_OF_QUANTITY
-
-  // Integers (4 types)
-  INTEGERS_ADDITION
-  INTEGERS_SUBTRACTION
-  INTEGERS_MULTIPLICATION
-  INTEGERS_DIVISION
-
-  // Decimals (4 types)
-  DECIMALS_ADDITION
-  DECIMALS_SUBTRACTION
-  DECIMALS_MULTIPLICATION
-  DECIMALS_DIVISION
-
-  // Index Notation & Square Roots (3 types)
-  INDEX_POWERS
-  INDEX_SQUARE_ROOTS
-  INDEX_LAWS
-
-  // Algebra - Basic (7 types)
   ALGEBRA_COLLECTING_TERMS
   ALGEBRA_MULTIPLICATION
   ALGEBRA_SUBSTITUTION
@@ -78,80 +86,26 @@ enum ProblemType {
   ALGEBRA_DISTRIBUTIVE_LAW
   ALGEBRA_LINEAR_EQUATIONS_SIMPLE
   ALGEBRA_LINEAR_EQUATIONS_COMPLEX
-
-  // Algebra - Advanced (2 types)
   ALGEBRA_EXPANDING_BRACKETS
   ALGEBRA_FACTORISING
-
-  // Graphing (2 types)
   COORDINATES_PLOTTING
   LINEAR_GRAPHING
-
-  // Ratio & Rates (1 type)
+  PERCENTAGE_CONVERSION
+  PERCENTAGE_OF_QUANTITY
+  INTEGERS_ADDITION
+  INTEGERS_SUBTRACTION
+  INTEGERS_MULTIPLICATION
+  INTEGERS_DIVISION
+  DECIMALS_ADDITION
+  DECIMALS_SUBTRACTION
+  DECIMALS_MULTIPLICATION
+  DECIMALS_DIVISION
+  INDEX_POWERS
+  INDEX_SQUARE_ROOTS
+  INDEX_LAWS
   RATIO_RATES
-
-  // Area & Geometry (2 types)
   AREA
   ANGLES
-
-  // Statistics & Probability (2 types)
   PROBABILITY
   DATA_ANALYSIS
-}
-
-enum Difficulty {
-  EASY // Problems 1-10
-  MEDIUM // Problems 11-20
-  HARD // Problems 21-30
-}
-
-model WorksheetTemplate {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name          String      @unique
-  displayTitle  String
-  problemType   ProblemType
-  totalProblems Int         @default(30)
-
-  // Typed difficulty mix (replaces Json)
-  easyCount   Int @default(10)
-  mediumCount Int @default(15)
-  hardCount   Int @default(5)
-
-  requiredTags String[]
-  excludedTags String[]
-  tips         String[]
-
-  generatedWorksheets GeneratedWorksheet[]
-}
-
-model GeneratedWorksheet {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-
-  title      String
-  templateId String?
-  template   WorksheetTemplate? @relation(fields: [templateId], references: [id])
-  seed       String?
-  pdfPath    String?
-
-  problems WorksheetProblem[]
-
-  @@index([templateId]) // Index for template lookups
-}
-
-model WorksheetProblem {
-  id          String             @id @default(cuid())
-  createdAt   DateTime           @default(now()) // Audit timestamp
-  worksheetId String
-  worksheet   GeneratedWorksheet @relation(fields: [worksheetId], references: [id], onDelete: Cascade)
-  problemId   String
-  problem     Problem            @relation(fields: [problemId], references: [id])
-  position    Int
-
-  @@unique([worksheetId, position])
-  @@index([worksheetId]) // FK index for joins
-  @@index([problemId]) // Reverse lookup index
 }
