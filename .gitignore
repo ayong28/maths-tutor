@@ -30,3 +30,6 @@ packages/api/dist/**
 
 # Math data source files (data already in PostgreSQL)
 /packages/api/math-data/
+
+# One-time data import scripts (data already in PostgreSQL)
+/packages/api/scripts/data/
