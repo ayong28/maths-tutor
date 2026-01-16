@@ -6,7 +6,7 @@ Guidance for Claude Code when working with this repository.
 
 **Testing Guides:** `docs/CLEANUP-UNUSED-CODE.md` | `docs/TESTING-IMPLEMENTATION-GUIDE.md` | `docs/REACT-ROUTER-TESTING-GUIDE.md`
 
-**Deployment:** `docs/RAILWAY-DEPLOYMENT-GUIDE.md` | `docs/NETLIFY-DEPLOYMENT-GUIDE.md`
+**Deployment:** `docs/RAILWAY-DEPLOYMENT-GUIDE.md` (inc. [DB Migrations](docs/RAILWAY-DEPLOYMENT-GUIDE.md#25-database-schema-migrations-with-prisma)) | `docs/NETLIFY-DEPLOYMENT-GUIDE.md`
 
 ## Quick Start
 

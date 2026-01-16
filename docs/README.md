@@ -61,7 +61,7 @@
 | Document | Purpose |
 |----------|---------|
 | [`REACT-ROUTER-7-TUTORIAL.md`](./REACT-ROUTER-7-TUTORIAL.md) | Complete migration guide (before/after examples) |
-| [`RAILWAY-DEPLOYMENT-GUIDE.md`](./RAILWAY-DEPLOYMENT-GUIDE.md) | Deploy SPA frontend to Railway (fixes `/app/build/client` error) |
+| [`RAILWAY-DEPLOYMENT-GUIDE.md`](./RAILWAY-DEPLOYMENT-GUIDE.md) | Deploy full stack to Railway (frontend/backend/DB + [database migrations](./RAILWAY-DEPLOYMENT-GUIDE.md#25-database-schema-migrations-with-prisma)) |
 | [`NETLIFY-DEPLOYMENT-GUIDE.md`](./NETLIFY-DEPLOYMENT-GUIDE.md) | Deploy React Router 7 app to Netlify |
 
 **Key Changes:**
@@ -151,6 +151,7 @@ maths-tutor/
 | **Test React Router** | [`REACT-ROUTER-TESTING-GUIDE.md`](./REACT-ROUTER-TESTING-GUIDE.md) |
 | **Understand routing** | [`REACT-ROUTER-7-TUTORIAL.md`](./REACT-ROUTER-7-TUTORIAL.md) |
 | **Deploy to Railway** | [`RAILWAY-DEPLOYMENT-GUIDE.md`](./RAILWAY-DEPLOYMENT-GUIDE.md) |
+| **Update database schema** | [`RAILWAY-DEPLOYMENT-GUIDE.md#25`](./RAILWAY-DEPLOYMENT-GUIDE.md#25-database-schema-migrations-with-prisma) (Database migrations) |
 | **Deploy to Netlify** | [`NETLIFY-DEPLOYMENT-GUIDE.md`](./NETLIFY-DEPLOYMENT-GUIDE.md) |
 | **See project history** | [`PROJECT-HISTORY.md`](./PROJECT-HISTORY.md) |
 | **Run E2E tests** | [`E2E-TEST-PLAN.md`](./E2E-TEST-PLAN.md) |

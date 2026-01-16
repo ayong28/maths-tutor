@@ -576,6 +576,80 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 
 This creates the database automatically.
 
+### Creating Database Migrations
+
+When you need to change the database schema (add columns, tables, indexes, etc.):
+
+**1. Edit Schema:**
+```bash
+# Edit the Prisma schema file
+code packages/api/prisma/schema.prisma
+```
+
+**2. Create Migration:**
+```bash
+cd packages/api
+npm run db:migrate  # Creates and applies migration locally
+```
+
+Prisma will prompt for a migration name. Use `snake_case` (e.g., `add_user_preferences`, not `addUserPreferences`).
+
+**3. Test Locally:**
+```bash
+# Verify schema changes
+psql -d maths_tutor_dev -c "\d+ Problem"
+
+# Test API
+npm run api:dev
+curl http://localhost:3001/health
+
+# Verify data integrity
+psql -d maths_tutor_dev -c "SELECT COUNT(*) FROM \"Problem\";"
+# Expected: 4628 problems
+```
+
+**4. Deploy to Railway:**
+
+See [`RAILWAY-DEPLOYMENT-GUIDE.md`](./RAILWAY-DEPLOYMENT-GUIDE.md) Section 2.5 for the complete deployment workflow, safety checklist, troubleshooting, and emergency procedures.
+
+**Quick Commands:**
+
+| Task | Command |
+|------|---------|
+| Create migration | `npm run db:migrate` |
+| Reset database | `npm run db:reset` |
+| Generate Prisma Client | `npm run db:generate` |
+| Open Prisma Studio | `npm run db:studio` |
+| Check migration status | `npx prisma migrate status` |
+
+**Important Notes:**
+- **Always test migrations locally** before deploying to Railway
+- Railway automatically applies migrations on deployment (via start command)
+- Migration files **must be committed to git** - Railway needs them
+- Backup Railway database before major schema changes: `railway run pg_dump $DATABASE_URL > backup.sql`
+
+**Example Migration Workflow:**
+```bash
+# 1. Edit schema
+vim packages/api/prisma/schema.prisma
+
+# 2. Create migration
+cd packages/api
+npm run db:migrate
+
+# 3. Test locally
+npm run api:dev
+psql -d maths_tutor_dev -c "SELECT COUNT(*) FROM \"Problem\";"
+
+# 4. Commit to git
+git add packages/api/prisma/
+git commit -m "Add user preferences table"
+
+# 5. Push to deploy
+git push origin main
+# Railway automatically applies migration
+```
+
 #### Problem: Mixed-number files missing 'type' field
 
 This was fixed with `packages/api/scripts/fix-mixed-number-types.ts`:

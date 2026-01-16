@@ -140,6 +140,981 @@ railway variables | grep DATABASE_URL
 
 ---
 
+## 2.5 Database Schema Migrations with Prisma
+
+### Overview
+
+Railway automatically runs Prisma migrations on every deployment via the start command:
+
+```bash
+npx prisma migrate deploy && npm run start
+```
+
+This ensures your Railway database schema stays in sync with your application code. Migrations are applied before the API server starts, preventing schema mismatches.
+
+**How it works:**
+- You create migrations locally and test them
+- Commit migration files to git
+- Push to GitHub triggers Railway deployment
+- Railway runs `npx prisma migrate deploy` automatically
+- All pending migrations apply to Railway database
+- API server starts with updated schema
+
+---
+
+### Standard Migration Workflow
+
+#### Step 1: Create Migration Locally
+
+When you need to change the database schema:
+
+```bash
+# Navigate to API folder
+cd packages/api
+
+# Edit schema with your changes
+# Edit: prisma/schema.prisma
+
+# Create migration with descriptive name
+npm run db:migrate
+# Or: npx prisma migrate dev --name add_user_preferences
+
+# Prisma prompts:
+# - Name for migration (use snake_case: add_user_table, not addUserTable)
+# - Apply migration to local database? → Yes
+```
+
+**What happens:**
+- Creates migration file in `packages/api/prisma/migrations/[timestamp]_[name]/migration.sql`
+- Applies migration to your local `maths_tutor_dev` database
+- Regenerates Prisma Client in `generated/prisma/`
+- Updates `_prisma_migrations` tracking table
+
+**Example Migration Structure:**
+```
+packages/api/prisma/migrations/
+└── 20260113120000_add_user_preferences/
+    └── migration.sql
+```
+
+#### Step 2: Test Migration Locally
+
+**Critical:** Always verify migrations work locally before deploying to Railway.
+
+**Test Checklist:**
+
+```bash
+# ✅ 1. Verify schema changes applied
+psql -d maths_tutor_dev -c "\d+ Problem"
+# Check that columns/tables exist as expected
+
+# ✅ 2. Test data integrity
+psql -d maths_tutor_dev -c "SELECT COUNT(*) FROM \"Problem\";"
+# Expected: 4628 problems (or your current count)
+
+# ✅ 3. Test API with new schema
+npm run api:dev
+# Visit http://localhost:3001/health
+# Test http://localhost:3001/api/categories
+
+# ✅ 4. Test existing data queries
+psql -d maths_tutor_dev -c "SELECT type, COUNT(*) FROM \"Problem\" GROUP BY type LIMIT 5;"
+# Ensure existing queries still work
+
+# ✅ 5. Test full reset (optional but recommended)
+npx prisma migrate reset
+npm run db:migrate
+npm run data:import-json
+npm run data:import-markdown
+# Verify full database rebuild works
+```
+
+**Common Test Scenarios:**
+
+| Change Type | Test Required |
+|-------------|---------------|
+| Add column | Verify default values, check existing rows populated correctly |
+| Remove column | Ensure no API code references removed column (use grep) |
+| Rename column | Update all API code, search codebase for old column name |
+| Add table | Test relationships, foreign keys work, API can query |
+| Add index | Verify query performance improves (use EXPLAIN ANALYZE) |
+| Change enum | Ensure existing data uses valid enum values |
+| Add constraint | Verify existing data doesn't violate constraint |
+
+#### Step 3: Commit Migration Files
+
+**Important:** Migration files MUST be committed to git - Railway needs them to deploy.
+
+```bash
+# Check git status
+git status
+
+# You should see:
+# Modified:   packages/api/prisma/schema.prisma
+# New files:  packages/api/prisma/migrations/[timestamp]_[name]/migration.sql
+# DO NOT commit: generated/prisma/ (already in .gitignore)
+
+# Stage migration files
+git add packages/api/prisma/
+
+# Commit with descriptive message
+git commit -m "Add user preferences table
+
+- Added UserPreferences model with theme, notifications
+- Added userId foreign key reference
+- Migration: 20260113120000_add_user_preferences
+
+Tested locally:
+- Schema changes verified
+- Existing 4628 problems intact
+- API endpoints functional
+- Full reset cycle successful"
+
+# DO NOT push yet - verify commit first
+```
+
+**Commit Message Best Practices:**
+- **First line:** Brief summary (50 chars max, imperative mood)
+- **Blank line**
+- **Body:** Detailed bullet points of changes
+- **Migration name:** For easy reference in logs
+- **Test summary:** Confirms local testing completed
+
+**Example Bad Commit:**
+```
+updated database
+```
+
+**Example Good Commit:**
+```
+Add user preferences table for theme/notification settings
+
+- Added UserPreferences model with theme, notifications, language
+- Added userId foreign key with cascade delete
+- Added unique constraint on userId
+- Migration: 20260113120000_add_user_preferences
+
+Tested locally:
+- Schema applied successfully
+- Data integrity verified (4628 problems)
+- API /user/preferences endpoints working
+- Full database reset cycle successful
+```
+
+#### Step 4: Push to GitHub (Triggers Railway Deployment)
+
+```bash
+# Final check before pushing
+git log -1 --stat
+# Review your commit includes migration files
+
+# Verify migration files are included
+git show --name-only
+# Should show: packages/api/prisma/migrations/...
+
+# Push to trigger Railway deployment
+git push origin main
+```
+
+**What happens automatically:**
+1. **GitHub** receives push on main branch
+2. **Railway** detects commit, starts deployment:
+   - Pulls latest code from GitHub
+   - Runs build command: `npm install && npm run build`
+   - Runs start command: `npx prisma migrate deploy && npm run start`
+3. **Prisma** checks migration history, applies new migrations:
+   - Reads `packages/api/prisma/migrations/` folder
+   - Compares with `_prisma_migrations` table in Railway database
+   - Applies pending migrations in chronological order
+4. **API server** starts with updated schema
+
+**Typical deployment time:** 2-3 minutes (build + migrations + startup)
+
+#### Step 5: Verify Migration on Railway
+
+**Critical:** Always verify migrations succeeded on Railway.
+
+**Verification Steps:**
+
+**1. Check Deployment Logs**
+
+Go to: Railway Dashboard → Backend Service → Deployments → Latest
+
+Look for these success indicators:
+
+```
+[build] ✓ Generated Prisma Client (v6.19.0)
+[build] ✓ Built in 1.5s
+
+[start] Applying migration `20260113120000_add_user_preferences`
+[start] The following migration(s) have been applied:
+[start]
+[start] migrations/
+[start]   └─ 20260113120000_add_user_preferences/
+[start]      └─ migration.sql
+[start]
+[start] Prisma Migrate applied 1 migration(s) in 234ms
+[start]
+[start] API server running on http://localhost:3001
+[start] Environment: production
+[start] Server listening on port 3001
+```
+
+**2. Test API Endpoints**
+
+```bash
+# Test health endpoint
+curl https://your-backend.up.railway.app/health
+# Expected: {"status":"ok","timestamp":"2026-01-13T12:00:00.000Z"}
+
+# Test categories endpoint
+curl https://your-backend.up.railway.app/api/categories
+# Expected: JSON array of categories
+
+# Test specific endpoints using new schema
+curl https://your-backend.up.railway.app/api/user/preferences
+# Should work with new table
+```
+
+**3. Connect to Railway Database (Optional)**
+
+```bash
+# Link to Railway project
+railway link
+# Select: Project → production → Postgres
+
+# Check data count
+railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
+# Expected: 4628
+
+# Verify new schema
+railway run psql $DATABASE_URL -c "\d+ UserPreferences"
+# Should show new table structure
+
+# Check migration history
+railway run npx prisma migrate status
+# Should show all migrations applied
+```
+
+**Expected Output:**
+```
+Environment variables loaded from Railway
+Prisma schema loaded from prisma/schema.prisma
+
+Status
+1 migration found in prisma/migrations
+
+Following migration(s) have been applied:
+
+migrations/
+  └─ 20260113120000_add_user_preferences/ ✓
+
+No pending migrations to apply.
+```
+
+---
+
+### Safety Checklist Before Deploying Migrations
+
+Use this checklist EVERY time before pushing schema changes:
+
+#### Pre-Deployment Checklist
+
+- [ ] Edited `packages/api/prisma/schema.prisma` with desired changes
+- [ ] Created migration with descriptive name: `npm run db:migrate`
+- [ ] Migration applied successfully to local database (no errors)
+- [ ] Prisma Client regenerated without errors
+- [ ] Local API server starts without errors: `npm run api:dev`
+- [ ] Tested API endpoints with new schema (all working)
+- [ ] Verified data integrity locally (counts match, no corruption)
+- [ ] Searched codebase for references to removed/renamed columns: `grep -r "oldColumnName" packages/api/src/`
+- [ ] Tested full database reset cycle (optional): `npx prisma migrate reset`
+- [ ] Migration files committed to git: `git status` shows migrations staged
+- [ ] Reviewed commit: `git show` includes all migration files
+- [ ] Commit message describes changes and includes test summary
+
+#### Post-Deployment Checklist
+
+- [ ] Railway deployment succeeded (green checkmark in dashboard)
+- [ ] Railway logs show "Prisma Migrate applied X migration(s)"
+- [ ] Railway logs show "Server listening on port 3001"
+- [ ] Tested `/health` endpoint: returns 200 status
+- [ ] Tested API endpoints with new schema (all working in production)
+- [ ] Verified data count unchanged: 4628 problems (if not adding/removing data)
+- [ ] Frontend still works with new backend schema
+- [ ] No error alerts from monitoring/logging (if configured)
+
+---
+
+### Common Migration Scenarios
+
+#### Scenario 1: Adding a New Column
+
+**Example:** Add `createdBy` field to Problem table
+
+**Schema Change:**
+```prisma
+// packages/api/prisma/schema.prisma
+model Problem {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  question    String
+  answer      String
+  // ... existing fields ...
+  createdBy   String?  @default("system") // ✅ Add default for existing rows
+}
+```
+
+**Safety Considerations:**
+- Use nullable (`?`) OR provide `@default()` for existing rows
+- Without nullable/default, migration fails if rows exist
+- Test with existing 4628 problems locally
+
+**Local Test:**
+```bash
+npm run db:migrate
+
+# Verify default value applied to existing rows
+psql -d maths_tutor_dev -c "SELECT id, createdBy FROM \"Problem\" LIMIT 5;"
+# Expected: All rows have createdBy = 'system'
+
+# Test API
+curl http://localhost:3001/api/problems?type=FRACTION_ADDITION | jq '.[0].createdBy'
+# Expected: "system"
+```
+
+**Generated Migration (example):**
+```sql
+-- AlterTable
+ALTER TABLE "Problem" ADD COLUMN "createdBy" TEXT DEFAULT 'system';
+```
+
+#### Scenario 2: Removing a Column
+
+**Example:** Remove deprecated `category` field
+
+**Before Migration - Critical Step:**
+```bash
+# ⚠️ Search for references in codebase FIRST
+cd /Users/adrian/workspace/2026-projects/maths-tutor-2
+grep -r "category" packages/api/src/
+
+# Update or remove any code using 'category' field
+# Check: API routes, services, types, tests
+```
+
+**Schema Change:**
+```prisma
+model Problem {
+  id        String   @id @default(cuid())
+  // category String // ❌ Remove this line
+  type      String   // ✅ Use this instead
+  // ... other fields ...
+}
+```
+
+**Safety Steps:**
+1. **First deployment:** Mark column as deprecated in code, don't remove from schema
+2. **Wait period:** Monitor for any remaining usage
+3. **Second deployment:** Remove from schema
+
+**Alternative (safer for production):**
+```prisma
+model Problem {
+  category String? // Make nullable first
+  // Later: remove entirely
+}
+```
+
+**Local Test:**
+```bash
+# After removing column
+npm run db:migrate
+
+# Verify API doesn't break
+npm run api:dev
+curl http://localhost:3001/api/categories
+# Should work without 'category' field
+```
+
+#### Scenario 3: Renaming a Column
+
+**⚠️ High Risk:** Requires careful multi-step coordination.
+
+**Recommended Approach (Multi-Step, Zero Downtime):**
+
+**Step 1: Add new column (no downtime)**
+```prisma
+model Problem {
+  oldName String? // Keep temporarily
+  newName String? @default("")
+}
+```
+
+Deploy, verify working.
+
+**Step 2: Migrate data**
+```sql
+-- Run via migration or Railway console
+UPDATE "Problem" SET "newName" = "oldName" WHERE "newName" IS NULL;
+```
+
+**Step 3: Update all code to use new column**
+```typescript
+// Update all API code
+const problem = await prisma.problem.findMany({
+  select: {
+    newName: true, // Instead of oldName
+  }
+});
+```
+
+Deploy, verify working.
+
+**Step 4: Remove old column (after verification)**
+```prisma
+model Problem {
+  newName String // oldName removed
+}
+```
+
+**Alternative (Simpler but risky):** Use Prisma's `@map()`
+```prisma
+model Problem {
+  newName String @map("old_name") // Database column stays "old_name"
+}
+```
+
+**Pros:** Code uses `newName`, database keeps old column
+**Cons:** Code/database mismatch can be confusing
+
+#### Scenario 4: Adding a New Problem Type (Common)
+
+**Example:** Add `ALGEBRA_QUADRATICS` type
+
+**Schema Change:**
+```prisma
+enum ProblemType {
+  // ... existing 29 types ...
+  FRACTION_ADDITION
+  FRACTION_SUBTRACTION
+  // ... more ...
+  ALGEBRA_QUADRATICS // ✅ Add new enum value
+}
+```
+
+**Local Test:**
+```bash
+npm run db:migrate
+
+# Test adding problem with new type
+psql -d maths_tutor_dev << EOF
+INSERT INTO "Problem" (id, question, answer, type, difficulty, tags, "sourceWorksheet", "sourceProblemNumber", "hasVariables", "createdAt", "updatedAt")
+VALUES (
+  gen_random_uuid()::text,
+  'Solve: x^2 + 5x + 6 = 0',
+  'x = -2 or x = -3',
+  'ALGEBRA_QUADRATICS',
+  'medium',
+  ARRAY['factoring', 'quadratic-formula'],
+  'test_worksheet',
+  1,
+  true,
+  NOW(),
+  NOW()
+);
+EOF
+
+# Verify API returns new type
+curl http://localhost:3001/api/problems?type=ALGEBRA_QUADRATICS
+```
+
+**Important:** Update frontend TypeScript types too:
+```typescript
+// apps/web/src/api/types.ts
+export type ProblemType =
+  | 'FRACTION_ADDITION'
+  | 'FRACTION_SUBTRACTION'
+  // ... existing types
+  | 'ALGEBRA_QUADRATICS'; // ✅ Add here too
+```
+
+**Deployment Notes:**
+- Frontend and backend can deploy separately
+- Old frontend works with new backend (ignores new type)
+- Update frontend after backend is stable
+
+#### Scenario 5: Adding an Index (Performance)
+
+**Example:** Add composite index for tag-based queries
+
+**Schema Change:**
+```prisma
+model Problem {
+  // ... fields ...
+  type String
+  tags String[]
+
+  @@index([tags], type: Gin) // ✅ Already exists for array
+  @@index([type, tags])      // Add composite index for combined queries
+}
+```
+
+**Performance Testing:**
+```bash
+npm run db:migrate
+
+# Test query performance BEFORE migration
+psql -d maths_tutor_dev -c "
+EXPLAIN ANALYZE
+SELECT * FROM \"Problem\"
+WHERE type = 'FRACTION_ADDITION'
+  AND 'unlike-denominators' = ANY(tags);
+"
+# Note execution time (e.g., 45ms)
+
+# Apply migration with index
+
+# Test query performance AFTER migration
+psql -d maths_tutor_dev -c "
+EXPLAIN ANALYZE
+SELECT * FROM \"Problem\"
+WHERE type = 'FRACTION_ADDITION'
+  AND 'unlike-denominators' = ANY(tags);
+"
+# Should be faster (e.g., 8ms)
+```
+
+**Generated Migration:**
+```sql
+-- CreateIndex
+CREATE INDEX "Problem_type_tags_idx" ON "Problem"("type", "tags");
+```
+
+**Production Considerations:**
+- Index creation can take time on large tables (Railway has 4628 rows - should be fast)
+- PostgreSQL creates indexes without blocking reads
+- Monitor Railway deployment logs for index creation time
+
+---
+
+### Troubleshooting Migration Issues
+
+#### Issue 1: Migration Fails on Railway
+
+**Symptoms:**
+- Railway deployment shows "Migration failed"
+- Error: `Unique constraint violation`
+- Error: `Column "columnName" does not exist`
+- Deployment status: Failed (red X)
+
+**Common Causes:**
+- Added unique constraint but existing data has duplicates
+- Removed column but Railway database schema ahead/behind local
+- Migration already partially applied
+
+**Solution:**
+
+```bash
+# 1. Check exact error in Railway logs
+# Railway Dashboard → Backend Service → Deployments → View Logs
+# Look for Prisma error message
+
+# 2. Connect to Railway database to check state
+railway link
+railway run psql $DATABASE_URL
+
+# Check current schema
+\d+ Problem
+
+# Check migration history
+railway run npx prisma migrate status
+
+# 3. Fix locally based on error
+cd packages/api
+
+# Rollback if needed
+npx prisma migrate reset
+
+# Fix schema.prisma
+# Create new migration
+npm run db:migrate
+
+# Test thoroughly
+psql -d maths_tutor_dev -c "SELECT COUNT(*) FROM \"Problem\";"
+
+# 4. Commit fix and re-push
+git add packages/api/prisma/
+git commit -m "Fix migration: resolve constraint violation"
+git push origin main
+```
+
+#### Issue 2: Migration Applied but API Crashes
+
+**Symptoms:**
+- Prisma migration succeeds in logs
+- API server crashes on startup
+- Error: `Invalid Prisma schema`
+- Error: `Cannot find module '@prisma/client'`
+
+**Causes:**
+- Prisma Client not regenerated during build
+- Type mismatches between schema and API code
+- Build script missing `db:generate`
+
+**Solution:**
+
+```bash
+# Verify package.json build script
+cat packages/api/package.json | grep "build"
+# Should be: "build": "npm run db:generate && tsc"
+
+# If missing, add db:generate
+# Edit packages/api/package.json:
+"build": "npm run db:generate && tsc"
+
+# Commit and push
+git add packages/api/package.json
+git commit -m "Fix build: add Prisma client generation"
+git push origin main
+
+# Or force redeploy without changes
+git commit --allow-empty -m "Trigger Railway rebuild with Prisma client"
+git push origin main
+```
+
+**Check Railway build logs for:**
+```
+[build] > api@1.0.0 build
+[build] > npm run db:generate && tsc
+[build]
+[build] > api@1.0.0 db:generate
+[build] > prisma generate
+[build]
+[build] ✔ Generated Prisma Client (v6.19.0)
+```
+
+#### Issue 3: Railway Database Out of Sync
+
+**Symptoms:**
+- Error: `Migration "20260113120000_name" already applied`
+- Error: `Migration history mismatch`
+- Local works but Railway fails
+
+**Causes:**
+- Manually ran migrations in Railway console
+- Migration was applied but not recorded in `_prisma_migrations`
+- Git history issues (rebased, force pushed)
+
+**Solution:**
+
+```bash
+# 1. Check migration status on Railway
+railway run npx prisma migrate status
+
+# Output shows:
+# Following migration(s) have NOT been applied:
+# 20260113120000_add_user_preferences
+
+# But schema changes ARE present (manually applied)
+
+# 2. Mark migration as applied without running it
+railway run npx prisma migrate resolve --applied 20260113120000_add_user_preferences
+
+# 3. Verify status
+railway run npx prisma migrate status
+# Should show: No pending migrations
+```
+
+**Nuclear option (⚠️ destructive - data loss):**
+```bash
+# Only if you can re-import all data
+railway run npx prisma migrate reset --force
+
+# Then re-import data
+cd packages/api
+npm run data:import-json
+npm run data:import-markdown
+```
+
+#### Issue 4: Cannot Roll Back Migration
+
+**Symptoms:**
+- Need to undo recent migration
+- Migration already applied to Railway
+- Data may be affected
+
+**Solution Option 1: Create Revert Migration (Recommended)**
+
+```bash
+# Edit schema.prisma to reverse changes
+# Remove added columns, restore removed columns, etc.
+
+# Create new "revert" migration
+npm run db:migrate -- --name revert_user_preferences
+
+# Test locally
+psql -d maths_tutor_dev -c "\d+ Problem"
+
+# Commit and push
+git add packages/api/prisma/
+git commit -m "Revert user preferences migration
+
+Reverted changes from 20260113120000_add_user_preferences
+- Removed UserPreferences table
+- Removed userId foreign key from Problem"
+
+git push origin main
+```
+
+**Solution Option 2: Manual Rollback (Last Resort)**
+
+```bash
+# Connect to Railway database
+railway run psql $DATABASE_URL
+
+# Manually reverse SQL commands
+# If migration added column:
+ALTER TABLE "Problem" DROP COLUMN "createdBy";
+
+# If migration added table:
+DROP TABLE "UserPreferences";
+
+# Update migration history
+railway run npx prisma migrate resolve --rolled-back 20260113120000_add_user_preferences
+
+# ⚠️ Warning: This creates schema/migration mismatch
+# You MUST also revert the code and schema.prisma locally
+```
+
+#### Issue 5: Data Loss After Migration
+
+**Symptoms:**
+- Data missing after migration deployed
+- Row counts don't match
+- Relations broken
+
+**Prevention (Always do this before major migrations):**
+
+```bash
+# Backup Railway database BEFORE pushing migration
+railway link
+railway run pg_dump $DATABASE_URL > backup_$(date +%Y%m%d_%H%M%S).sql
+
+# Example: backup_20260113_120530.sql
+
+# Store backup securely
+mkdir -p ~/backups/maths-tutor
+mv backup_*.sql ~/backups/maths-tutor/
+```
+
+**Recovery:**
+
+```bash
+# 1. Get backup file
+ls ~/backups/maths-tutor/
+
+# 2. Restore to Railway database
+railway run pg_restore --clean --no-owner --no-acl -d $DATABASE_URL backup_20260113_120530.sql
+
+# 3. Verify data restored
+railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
+# Expected: 4628
+
+# 4. Restart Railway backend service
+# Railway Dashboard → Backend Service → Settings → Restart
+```
+
+---
+
+### Emergency Procedures
+
+#### Emergency: Migration Broke Production
+
+**Immediate Actions (5 minutes):**
+
+1. **Roll back Railway to previous deployment**
+   - Railway Dashboard → Backend Service → Deployments
+   - Find last successful deployment (before migration)
+   - Click three dots (⋮) → "Redeploy"
+   - Confirm - uses old code without broken migration
+   - Verify site works: test API endpoints
+
+2. **Notify team** (if applicable)
+   - Post in team chat: "Rolled back backend to previous deployment"
+   - Explain issue briefly
+   - Set status: investigating
+
+**Fix Locally (30 minutes):**
+
+```bash
+# Option A: Revert the commit
+git log -5 --oneline
+git revert <commit-hash-of-broken-migration>
+git push origin main
+
+# Option B: Fix the migration
+cd packages/api
+# Edit schema.prisma to fix issue
+npm run db:migrate -- --name fix_broken_migration
+# Test thoroughly
+npm run db:reset
+npm run db:migrate
+npm run data:import-json
+npm test
+```
+
+**Redeploy Fix:**
+
+```bash
+# Commit fix
+git add packages/api/prisma/
+git commit -m "Fix broken migration: [describe fix]
+
+Root cause: [explain what went wrong]
+Fix: [explain solution]
+Tested: [summarize local testing]"
+
+git push origin main
+
+# Monitor Railway deployment closely
+# Railway Dashboard → Backend Service → Deployments → Latest
+# Watch logs for:
+# - Migration success
+# - Server startup
+# - No errors
+```
+
+**Verify Fix:**
+
+```bash
+# Test all endpoints
+curl https://your-backend.up.railway.app/health
+curl https://your-backend.up.railway.app/api/categories
+curl https://your-backend.up.railway.app/api/problems?type=FRACTION_ADDITION
+
+# Verify data integrity
+railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
+# Expected: 4628
+```
+
+#### Emergency: Database Corrupted
+
+**Symptoms:**
+- Data missing or incorrect
+- Foreign key violations
+- Constraints broken
+- Data types wrong
+
+**Immediate Actions:**
+
+1. **Stop Railway backend service**
+   - Railway Dashboard → Backend Service → Settings
+   - Click "Pause" or scale to 0 replicas
+   - Prevents further writes to corrupt database
+
+2. **Assess damage**
+```bash
+railway run psql $DATABASE_URL << EOF
+-- Check row counts
+SELECT 'Problem' AS table_name, COUNT(*) FROM "Problem"
+UNION ALL
+SELECT 'WorksheetTemplate', COUNT(*) FROM "WorksheetTemplate";
+
+-- Check for orphaned relations
+SELECT p.id FROM "Problem" p
+LEFT JOIN "WorksheetProblem" wp ON p.id = wp."problemId"
+WHERE wp.id IS NULL;
+EOF
+```
+
+3. **Restore from backup**
+```bash
+# Get most recent backup
+ls -lt ~/backups/maths-tutor/ | head -3
+
+# Test restore locally first (if time permits)
+createdb maths_tutor_restore_test
+pg_restore -d maths_tutor_restore_test backup_20260113_120530.sql
+psql -d maths_tutor_restore_test -c "SELECT COUNT(*) FROM \"Problem\";"
+
+# If local restore looks good, restore to Railway
+railway run pg_restore --clean --no-owner --no-acl -d $DATABASE_URL backup_20260113_120530.sql
+
+# Verify
+railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
+# Expected: 4628
+```
+
+4. **Restart Railway backend**
+   - Railway Dashboard → Backend Service → Settings
+   - Click "Resume" or scale back up
+   - Monitor logs for clean startup
+
+---
+
+### Migration Best Practices
+
+#### Development Workflow Checklist
+
+- ✅ **Always test locally first** - Never push untested migrations
+- ✅ **Create descriptive migration names** - Use snake_case: `add_user_table`, not `migration1`
+- ✅ **Commit migrations immediately** - Don't let uncommitted migrations linger
+- ✅ **Never edit migration files manually** - Create new migrations instead
+- ✅ **Use nullable fields or defaults** - When adding columns to populated tables
+- ✅ **Test API endpoints after changes** - Verify app works with new schema
+- ✅ **Verify data integrity** - Check row counts, run test queries
+- ✅ **Search before removing columns** - Use `grep -r "columnName"` to find all references
+
+#### Deployment Workflow Checklist
+
+- ✅ **Review migration in commit** - Check `git show` before pushing
+- ✅ **Push during low-traffic periods** - Minimize user impact
+- ✅ **Monitor Railway deployment logs** - Watch for migration success
+- ✅ **Test production immediately** - Don't wait to verify deployment
+- ✅ **Keep backups** - Run `pg_dump` before major schema changes
+- ✅ **Have rollback plan ready** - Know how to revert if needed
+- ✅ **Document breaking changes** - Note in commit message and team chat
+
+#### Team Coordination Checklist
+
+- ✅ **Communicate schema changes** - Notify team before pushing
+- ✅ **Update frontend types** - Sync TypeScript types when adding enums
+- ✅ **Document breaking changes** - Note incompatibilities in commit
+- ✅ **Consider backward compatibility** - Allow gradual rollout when possible
+- ✅ **Coordinate deploy timing** - Avoid conflicting deployments
+- ✅ **Review each other's migrations** - Peer review before merge
+
+---
+
+### Reference
+
+**Quick Command Reference:**
+
+| Task | Command | Location |
+|------|---------|----------|
+| Create migration | `npm run db:migrate` | `packages/api/` |
+| Apply migrations (prod-like) | `npm run db:migrate:deploy` | `packages/api/` |
+| Check migration status | `npx prisma migrate status` | `packages/api/` |
+| Reset database | `npm run db:reset` | `packages/api/` |
+| Generate Prisma Client | `npm run db:generate` | `packages/api/` |
+| Open Prisma Studio | `npm run db:studio` | `packages/api/` |
+| Check Railway migrations | `railway run npx prisma migrate status` | Any |
+| Backup Railway DB | `railway run pg_dump $DATABASE_URL > backup.sql` | Any |
+| Restore Railway DB | `railway run pg_restore -d $DATABASE_URL backup.sql` | Any |
+| Connect to Railway DB | `railway run psql $DATABASE_URL` | Any |
+
+**Related Documentation:**
+- **Prisma Migrate:** https://www.prisma.io/docs/concepts/components/prisma-migrate
+- **Railway PostgreSQL:** https://docs.railway.app/databases/postgresql
+- **Local Setup:** [`PROJECT-SETUP.md`](./PROJECT-SETUP.md) → Database Setup
+- **Railway Deployment:** This guide, Section 2 (Backend Deployment)
+- **Prisma Schema:** https://www.prisma.io/docs/concepts/components/prisma-schema
+
+**Last Updated:** 2026-01-13
+
+---
+
 ## 3. Frontend Deployment (React SPA)
 
 ### Configure API Client for Production
