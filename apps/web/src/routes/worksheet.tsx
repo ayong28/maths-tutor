@@ -19,7 +19,6 @@ import {
   buildTypeMap,
   setCachedTypeMap,
 } from "@/utils/routing";
-import { PrintableWorksheet } from "@/components/PrintableWorksheet";
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -194,14 +193,12 @@ export default function Worksheet() {
 
   // PDF download
   const handleDownloadPDF = async (): Promise<void> => {
-    if (!problems) return;
+    if (!problems || problems.length === 0) return;
 
     const title = `${categoryDisplay} - ${subcategoryDisplay}`;
     const filename = `${category}-${subcategory}-worksheet.pdf`;
 
-    const document = <PrintableWorksheet title={title} problems={problems} />;
-
-    await generatePDF(document, filename);
+    await generatePDF(title, problems, filename);
   };
 
   return (
