@@ -1,30 +1,58 @@
 import { useState } from 'react';
-import { pdf } from '@react-pdf/renderer';
-import type { ReactElement } from 'react';
+
+type PDFProblem = {
+  question: string;
+  answer: string;
+}
 
 interface UsePDFGeneratorReturn {
   generating: boolean;
   error: string | null;
-  generatePDF: (document: ReactElement<any>, filename: string) => Promise<void>;
+  generatePDF: (title: string, problems: PDFProblem[], filename: string) => Promise<void>;
 }
 
+const API_BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
+
 /**
- * Hook for generating and downloading PDFs from @react-pdf/renderer Documents
+ * Hook for generating and downloading PDF worksheets via the backend API
  */
 export const usePDFGenerator = (): UsePDFGeneratorReturn => {
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const generatePDF = async (
-    document: ReactElement<any>,
+    title: string,
+    problems: PDFProblem[],
     filename: string
   ): Promise<void> => {
     try {
       setGenerating(true);
       setError(null);
 
-      // Generate PDF blob
-      const blob = await pdf(document).toBlob();
+      // Call backend API to generate PDF
+      const response = await fetch(`${API_BASE}/generate-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title,
+          problems: problems.map(p => ({
+            question: p.question,
+            answer: p.answer,
+          })),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Failed to generate PDF: ${response.statusText}`);
+      }
+
+      // Get PDF blob from response
+      const blob = await response.blob();
 
       // Create download link
       const url = URL.createObjectURL(blob);
