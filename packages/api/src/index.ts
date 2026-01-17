@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import problemsRouter from './routes/problems.routes';
+import pdfRouter from './routes/pdf.routes';
 
 // Load environment variables
 dotenv.config();
@@ -25,6 +26,7 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 
 // Routes
 app.use('/api', problemsRouter);
+app.use('/api', pdfRouter);
 
 // Health check
 app.get('/health', (_req: Request, res: Response) => {
