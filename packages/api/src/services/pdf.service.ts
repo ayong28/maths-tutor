@@ -41,13 +41,33 @@ const CONFIG = {
     MARGIN: 50,
     LEFT_COLUMN_X: 70,
     RIGHT_COLUMN_X: 320,
-    PROBLEMS_PER_COLUMN: 15,
     START_Y: 120,
-    VERTICAL_SPACING: 35,
+    PAGE_HEIGHT: 792, // Letter size height in points
+    MIN_VERTICAL_SPACING: 28,
+    MAX_VERTICAL_SPACING: 45,
     TITLE_FONT_SIZE: 16,
     PROBLEM_FONT_SIZE: 12,
   },
 } as const;
+
+/**
+ * Calculate dynamic layout based on problem count
+ */
+function calculateLayout(problemCount: number): { problemsPerColumn: number; verticalSpacing: number } {
+  const { START_Y, PAGE_HEIGHT, MARGIN, MIN_VERTICAL_SPACING, MAX_VERTICAL_SPACING } = CONFIG.PDF;
+
+  // Split problems evenly between two columns
+  const problemsPerColumn = Math.ceil(problemCount / 2);
+
+  // Calculate available height for problems
+  const availableHeight = PAGE_HEIGHT - MARGIN - START_Y;
+
+  // Calculate spacing, clamped between min and max
+  let verticalSpacing = availableHeight / problemsPerColumn;
+  verticalSpacing = Math.max(MIN_VERTICAL_SPACING, Math.min(MAX_VERTICAL_SPACING, verticalSpacing));
+
+  return { problemsPerColumn, verticalSpacing };
+}
 
 /**
  * Draws a fraction with proper vertical notation (numerator / denominator)
@@ -195,22 +215,26 @@ function createWorksheetDocument(options: PDFGenerateOptions): PDFKit.PDFDocumen
 
   const doc = new PDFDocument({ margin: CONFIG.PDF.MARGIN });
 
-  const { LEFT_COLUMN_X, RIGHT_COLUMN_X, PROBLEMS_PER_COLUMN, START_Y, VERTICAL_SPACING, TITLE_FONT_SIZE, PROBLEM_FONT_SIZE } = CONFIG.PDF;
+  const { LEFT_COLUMN_X, RIGHT_COLUMN_X, START_Y, TITLE_FONT_SIZE, PROBLEM_FONT_SIZE } = CONFIG.PDF;
+
+  // Calculate dynamic layout based on problem count
+  const { problemsPerColumn, verticalSpacing } = calculateLayout(problems.length);
 
   // Title Page
   doc.fontSize(TITLE_FONT_SIZE).text(title, { align: 'center', underline: true });
   doc.moveDown(2);
 
-  // Layout problems in two columns
+  // Layout problems in two columns (evenly distributed)
   for (let i = 0; i < problems.length; i++) {
     const problem = problems[i];
     if (!problem) continue;
 
-    const columnIndex = Math.floor(i / PROBLEMS_PER_COLUMN);
-    const rowIndex = i % PROBLEMS_PER_COLUMN;
+    // Distribute evenly: first half in left column, second half in right
+    const columnIndex = i < problemsPerColumn ? 0 : 1;
+    const rowIndex = i < problemsPerColumn ? i : i - problemsPerColumn;
 
     const x = columnIndex === 0 ? LEFT_COLUMN_X : RIGHT_COLUMN_X;
-    const y = START_Y + (rowIndex * VERTICAL_SPACING);
+    const y = START_Y + (rowIndex * verticalSpacing);
 
     doc.fontSize(PROBLEM_FONT_SIZE);
 
@@ -236,11 +260,12 @@ function createWorksheetDocument(options: PDFGenerateOptions): PDFKit.PDFDocumen
       const problem = problems[i];
       if (!problem) continue;
 
-      const columnIndex = Math.floor(i / PROBLEMS_PER_COLUMN);
-      const rowIndex = i % PROBLEMS_PER_COLUMN;
+      // Same layout as problems page
+      const columnIndex = i < problemsPerColumn ? 0 : 1;
+      const rowIndex = i < problemsPerColumn ? i : i - problemsPerColumn;
 
       const x = columnIndex === 0 ? LEFT_COLUMN_X : RIGHT_COLUMN_X;
-      const y = START_Y + (rowIndex * VERTICAL_SPACING);
+      const y = START_Y + (rowIndex * verticalSpacing);
 
       doc.fontSize(PROBLEM_FONT_SIZE);
 
