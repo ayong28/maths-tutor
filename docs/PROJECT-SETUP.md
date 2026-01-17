@@ -283,7 +283,7 @@ curl "http://localhost:3001/api/problems?type=FRACTION_ADDITION&difficulty=EASY,
 - Schema: `packages/api/prisma/schema.prisma`
 - Migrations: `packages/api/prisma/migrations/`
 - Client singleton: `packages/api/src/db/prisma.ts`
-- Data scripts: `packages/api/scripts/data/`
+- Data scripts: `packages/api/scripts/data/` (local only, not tracked in git)
 
 **Custom Client Location:**
 - Generator output: `../../../../generated/prisma` (relative to packages/api/src/db/prisma.ts)
@@ -370,9 +370,11 @@ The project has **two data sources**:
 
 **Total: 4,628 problems across 29 problem types**
 
-**Note:** The `math-data/` folder is not tracked in git (already imported to PostgreSQL).
+**Note:** Data is already in PostgreSQL. The following are not tracked in git:
+- `packages/api/math-data/` - Source JSON files
+- `packages/api/scripts/data/` - One-time import scripts
 
-##### Import JSON Problems
+##### Import JSON Problems (local scripts only)
 
 ```bash
 # From packages/api folder (recommended)
@@ -421,14 +423,14 @@ Successful: 3758
 Errors: 0
 ```
 
-##### Import Markdown Worksheets
+##### Import Markdown Worksheets (local scripts only)
 
 ```bash
 # From packages/api folder (recommended)
 cd packages/api
 npm run data:import-markdown
 
-# Or from root
+# Or from root (requires local scripts)
 npx tsx packages/api/scripts/data/migrate-markdown-to-db.ts
 ```
 
@@ -533,31 +535,15 @@ psql -d maths_tutor_dev -c "SELECT difficulty, COUNT(*) as count FROM \"Problem\
 
 #### Problem: Database already exists but is empty
 
-**Solution: Clear and re-import**
+**Solution: Clear and re-import** (requires local scripts in `packages/api/scripts/data/`)
 ```bash
 # Clear all problems
 psql -d maths_tutor_dev -c "TRUNCATE TABLE \"Problem\" CASCADE;"
 
-# Re-import
-npx tsx scripts/import-json-to-db.ts
-npx tsx scripts/migrate-markdown-to-db.ts
-```
-
-#### Problem: Import script fails with "Unknown argument denominators"
-
-This happened with older JSON files that had extra fields not in the schema.
-
-**Solution: The import script now auto-cleans data**
-
-The `import-json-to-db.ts` script strips invalid fields:
-```typescript
-const cleanedProblems = problems.map((p: any) => ({
-  question: p.question,
-  answer: p.answer,
-  type: p.type,
-  difficulty: p.difficulty,
-  tags: p.tags || [],
-}));
+# Re-import (scripts not tracked in git - must exist locally)
+cd packages/api
+npm run data:import-json
+npm run data:import-markdown
 ```
 
 #### Problem: "Database maths_tutor_dev does not exist"

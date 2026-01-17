@@ -221,11 +221,11 @@ npm run api:dev
 psql -d maths_tutor_dev -c "SELECT type, COUNT(*) FROM \"Problem\" GROUP BY type LIMIT 5;"
 # Ensure existing queries still work
 
-# ✅ 5. Test full reset (optional but recommended)
+# ✅ 5. Test full reset (optional - requires local import scripts)
 npx prisma migrate reset
 npm run db:migrate
-npm run data:import-json
-npm run data:import-markdown
+npm run data:import-json      # Requires local scripts/data/
+npm run data:import-markdown  # Requires local scripts/data/
 # Verify full database rebuild works
 ```
 
@@ -825,10 +825,10 @@ railway run npx prisma migrate status
 
 **Nuclear option (⚠️ destructive - data loss):**
 ```bash
-# Only if you can re-import all data
+# Only if you can re-import all data (requires local scripts/data/)
 railway run npx prisma migrate reset --force
 
-# Then re-import data
+# Then re-import data (scripts not tracked in git)
 cd packages/api
 npm run data:import-json
 npm run data:import-markdown
@@ -957,7 +957,7 @@ npm run db:migrate -- --name fix_broken_migration
 # Test thoroughly
 npm run db:reset
 npm run db:migrate
-npm run data:import-json
+npm run data:import-json  # Requires local scripts/data/
 npm test
 ```
 

@@ -80,14 +80,12 @@ brew services start postgresql@16  # Start PostgreSQL
 # From packages/api folder (recommended)
 cd packages/api
 npm run db:migrate                  # Create DB + run migrations
-npm run data:import-json            # Import JSON (3,758 problems)
-npm run data:import-markdown        # Import markdown (870 problems)
 
 # Or from root
 npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
-npx tsx packages/api/scripts/data/import-json-to-db.ts
-npx tsx packages/api/scripts/data/migrate-markdown-to-db.ts
 ```
+
+**Note:** Data (4,628 problems) is already in PostgreSQL. Import scripts exist locally in `packages/api/scripts/data/` but are not tracked in git.
 
 **Full setup guide:** See `docs/PROJECT-SETUP.md` → Database Setup section
 
@@ -128,7 +126,7 @@ packages/api/      # Express API + Prisma
   math-data/       # Source JSON files (not tracked - data in PostgreSQL)
   src/db/          # Prisma client singleton (packages/api/src/db/prisma.ts)
   src/services/    # Database business logic
-  scripts/         # Data import scripts
+  scripts/data/    # One-time import scripts (not tracked - data in PostgreSQL)
 src/               # CLI + PDF generator
 e2e/               # Playwright tests (47 E2E tests)
 docs/              # Documentation (see docs/README.md for index)
@@ -147,5 +145,6 @@ generated/         # Prisma client output (not tracked - regenerated locally)
 **Not Tracked in Git:**
 - `generated/` - Prisma client (regenerated via `npx prisma generate`)
 - `packages/api/math-data/` - Source JSON files (data already in PostgreSQL)
+- `packages/api/scripts/data/` - One-time data import scripts (data already in PostgreSQL)
 
 See `docs/PROJECT-SETUP.md` for details.
