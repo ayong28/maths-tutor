@@ -6,24 +6,24 @@ import * as fs from 'fs';
 /**
  * E2E-007: PDF Download
  * Tests PDF generation and download functionality
+ * Updated for React Router 7 URL-based routing
  */
 test.describe('PDF Download', () => {
   test('should download PDF with correct filename when clicking Download PDF button', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Navigate to Fractions → Addition
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
+    // Navigate directly to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
 
-    // Wait for problems to load
-    await worksheetPage.waitForProblemsToLoad();
+    // Wait for problems to be visible
+    await expect(worksheetPage.problemsList).toBeVisible();
 
     // Set up download listener before clicking
     const downloadPromise = page.waitForEvent('download');
 
     // Click Download PDF button
-    const downloadButton = page.getByRole('button', { name: /download pdf/i }).first();
+    const downloadButton = worksheetPage.downloadPdfButton;
 
     // Verify button is enabled
     await expect(downloadButton).toBeEnabled();
@@ -60,26 +60,21 @@ test.describe('PDF Download', () => {
 
   test('should show loading state while generating PDF', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Navigate to Fractions → Addition
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
+    // Navigate directly to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
 
-    // Wait for problems to load
-    await worksheetPage.waitForProblemsToLoad();
+    // Wait for problems to be visible
+    await expect(worksheetPage.problemsList).toBeVisible();
 
-    const downloadButton = page.getByRole('button', { name: /download pdf/i }).first();
+    const downloadButton = worksheetPage.downloadPdfButton;
 
     // Set up download listener
     const downloadPromise = page.waitForEvent('download');
 
     // Click the button
     await downloadButton.click();
-
-    // Check for loading state (button should show "Generating...")
-    // Note: This might be very brief, so we use a flexible assertion
-    const buttonText = await downloadButton.textContent();
 
     // Button should either show loading state or return to normal quickly
     // We just verify the download completes successfully
@@ -91,23 +86,23 @@ test.describe('PDF Download', () => {
 
   test('should download PDF for different problem types', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Test with Algebra → Collecting Terms
-    await worksheetPage.selectCategory('Algebra');
-    await worksheetPage.selectSubcategory('Collecting Terms');
-    await worksheetPage.waitForProblemsToLoad();
+    // Navigate directly to Algebras → Collecting Terms
+    await worksheetPage.gotoWorksheet('algebras', 'collecting-terms');
+    await worksheetPage.waitForPageReady();
+
+    // Wait for problems to be visible
+    await expect(worksheetPage.problemsList).toBeVisible();
 
     const downloadPromise = page.waitForEvent('download');
 
-    const downloadButton = page.getByRole('button', { name: /download pdf/i }).first();
-    await downloadButton.click();
+    await worksheetPage.downloadPdfButton.click();
 
     const download = await downloadPromise;
     const filename = download.suggestedFilename();
 
     // Verify algebra worksheet filename
-    expect(filename).toMatch(/algebra-collecting-terms-worksheet\.pdf/i);
+    expect(filename).toMatch(/algebras-collecting-terms-worksheet\.pdf/i);
 
     // Save and verify file
     const downloadsPath = path.join(__dirname, '../../playwright-downloads');

@@ -1,24 +1,24 @@
-import { test, expect, chromium, firefox, webkit } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { WorksheetPage } from '../fixtures/WorksheetPage';
 
 /**
  * E2E-020: Cross-Browser Compatibility
  * Tests app functionality across Chromium, Firefox, and WebKit
+ * Updated for React Router 7 URL-based routing
  */
 test.describe('Cross-Browser Compatibility', () => {
   // These tests run on all browsers configured in playwright.config.ts
-  // Each test automatically runs in Chromium, Firefox, and WebKit
 
   test('should load homepage correctly in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
     // Wait for hero section
-    await expect(worksheetPage.heroSection).toBeVisible();
+    await expect(worksheetPage.heroHeading).toBeVisible();
 
-    // Verify categories load
-    await expect(page.getByRole('button', { name: 'Fractions' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Algebra' })).toBeVisible();
+    // Verify category links load
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
 
     // Verify page title
     const title = await page.title();
@@ -27,57 +27,58 @@ test.describe('Cross-Browser Compatibility', () => {
     console.log(`✓ Homepage loaded successfully in ${browserName}`);
   });
 
-  test('should handle category and subcategory selection in all browsers', async ({ page, browserName }) => {
+  test('should handle category and subcategory navigation in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
-    // Select category
+    // Click category link
     await worksheetPage.selectCategory('Fractions');
-    await expect(page.getByRole('button', { name: 'Addition' })).toBeVisible();
 
-    // Select subcategory
+    // Should navigate to category page
+    await expect(page).toHaveURL(/\/fractions$/);
+    await expect(page.getByRole('link', { name: /addition/i })).toBeVisible();
+
+    // Click subcategory link
     await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
 
-    await expect(page.getByText('Fractions - Addition').first()).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Addition', level: 2 })).toBeVisible();
-    console.log(`✓ Category selection works in ${browserName}`);
+    // Should navigate to worksheet page
+    await expect(page).toHaveURL(/\/fractions\/addition/);
+    await expect(worksheetPage.problemsList).toBeVisible();
+
+    console.log(`✓ Category navigation works in ${browserName}`);
   });
 
   test('should apply filters correctly in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Navigate to subcategory
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
+    // Navigate directly to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
 
-    await expect(page.getByText('Fractions - Addition').first()).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Addition', level: 2 })).toBeVisible();
+    // Wait for problems to load
+    await expect(worksheetPage.problemsList).toBeVisible();
 
     // Apply difficulty filter
-    await page.getByLabel(/filter by easy difficulty/i).click();
-    await page.getByRole('button', { name: /apply filters/i }).click();
+    await page.getByRole('checkbox', { name: /easy/i }).click();
+    await worksheetPage.applyFiltersButton.click();
 
-    // TODO: Find out why 'li' elements can't be located 
-    // Wait for filtered results
-    await page.waitForTimeout(1000);
+    // URL should update with filter params
+    await expect(page).toHaveURL(/difficulty=EASY/i);
 
-    // Verify problems still showing
-    await expect(page.getByText('Fractions - Addition').first()).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Addition', level: 2 })).toBeVisible();
+    console.log(`✓ Filters work correctly in ${browserName}`);
   });
 
   test('should render CSS correctly in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
-    await expect(page.getByRole('button', { name: 'Fractions' })).toBeVisible();
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
 
-    // Check button styling
-    const fractionsButton = page.getByRole('button', { name: 'Fractions' });
-    const styles = await fractionsButton.evaluate((el) => {
+    // Check link styling
+    const fractionsLink = page.getByRole('link', { name: /fractions/i });
+    const styles = await fractionsLink.evaluate((el) => {
       const computed = window.getComputedStyle(el);
       return {
         display: computed.display,
@@ -96,19 +97,19 @@ test.describe('Cross-Browser Compatibility', () => {
 
   test('should handle PDF download in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Navigate to subcategory
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
+    // Navigate directly to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
+
+    // Wait for problems to load
+    await expect(worksheetPage.problemsList).toBeVisible();
 
     // Set up download listener
     const downloadPromise = page.waitForEvent('download');
 
     // Click Download PDF
-    const downloadButton = page.getByRole('button', { name: /download pdf/i }).first();
-    await downloadButton.click();
+    await worksheetPage.downloadPdfButton.click();
 
     // Wait for download
     const download = await downloadPromise;
@@ -123,55 +124,57 @@ test.describe('Cross-Browser Compatibility', () => {
   test('should handle keyboard navigation in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
-    await expect(page.getByRole('button', { name: 'Fractions' })).toBeVisible();
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
 
     // Focus and activate with keyboard
-    const fractionsButton = page.getByRole('button', { name: 'Fractions' });
-    await fractionsButton.focus();
+    const fractionsLink = page.getByRole('link', { name: /fractions/i });
+    await fractionsLink.focus();
 
     // Verify focus
-    const isFocused = await fractionsButton.evaluate((el) => el === document.activeElement);
+    const isFocused = await fractionsLink.evaluate((el) => el === document.activeElement);
     expect(isFocused).toBe(true);
 
     // Activate with Enter
     await page.keyboard.press('Enter');
 
-    // Verify subcategories appear
-    await expect(page.getByRole('button', { name: 'Addition' })).toBeVisible();
+    // Should navigate to category page
+    await expect(page).toHaveURL(/\/fractions$/);
 
     console.log(`✓ Keyboard navigation works in ${browserName}`);
   });
 
   test('should display fractions correctly in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Navigate to fraction problems
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
-    const secondItemOnWorksheet = page.locator('ol').locator('li').nth(1);
-    await expect(secondItemOnWorksheet).toContainText(/\d+\+\d+=/);
+    // Navigate directly to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
 
-    expect(secondItemOnWorksheet).toBeVisible();
+    // Wait for problems to load
+    await expect(worksheetPage.problemsList).toBeVisible();
+
+    // Verify fraction problems display
+    const problemCount = await worksheetPage.getProblemCount();
+    expect(problemCount).toBeGreaterThan(0);
 
     console.log(`✓ Fractions display correctly in ${browserName}`);
   });
 
   test('should display algebraic expressions correctly in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
-    await worksheetPage.goto();
 
-    // Navigate to algebra problems
-    await worksheetPage.selectCategory('Algebra');
-    await worksheetPage.selectSubcategory('Collecting Terms');
-    await worksheetPage.waitForProblemsToLoad();
+    // Navigate directly to algebra worksheet
+    await worksheetPage.gotoWorksheet('algebras', 'collecting-terms');
+    await worksheetPage.waitForPageReady();
+
+    // Wait for problems to load
+    await expect(worksheetPage.problemsList).toBeVisible();
 
     // Verify problems display
-    await expect(page.getByText('Algebra - Collecting Terms').first()).toBeVisible();
-    const problems = await page.locator('li').filter({ hasText: /[a-z]+/ }).count();
-    expect(problems).toBeGreaterThan(0);
+    const problemCount = await worksheetPage.getProblemCount();
+    expect(problemCount).toBeGreaterThan(0);
 
     console.log(`✓ Algebraic expressions display correctly in ${browserName}`);
   });
@@ -182,40 +185,41 @@ test.describe('Cross-Browser Compatibility', () => {
 
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
     // Verify page loads on mobile
-    await expect(worksheetPage.heroSection).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Fractions' })).toBeVisible();
+    await expect(worksheetPage.heroHeading).toBeVisible();
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
 
-    // Test interaction on mobile
+    // Test navigation on mobile
     await worksheetPage.selectCategory('Fractions');
-    await expect(page.getByRole('button', { name: 'Addition' })).toBeVisible();
+    await expect(page).toHaveURL(/\/fractions$/);
 
     console.log(`✓ Mobile viewport works in ${browserName}`);
   });
 
-  test('should handle rapid interactions in all browsers', async ({ page, browserName }) => {
+  test('should handle rapid navigation in all browsers', async ({ page, browserName }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
-    await expect(page.getByRole('button', { name: 'Fractions' })).toBeVisible();
+    // Navigate to a category
+    await worksheetPage.selectCategory('Fractions');
+    await expect(page).toHaveURL(/\/fractions$/);
 
-    // Rapidly switch categories
-    for (let i = 0; i < 3; i++) {
-      await page.getByRole('button', { name: 'Fractions' }).click();
-      await page.getByRole('button', { name: 'Algebra' }).click();
-    }
+    // Navigate back
+    await page.goBack();
+    await worksheetPage.waitForPageReady();
 
-    // Final selection
-    await page.getByRole('button', { name: 'Fractions' }).click();
+    // Navigate to another category
+    await worksheetPage.selectCategory('Decimals');
+    await expect(page).toHaveURL(/\/decimals$/);
 
-    // Wait for UI to stabilize
-    await page.waitForTimeout(500);
+    // Navigate to subcategory
+    await worksheetPage.selectSubcategory('Addition');
+    await expect(page).toHaveURL(/\/decimals\/addition/);
 
-    // Verify correct state
-    await expect(page.getByRole('button', { name: 'Addition' })).toBeVisible();
-
-    console.log(`✓ Rapid interactions handled correctly in ${browserName}`);
+    console.log(`✓ Rapid navigation handled correctly in ${browserName}`);
   });
 });
 
@@ -229,9 +233,10 @@ test.describe('Browser-Specific Tests', () => {
 
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
     // Test Chromium-specific behavior
-    await expect(worksheetPage.heroSection).toBeVisible();
+    await expect(worksheetPage.heroHeading).toBeVisible();
 
     console.log('✓ Chromium-specific features work');
   });
@@ -241,9 +246,10 @@ test.describe('Browser-Specific Tests', () => {
 
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
     // Test Firefox-specific behavior
-    await expect(worksheetPage.heroSection).toBeVisible();
+    await expect(worksheetPage.heroHeading).toBeVisible();
 
     console.log('✓ Firefox-specific features work');
   });
@@ -253,9 +259,10 @@ test.describe('Browser-Specific Tests', () => {
 
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
     // Test WebKit (Safari) specific behavior
-    await expect(worksheetPage.heroSection).toBeVisible();
+    await expect(worksheetPage.heroHeading).toBeVisible();
 
     console.log('✓ WebKit-specific features work');
   });

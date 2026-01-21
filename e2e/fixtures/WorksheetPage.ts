@@ -1,31 +1,41 @@
 import { Page, Locator, expect } from '@playwright/test';
 
 /**
- * Page Object Model for the Math Worksheet Application
- * Encapsulates common interactions and assertions
+ * Page Object Model for the Math Worksheet Application (React Router 7)
+ * Updated to match URL-based routing structure:
+ * - / (homepage with category grid)
+ * - /:category (subcategory list)
+ * - /:category/:subcategory (worksheet with filters)
  */
 export class WorksheetPage {
   readonly page: Page;
 
-  // Header elements
-  readonly headerTitle: Locator;
-  readonly headerSubtitle: Locator;
+  // Homepage elements
+  readonly heroHeading: Locator;
+  readonly heroDescription: Locator;
+  readonly categoryLinks: Locator;
 
-  // Sidebar elements
-  readonly topicsHeading: Locator;
-  readonly categoryButtons: Locator;
+  // Category page elements
+  readonly categoryHeading: Locator;
+  readonly subcategoryLinks: Locator;
+  readonly backToCategoriesLink: Locator;
+
+  // Worksheet page elements (/:category/:subcategory)
+  readonly worksheetHeading: Locator;
+  readonly problemsList: Locator;
+  readonly downloadPdfButton: Locator;
+  readonly showAnswerKeyButton: Locator;
+  readonly backToCategoryButton: Locator;
+
+  // Filter elements (worksheet page only)
+  readonly filtersHeading: Locator;
   readonly difficultySection: Locator;
   readonly tagSection: Locator;
   readonly applyFiltersButton: Locator;
   readonly clearFiltersButton: Locator;
 
-  // Main content elements
-  readonly heroSection: Locator;
-  readonly pageTitle: Locator;
-  readonly problemsList: Locator;
-  readonly downloadPdfButton: Locator;
-  readonly showAnswerKeyButton: Locator;
-  readonly backToCategoriesButton: Locator;
+  // Breadcrumb
+  readonly breadcrumb: Locator;
 
   // Loading/Error states
   readonly loadingSpinner: Locator;
@@ -34,54 +44,80 @@ export class WorksheetPage {
   constructor(page: Page) {
     this.page = page;
 
-    // Header
-    this.headerTitle = page.getByRole('heading', { name: /maths tutoring worksheets/i });
-    this.headerSubtitle = page.locator('header').getByText(/select a topic and category/i);
+    // Homepage
+    this.heroHeading = page.getByRole('heading', { name: /master math with/i });
+    this.heroDescription = page.getByText(/select a topic and category/i);
+    this.categoryLinks = page.locator('a[href^="/"]').filter({
+      has: page.locator('h3'),
+    });
 
-    // Sidebar
-    this.topicsHeading = page.getByRole('heading', { name: /topics/i });
-    this.categoryButtons = page.getByRole('button').filter({ hasText: /fractions|algebra/i });
+    // Category page
+    this.categoryHeading = page.locator('h2').filter({ hasText: /.+/ });
+    this.subcategoryLinks = page.locator('ul a[href*="/"]');
+    this.backToCategoriesLink = page.getByRole('link', { name: /back to categories/i });
+
+    // Worksheet page
+    this.worksheetHeading = page.locator('main h2').first();
+    this.problemsList = page.locator('ol').filter({ has: page.locator('li') });
+    this.downloadPdfButton = page.getByRole('button', { name: /download pdf/i });
+    this.showAnswerKeyButton = page.getByRole('button', { name: /show answer key|hide answer key/i });
+    this.backToCategoryButton = page.getByRole('button', { name: /back to/i });
+
+    // Filters (worksheet page sidebar)
+    this.filtersHeading = page.getByRole('heading', { name: /filters/i });
     this.difficultySection = page.getByText(/filter by difficulty/i);
     this.tagSection = page.getByText(/filter by tags/i);
     this.applyFiltersButton = page.getByRole('button', { name: /apply filters/i });
     this.clearFiltersButton = page.getByRole('button', { name: /clear filters/i });
 
-    // Main content
-    this.heroSection = page.getByRole('heading', { name: /master math with/i });
-    this.pageTitle = page.getByRole('heading', { level: 2 }).filter({ hasText: /fractions|algebra/i });
-    this.problemsList = page.locator('ol').filter({ has: page.locator('li') });
-    this.downloadPdfButton = page.getByRole('button', { name: /download pdf/i });
-    this.showAnswerKeyButton = page.getByRole('button', { name: /show answer key|hide answer key/i });
-    this.backToCategoriesButton = page.getByRole('button', { name: /back to categories/i });
+    // Breadcrumb
+    this.breadcrumb = page.locator('nav').filter({ hasText: /home/i });
 
     // States
-    this.loadingSpinner = page.getByText(/loading/i);
+    this.loadingSpinner = page.locator('.animate-spin');
     this.errorMessage = page.locator('[class*="text-red"]').filter({ hasText: /error/i });
   }
 
   /**
-   * Navigate to the homepage
+   * Navigate to homepage
    */
   async goto() {
     await this.page.goto('/');
   }
 
   /**
-   * Select a category from the sidebar
+   * Navigate directly to a category page
    */
-  async selectCategory(category: 'Fractions' | 'Algebra') {
-    await this.page.getByRole('button', { name: category, exact: true }).click();
+  async gotoCategory(category: string) {
+    const slug = category.toLowerCase().replace(/\s+/g, '-');
+    await this.page.goto(`/${slug}`);
   }
 
   /**
-   * Select a subcategory (must have category selected first)
+   * Navigate directly to a worksheet page
+   */
+  async gotoWorksheet(category: string, subcategory: string) {
+    const catSlug = category.toLowerCase().replace(/\s+/g, '-');
+    const subSlug = subcategory.toLowerCase().replace(/\s+/g, '-');
+    await this.page.goto(`/${catSlug}/${subSlug}`);
+  }
+
+  /**
+   * Click a category link on the homepage
+   */
+  async selectCategory(category: string) {
+    await this.page.getByRole('link', { name: new RegExp(category, 'i') }).click();
+  }
+
+  /**
+   * Click a subcategory link on the category page
    */
   async selectSubcategory(subcategory: string) {
-    await this.page.getByRole('button', { name: subcategory, exact: true }).click();
+    await this.page.getByRole('link', { name: new RegExp(subcategory, 'i') }).click();
   }
 
   /**
-   * Toggle a difficulty filter checkbox
+   * Toggle a difficulty filter checkbox (worksheet page only)
    */
   async toggleDifficulty(difficulty: 'EASY' | 'MEDIUM' | 'HARD') {
     const checkbox = this.page.getByRole('checkbox', { name: new RegExp(difficulty, 'i') });
@@ -89,11 +125,14 @@ export class WorksheetPage {
   }
 
   /**
-   * Toggle a tag filter checkbox
+   * Toggle a tag filter checkbox (worksheet page only)
    */
   async toggleTag(tag: string) {
-    const checkbox = this.page.locator(`input[type="checkbox"][id^="tag-"]`).filter({ hasText: tag });
-    await checkbox.click();
+    const checkbox = this.page.locator(`input[type="checkbox"][id^="tag-"]`).filter({
+      has: this.page.locator(`[id="tag-${tag}"]`),
+    });
+    // Alternative: click by label
+    await this.page.getByLabel(new RegExp(`filter by tag.*${tag}`, 'i')).click();
   }
 
   /**
@@ -128,18 +167,10 @@ export class WorksheetPage {
   }
 
   /**
-   * Go back to categories (clear subcategory selection)
+   * Wait for page to be ready (loading complete)
    */
-  async goBackToCategories() {
-    await this.backToCategoriesButton.click();
-  }
-
-  /**
-   * Wait for problems to load
-   */
-  async waitForProblemsToLoad() {
+  async waitForPageReady() {
     await this.page.waitForLoadState('networkidle');
-    await expect(this.loadingSpinner).toBeHidden({ timeout: 10000 });
   }
 
   /**
@@ -151,19 +182,10 @@ export class WorksheetPage {
   }
 
   /**
-   * Check if hero section is visible
+   * Check if hero section is visible (homepage)
    */
   async isHeroVisible(): Promise<boolean> {
-    return await this.heroSection.isVisible();
-  }
-
-  /**
-   * Check if a category is highlighted/selected
-   */
-  async isCategorySelected(category: string): Promise<boolean> {
-    const button = this.page.getByRole('button', { name: category, exact: true });
-    const className = await button.getAttribute('class');
-    return className?.includes('bg-blue-200') || false;
+    return await this.heroHeading.isVisible();
   }
 
   /**
@@ -179,5 +201,12 @@ export class WorksheetPage {
   async hasFilterPendingBadge(): Promise<boolean> {
     const badge = this.page.getByText(/pending/i);
     return await badge.isVisible();
+  }
+
+  /**
+   * Get current URL path
+   */
+  getCurrentPath(): string {
+    return new URL(this.page.url()).pathname;
   }
 }

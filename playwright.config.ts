@@ -74,22 +74,18 @@ export default defineConfig({
   ],
 
   // Web server configuration - start dev servers before tests
-  // NOTE: For now, manually start servers before running tests:
-  // Terminal 1: npm run dev
-  // Terminal 2: npm run api:dev
-  // TODO: Fix webServer config to handle already-running servers gracefully
-  // webServer: [
-  //   {
-  //     command: 'npm run dev',
-  //     url: 'http://localhost:5173',
-  //     reuseExistingServer: !process.env.CI,
-  //     timeout: 120 * 1000,
-  //   },
-  //   {
-  //     command: 'npm run api:dev',
-  //     url: 'http://localhost:3001/api/problems/categories',
-  //     reuseExistingServer: !process.env.CI,
-  //     timeout: 120 * 1000,
-  //   },
-  // ],
+  webServer: [
+    {
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+    {
+      command: 'npm run api:dev',
+      url: 'http://localhost:3001/api/categories',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+  ],
 });

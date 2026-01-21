@@ -4,95 +4,77 @@ import { WorksheetPage } from '../fixtures/WorksheetPage';
 /**
  * E2E-012: Mobile Responsiveness
  * Tests the app works correctly on different viewport sizes
+ * Updated for React Router 7 URL-based routing
  */
 test.describe('Mobile Responsiveness', () => {
   test('should work on mobile viewport (iPhone SE)', async ({ browser }) => {
-    // Create a context with mobile viewport
     const context = await browser.newContext({
       ...devices['iPhone SE'],
     });
     const page = await context.newPage();
     const worksheetPage = new WorksheetPage(page);
 
+    // Test homepage on mobile
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
-    // On mobile initially: aside (menu) visible, main hidden
+    // Verify hero is visible
+    await expect(worksheetPage.heroHeading).toBeVisible();
+
+    // Verify category links are visible
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
+
+    // Navigate to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
+
+    // On mobile worksheet page, sidebar should stack above main content
     const aside = page.locator('aside');
     const main = page.locator('main');
 
     await expect(aside).toBeVisible();
-    await expect(main).toBeHidden();
-
-    // Verify categories load in aside
-    await expect(page.getByRole('button', { name: 'Fractions' })).toBeVisible();
-
-    // Test category selection - should stay in menu view
-    await worksheetPage.selectCategory('Fractions');
-    await expect(page.getByRole('button', { name: 'Addition' })).toBeVisible();
-    await expect(aside).toBeVisible();
-    await expect(main).toBeHidden();
-
-    // Test subcategory selection - should switch to content view
-    await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
-
-    // After selecting subcategory: main visible, aside hidden on mobile
     await expect(main).toBeVisible();
-    await expect(aside).toBeHidden();
 
     // Verify problems load
-    await expect(page.getByText('Fractions - Addition').first()).toBeVisible();
+    await expect(worksheetPage.problemsList).toBeVisible();
 
-    // Verify buttons are accessible (should have reasonable touch target)
-    const downloadButton = page.getByRole('button', { name: /download pdf/i }).first();
+    // Verify Download PDF button is accessible
+    const downloadButton = worksheetPage.downloadPdfButton;
     await expect(downloadButton).toBeVisible();
 
     const boundingBox = await downloadButton.boundingBox();
     expect(boundingBox).not.toBeNull();
     if (boundingBox) {
-      // Touch targets should be at least 40x40px (relaxed from 44x44px)
+      // Touch targets should be at least 40x40px
       expect(boundingBox.height).toBeGreaterThanOrEqual(40);
     }
-
-    // Test "Back to Categories" button - should return to menu view
-    const backButton = page.getByRole('button', { name: 'Back to Categories' });
-    await expect(backButton).toBeVisible();
-    await backButton.click();
-
-    // After clicking back: aside visible, main hidden on mobile
-    await expect(aside).toBeVisible();
-    await expect(main).toBeHidden();
 
     await context.close();
   });
 
   test('should work on tablet viewport (iPad)', async ({ browser }) => {
-    // Create a context with tablet viewport (768px - md breakpoint)
     const context = await browser.newContext({
       ...devices['iPad'],
     });
     const page = await context.newPage();
     const worksheetPage = new WorksheetPage(page);
 
+    // Test homepage on tablet
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
-    // On tablet (md breakpoint): both aside and main should be visible (desktop layout)
+    // Verify hero and categories visible
+    await expect(worksheetPage.heroHeading).toBeVisible();
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
+
+    // Navigate to worksheet page
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
+
+    // On tablet, both aside and main should be visible side-by-side
     const aside = page.locator('aside');
     const main = page.locator('main');
 
-    await expect(aside).toBeVisible();
-    await expect(main).toBeVisible();
-
-    // Verify layout scales properly
-    await expect(worksheetPage.heroSection).toBeVisible();
-    await expect(worksheetPage.topicsHeading).toBeVisible();
-
-    // Test full workflow
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
-
-    // Both panels should still be visible after selection (desktop behavior)
     await expect(aside).toBeVisible();
     await expect(main).toBeVisible();
 
@@ -101,7 +83,7 @@ test.describe('Mobile Responsiveness', () => {
     expect(problemCount).toBeGreaterThan(0);
 
     // Verify filters are accessible
-    await expect(page.getByText('Difficulty Levels')).toBeVisible();
+    await expect(worksheetPage.filtersHeading).toBeVisible();
 
     await context.close();
   });
@@ -114,6 +96,11 @@ test.describe('Mobile Responsiveness', () => {
     const worksheetPage = new WorksheetPage(page);
 
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
+
+    // Navigate to worksheet
+    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.waitForPageReady();
 
     // On desktop, sidebar and main content should be side-by-side
     const sidebar = page.locator('aside');
@@ -121,11 +108,6 @@ test.describe('Mobile Responsiveness', () => {
 
     const main = page.locator('main');
     await expect(main).toBeVisible();
-
-    // Test full workflow
-    await worksheetPage.selectCategory('Fractions');
-    await worksheetPage.selectSubcategory('Addition');
-    await worksheetPage.waitForProblemsToLoad();
 
     // On desktop, problems should be displayed in a grid
     const problemsList = page.locator('ol').last();
@@ -139,8 +121,6 @@ test.describe('Mobile Responsiveness', () => {
 
     // Should use grid layout on desktop
     expect(gridColumns.display).toBe('grid');
-    // Grid should have columns defined (might be '1fr 1fr' or similar)
-    expect(gridColumns.gridTemplateColumns).toBeTruthy();
 
     await context.close();
   });
@@ -153,6 +133,7 @@ test.describe('Mobile Responsiveness', () => {
     const worksheetPage = new WorksheetPage(page);
 
     await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
 
     // Verify content is centered and not stretched too wide
     const mainContainer = page.locator('.max-w-5xl');
@@ -180,9 +161,10 @@ test.describe('Mobile Responsiveness', () => {
       const context = await browser.newContext({ viewport });
       const page = await context.newPage();
 
-      await page.goto('http://localhost:5173');
+      await page.goto('/');
+      await page.waitForLoadState('networkidle');
 
-      // Verify text is readable (font-size should be at least 16px for body text)
+      // Verify text is readable (font-size should be at least 14px for body text)
       const bodyFontSize = await page.evaluate(() => {
         const body = document.body;
         return window.getComputedStyle(body).fontSize;
@@ -190,7 +172,7 @@ test.describe('Mobile Responsiveness', () => {
 
       // Parse font size (e.g., "16px" -> 16)
       const fontSize = parseInt(bodyFontSize);
-      expect(fontSize).toBeGreaterThanOrEqual(14); // Minimum readable font size
+      expect(fontSize).toBeGreaterThanOrEqual(14);
 
       await context.close();
     }

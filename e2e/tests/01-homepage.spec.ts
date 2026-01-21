@@ -4,43 +4,32 @@ import { WorksheetPage } from '../fixtures/WorksheetPage';
 /**
  * E2E-001: Homepage & Initial Load
  * Tests the initial page load, hero section, and category loading
+ * Updated for React Router 7 URL-based routing
  */
 test.describe('Homepage & Initial Load', () => {
   test('should display hero section on initial load', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
 
-    // Verify header
-    await expect(worksheetPage.headerTitle).toBeVisible();
-    await expect(worksheetPage.headerSubtitle).toBeVisible();
-
     // Verify hero section is displayed
-    await expect(worksheetPage.heroSection).toBeVisible();
+    await expect(worksheetPage.heroHeading).toBeVisible();
     await expect(page.getByRole('heading', { name: /master math with/i })).toBeVisible();
-    await expect(page.getByText(/interactive worksheets/i)).toBeVisible();
+    await expect(page.getByText(/year 7 math worksheets/i)).toBeVisible();
 
-    // Verify hero features (using heading roles for specificity)
-    await expect(page.getByRole('heading', { name: /easy to use/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /comprehensive/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /printable/i })).toBeVisible();
-
-    // Verify "Get Started" button
-    await expect(page.getByRole('button', { name: /get started/i })).toBeVisible();
+    // Verify description text
+    await expect(worksheetPage.heroDescription).toBeVisible();
   });
 
   test('should load categories from API', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
 
-    // Verify "Topics" heading
-    await expect(worksheetPage.topicsHeading).toBeVisible();
-
     // Wait for categories to load
-    await page.waitForLoadState('networkidle');
+    await worksheetPage.waitForPageReady();
 
-    // Verify categories are present
-    await expect(page.getByRole('button', { name: 'Fractions', exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Algebra', exact: true })).toBeVisible();
+    // Verify category links are present (using links, not buttons)
+    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /algebra/i })).toBeVisible();
 
     // Verify no errors
     await worksheetPage.verifyNoErrors();
@@ -57,9 +46,40 @@ test.describe('Homepage & Initial Load', () => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
 
-    await page.waitForLoadState('networkidle');
+    await worksheetPage.waitForPageReady();
 
     // Assert no console errors
     expect(consoleErrors).toHaveLength(0);
+  });
+
+  test('should navigate to category page when clicking category link', async ({ page }) => {
+    const worksheetPage = new WorksheetPage(page);
+    await worksheetPage.goto();
+    await worksheetPage.waitForPageReady();
+
+    // Click on Fractions category
+    await worksheetPage.selectCategory('Fractions');
+
+    // Should navigate to /fractions
+    await expect(page).toHaveURL(/\/fractions$/);
+
+    // Should show subcategories
+    await expect(page.getByRole('heading', { name: /fractions/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /addition/i })).toBeVisible();
+  });
+
+  test('should navigate to worksheet page from subcategory', async ({ page }) => {
+    const worksheetPage = new WorksheetPage(page);
+    await worksheetPage.gotoCategory('fractions');
+    await worksheetPage.waitForPageReady();
+
+    // Click on Addition subcategory
+    await worksheetPage.selectSubcategory('Addition');
+
+    // Should navigate to /fractions/addition
+    await expect(page).toHaveURL(/\/fractions\/addition/);
+
+    // Should show problems
+    await expect(worksheetPage.problemsList).toBeVisible();
   });
 });
