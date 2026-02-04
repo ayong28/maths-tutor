@@ -136,6 +136,7 @@ function pluralizeCategory(word: string): string {
   const SPECIAL_PLURALS: Record<string, string> = {
     'Index': 'Index Notation',
     'Percentage': 'Percentages',
+    'Algebra': 'Algebra',
   };
 
   if (SPECIAL_PLURALS[word]) return SPECIAL_PLURALS[word];
