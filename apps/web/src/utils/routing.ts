@@ -9,7 +9,7 @@ let cachedTypeMap: Record<string, Record<string, ProblemType>> | null = null;
  * "Linear Graphs" → "linear-graphs"
  * "Ratio & Rates" → "ratio-rates"
  */
-function toSlug(str: string): string {
+export function toSlug(str: string): string {
   return str
     .toLowerCase()
     .replace(/\s+/g, '-')       // spaces to hyphens

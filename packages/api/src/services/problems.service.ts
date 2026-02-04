@@ -104,7 +104,7 @@ const CATEGORY_OVERRIDES: Partial<Record<ProblemType, { main: string; sub: strin
   // Types with special subcategory grouping
   COORDINATES_PLOTTING: { main: 'Coordinates', sub: 'Plotting' },
   LINEAR_GRAPHING: { main: 'Linear Graphs', sub: 'Graphing' },
-  RATIO_RATES: { main: 'Ratio & Rates', sub: 'Ratio & Rates' },
+  RATIO_RATES: { main: 'Ratio & Rates', sub: 'Problems' },
 };
 
 /**

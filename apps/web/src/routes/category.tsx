@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useLoaderData, Link, redirect } from 'react-router';
 import { getCategories } from '@/api/client';
-import { buildTypeMap, getCachedTypeMap, setCachedTypeMap } from '@/utils/routing';
+import { buildTypeMap, getCachedTypeMap, setCachedTypeMap, toSlug } from '@/utils/routing';
 import { Loader2, ChevronRight, Home, FileText, ArrowLeft } from 'lucide-react';
 
 // Type for loader data
@@ -36,7 +36,7 @@ export async function clientLoader({
   }> = {};
 
   categories.forEach((cat) => {
-    const slug = cat.mainCategory.toLowerCase().replace(/\s+/g, '-');
+    const slug = toSlug(cat.mainCategory);
 
     if (!categoryMap[slug]) {
       categoryMap[slug] = {
@@ -117,7 +117,7 @@ export default function Category() {
       <div className="max-w-4xl mx-auto px-8 py-10">
         <div className="space-y-3">
           {subcategories.map((subCat, index) => {
-            const slug = subCat.toLowerCase().replace(/\s+/g, '-');
+            const slug = toSlug(subCat);
 
             return (
               <Link
