@@ -2,7 +2,7 @@
 import { useLoaderData, Link, redirect } from 'react-router';
 import { getCategories } from '@/api/client';
 import { buildTypeMap, getCachedTypeMap, setCachedTypeMap } from '@/utils/routing';
-import { Loader2, ChevronRight } from 'lucide-react';
+import { Loader2, ChevronRight, Home, FileText, ArrowLeft } from 'lucide-react';
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -63,10 +63,12 @@ export async function clientLoader({
 // Loading fallback
 export function HydrateFallback() {
   return (
-    <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-8">
-      <div className="flex items-center gap-3">
-        <Loader2 className="w-6 h-6 animate-spin text-blue-900" />
-        <p className="text-blue-900">Loading subcategories...</p>
+    <div className="min-h-screen p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-center gap-3 py-24">
+          <Loader2 className="w-8 h-8 animate-spin text-[var(--color-teal-500)]" />
+          <p className="text-[var(--color-slate-500)] font-medium">Loading worksheets...</p>
+        </div>
       </div>
     </div>
   );
@@ -77,47 +79,92 @@ export default function Category() {
   const { category, categoryDisplay, subcategories } = useLoaderData<LoaderData>();
 
   return (
-    <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden">
-      <div className="p-8">
-        {/* Breadcrumb */}
-        <nav className="mb-6 text-sm text-blue-600">
-          <Link to="/" className="hover:underline">Home</Link>
-          <span className="mx-2">/</span>
-          <span className="text-blue-900">{categoryDisplay}</span>
-        </nav>
+    <div className="min-h-screen">
+      {/* Header Section */}
+      <div className="bg-gradient-to-b from-[var(--color-slate-100)] to-[var(--color-cream)] border-b border-[var(--color-slate-200)]">
+        <div className="max-w-4xl mx-auto px-8 py-8">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 text-sm mb-6 animate-fade-in-up">
+            <Link
+              to="/"
+              className="flex items-center gap-1.5 text-[var(--color-slate-500)] hover:text-[var(--color-teal-600)] transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span>Home</span>
+            </Link>
+            <ChevronRight className="w-4 h-4 text-[var(--color-slate-400)]" />
+            <span className="font-medium text-[var(--color-slate-800)]">{categoryDisplay}</span>
+          </nav>
 
-        <h2 className="text-2xl font-bold text-blue-900 mb-6">
-          {categoryDisplay}
-        </h2>
+          {/* Title */}
+          <div className="flex items-center gap-4 animate-fade-in-up delay-100">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--color-teal-500)] to-[var(--color-teal-600)] flex items-center justify-center shadow-lg">
+              <FileText className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <h1 className="font-heading text-3xl md:text-4xl font-bold text-[var(--color-slate-800)]">
+                {categoryDisplay}
+              </h1>
+              <p className="text-[var(--color-slate-500)] mt-1">
+                {subcategories.length} worksheet {subcategories.length === 1 ? 'type' : 'types'} available
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        {/* Subcategory List */}
-        <ul className="space-y-2">
-          {subcategories.map((subCat) => {
+      {/* Subcategory List */}
+      <div className="max-w-4xl mx-auto px-8 py-10">
+        <div className="space-y-3">
+          {subcategories.map((subCat, index) => {
             const slug = subCat.toLowerCase().replace(/\s+/g, '-');
 
             return (
-              <li key={subCat}>
-                <Link
-                  to={`/${category}/${slug}`}
-                  className="flex items-center px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition"
-                >
-                  <span className="flex-1 text-blue-900 font-medium">
-                    {subCat}
+              <Link
+                key={subCat}
+                to={`/${category}/${slug}`}
+                className="group flex items-center gap-4 p-5 bg-white rounded-2xl border border-[var(--color-slate-200)] hover:border-[var(--color-teal-300)] hover:shadow-md transition-all duration-200 animate-slide-in-left"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {/* Number indicator */}
+                <div className="w-10 h-10 rounded-xl bg-[var(--color-slate-100)] group-hover:bg-[var(--color-teal-500)] flex items-center justify-center transition-colors">
+                  <span className="text-sm font-heading font-bold text-[var(--color-slate-500)] group-hover:text-white transition-colors">
+                    {String(index + 1).padStart(2, '0')}
                   </span>
-                  <ChevronRight className="w-5 h-5 text-blue-600" />
-                </Link>
-              </li>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="font-heading text-lg font-semibold text-[var(--color-slate-800)] group-hover:text-[var(--color-teal-700)] transition-colors">
+                    {subCat}
+                  </h3>
+                  <p className="text-sm text-[var(--color-slate-500)]">
+                    Practice worksheets with easy, medium, and hard levels
+                  </p>
+                </div>
+
+                {/* Arrow */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-[var(--color-slate-400)] group-hover:text-[var(--color-teal-600)] transition-colors">
+                    Start
+                  </span>
+                  <ChevronRight className="w-5 h-5 text-[var(--color-slate-400)] group-hover:text-[var(--color-teal-600)] group-hover:translate-x-1 transition-all" />
+                </div>
+              </Link>
             );
           })}
-        </ul>
+        </div>
 
         {/* Back Button */}
-        <Link
-          to="/"
-          className="mt-6 inline-block text-blue-600 hover:text-blue-800"
-        >
-          ← Back to Categories
-        </Link>
+        <div className="mt-10 animate-fade-in-up delay-300">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-slate-100)] hover:bg-[var(--color-slate-200)] text-[var(--color-slate-700)] font-medium transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to All Topics</span>
+          </Link>
+        </div>
       </div>
     </div>
   );
