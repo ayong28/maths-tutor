@@ -70,6 +70,7 @@
 - ✅ Browser back/forward navigation
 - ✅ Filter state in URL query params
 - ✅ Dynamic TYPE_MAP generation
+- ✅ **NEW:** "Geometric Scholar" UI redesign with sidebar navigation
 - ⚠️ Old hooks (`useCategories`, `useProblems`, `useTags`) now unused
 
 ---
@@ -99,11 +100,12 @@ npm run generate -- --type FRACTION_ADDITION
 
 ### Project Stats
 
-- **4,828 problems** across 25 types (VCAA Level 7)
+- **4,628 problems** across 29 types (VCAA Level 7)
 - **153 tests** (32 PDF + 74 Web + 47 E2E)
 - **React Router 7** for URL-based navigation
 - **PostgreSQL 16** database
 - **Playwright** for E2E testing
+- **"Geometric Scholar" UI** - Modern design with sidebar navigation
 
 ---
 
@@ -201,4 +203,4 @@ maths-tutor/
 
 ---
 
-Last updated: 2026-01-08
+Last updated: 2026-02-05

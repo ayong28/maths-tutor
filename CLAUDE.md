@@ -95,6 +95,8 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 
 **React Router 7 Migration Complete ✅** - URL-based routing with deep linking
 
+**UI Redesign Complete ✅** - "Geometric Scholar" design with sidebar navigation
+
 **Current Tasks:**
 - 🔥 **HIGH PRIORITY:** Move PDF generation to backend API (reduce client bundle from 1.5MB to ~300KB)
   - Currently: pdfkit/fontkit/png-js loaded in browser (worksheet chunk = 1.5MB gzipped to 500KB)
@@ -102,7 +104,7 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
   - Benefits: ~1.2MB smaller client bundle, faster page loads, better mobile performance
   - Implementation: Move PDF logic from `apps/web/src/hooks/usePDFGenerator.ts` to `packages/api/src/routes/`
 - ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
-- Add component tests - See `docs/TESTING-IMPLEMENTATION-GUIDE.md`
+- ⚠️ Update remaining E2E tests for new UI selectors
 
 **Future Enhancements:**
 - Try to remove CATEGORY_OVERRIDES (packages/api/src/services/problems.service.ts) by improving auto-derivation logic
@@ -110,8 +112,9 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 
 ## Tech Stack
 
-**Production:** pdfkit | @react-pdf/renderer | PostgreSQL 16 | Prisma 6.19
+**Production:** pdfkit | @react-pdf/renderer | PostgreSQL 16 | Prisma 6.19 | Tailwind CSS 4.1
 **Dev:** tsx | jest | @testing-library/react | @playwright/test | @axe-core/playwright
+**Design:** Outfit font (headings) | Plus Jakarta Sans (body) | Lucide React icons
 
 ## Architecture
 

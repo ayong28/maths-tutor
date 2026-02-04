@@ -2,7 +2,124 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-01-04 - Testing Documentation & Cleanup)
+## Current Session (2026-02-05 - UI Redesign "Geometric Scholar")
+
+**Session Summary**: Complete UI redesign with modern "Geometric Scholar" aesthetic. Replaced generic blue theme with warm slate/teal palette, added persistent sidebar navigation, redesigned all pages with new typography (Outfit + Plus Jakarta Sans), and implemented smooth animations throughout.
+
+### UI Redesign Implementation ✅
+
+**Design Direction**: "Geometric Scholar" - Clean educational meets modern geometric design
+
+**Key Design Choices**:
+- **Color Palette**: Warm slate/charcoal (`--color-slate-900`) with teal accents (`--color-teal-500`) and cream backgrounds (`--color-cream`)
+- **Typography**: "Outfit" for headings (modern geometric sans), "Plus Jakarta Sans" for body text
+- **Navigation**: Persistent sidebar with logo, quick access links, and problem count
+- **Animations**: Staggered reveals on load (`fadeInUp`, `scaleIn`, `slideInLeft`), floating math symbols, smooth hover states
+
+**Files Modified**:
+
+1. **`apps/web/src/index.css`** - Complete design system overhaul
+   - CSS custom properties for all colors, shadows, timing functions
+   - Custom checkbox styling with teal accent
+   - Button classes (`.btn-primary`, `.btn-secondary`, `.btn-ghost`)
+   - Tag/badge styles for difficulty indicators
+   - Animation keyframes and utility classes
+   - Custom scrollbar styling
+   - Google Fonts import (Outfit, Plus Jakarta Sans)
+
+2. **`apps/web/src/routes/root.tsx`** - New sidebar layout
+   - Dark slate sidebar (`w-64`, fixed position)
+   - Logo with "Year 7" badge
+   - Quick access navigation (All Topics, Fractions, Algebra, Integers, Decimals)
+   - Active state highlighting with teal accent
+   - Footer card showing "4,628 Problems Ready to practice"
+   - Main content area with `ml-64` offset
+
+3. **`apps/web/src/routes/home.tsx`** - Redesigned homepage
+   - Dark hero section with gradient orbs and grid pattern
+   - Floating animated math symbols (∑, π, √)
+   - VCAA Level 7 badge with sparkles icon
+   - Gradient text heading ("Master Maths with Practice Worksheets")
+   - Stats section (4,628 problems, 29 types, 3 difficulty levels)
+   - Curved bottom edge transition
+   - Category cards with unique colors per category:
+     - Fractions: Teal
+     - Algebra: Purple
+     - Integers: Amber
+     - Decimals: Pink
+     - Percentages: Blue
+     - Ratios: Green
+   - Staggered entrance animations on cards
+
+4. **`apps/web/src/routes/category.tsx`** - Redesigned category page
+   - Gradient header with breadcrumb navigation
+   - Category icon with teal gradient background
+   - Numbered subcategory list with hover effects
+   - Slide-in animations for list items
+   - "Back to All Topics" button
+
+5. **`apps/web/src/routes/worksheet.tsx`** - Redesigned worksheet page
+   - Clean header with breadcrumb
+   - Collapsible filter panel (replaces permanent sidebar)
+   - Toggle buttons: Filters, Show/Hide Answers, Download PDF
+   - Filter count badge on Filters button
+   - Problem cards with difficulty badges (green/amber/red dots)
+   - Problem numbers in absolute position (top-left)
+   - Answer display in teal color
+   - "Shuffle Problems" button
+   - Empty state with filter icon
+
+6. **`apps/web/src/components/DifficultyFilter.tsx`** - Updated styling
+   - Rounded container with subtle border
+   - Color-coded difficulty dots (green/amber/red)
+   - Hover state with white background
+   - Checkbox highlight on checked state
+
+7. **`apps/web/src/components/HeroSection.tsx`** - Deleted (merged into home.tsx)
+
+**E2E Test Updates**:
+
+8. **`e2e/fixtures/WorksheetPage.ts`** - Updated page object model
+   - Updated hero heading selector (`/master maths with/i`)
+   - Updated hero description selector (`/build confidence through practice/i`)
+   - Added sidebar locators
+   - Added filter panel locators
+   - Updated button selectors for new design
+   - Added `openFilters()` method for collapsible panel
+   - Updated `selectCategory()` to use `.first()` for multiple links
+
+9. **`e2e/tests/01-homepage.spec.ts`** - Updated tests
+   - Updated text assertions for new copy
+   - Added `.first()` to handle sidebar + main content duplicate links
+   - Added new test: "should display sidebar navigation"
+
+**Design System Summary**:
+
+| Element | Old Design | New Design |
+|---------|------------|------------|
+| Primary Color | Blue-400/500 | Teal-500/600 |
+| Background | Gray-500 | Cream (#fdfcfa) |
+| Navigation | None (inline breadcrumbs) | Persistent dark sidebar |
+| Headings | System fonts | Outfit (Google Font) |
+| Body | System fonts | Plus Jakarta Sans |
+| Animations | None | Staggered reveals, floats |
+| Cards | Blue background | Gradient backgrounds per category |
+| Filters | Permanent sidebar | Collapsible panel |
+| Buttons | Mixed styles | Unified `.btn` classes |
+
+**Test Status**:
+- ✅ Build: Passing (no TypeScript errors)
+- ✅ Homepage E2E: 6/6 passing
+- ✅ PDF Download E2E: 3/3 passing
+- ⚠️ Some other E2E tests need selector updates
+
+**Breaking Changes**:
+- HeroSection component removed (functionality merged into home.tsx)
+- E2E tests require updated selectors for new layout
+
+---
+
+## Previous Session (2026-01-04 - Testing Documentation & Cleanup)
 
 **Session Summary**: Created comprehensive testing documentation suite after React Router 7 migration. Identified unused hooks and provided cleanup recommendations. Organized all documentation into `/docs` folder with central index.
 
