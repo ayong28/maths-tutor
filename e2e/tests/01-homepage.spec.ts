@@ -4,17 +4,17 @@ import { WorksheetPage } from '../fixtures/WorksheetPage';
 /**
  * E2E-001: Homepage & Initial Load
  * Tests the initial page load, hero section, and category loading
- * Updated for React Router 7 URL-based routing
+ * Updated for React Router 7 URL-based routing and "Geometric Scholar" design
  */
 test.describe('Homepage & Initial Load', () => {
   test('should display hero section on initial load', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
 
-    // Verify hero section is displayed
+    // Verify hero section is displayed (updated text for new design)
     await expect(worksheetPage.heroHeading).toBeVisible();
-    await expect(page.getByRole('heading', { name: /master math with/i })).toBeVisible();
-    await expect(page.getByText(/year 7 math worksheets/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /master maths with/i })).toBeVisible();
+    await expect(page.getByText(/practice worksheets/i)).toBeVisible();
 
     // Verify description text
     await expect(worksheetPage.heroDescription).toBeVisible();
@@ -27,9 +27,10 @@ test.describe('Homepage & Initial Load', () => {
     // Wait for categories to load
     await worksheetPage.waitForPageReady();
 
-    // Verify category links are present (using links, not buttons)
-    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /algebra/i })).toBeVisible();
+    // Verify category links are present in the main content grid
+    // Use .first() to handle multiple links (sidebar + main content)
+    await expect(page.getByRole('link', { name: /fractions/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /algebra/i }).first()).toBeVisible();
 
     // Verify no errors
     await worksheetPage.verifyNoErrors();
@@ -57,7 +58,7 @@ test.describe('Homepage & Initial Load', () => {
     await worksheetPage.goto();
     await worksheetPage.waitForPageReady();
 
-    // Click on Fractions category
+    // Click on Fractions category (in main content area)
     await worksheetPage.selectCategory('Fractions');
 
     // Should navigate to /fractions
@@ -65,7 +66,7 @@ test.describe('Homepage & Initial Load', () => {
 
     // Should show subcategories
     await expect(page.getByRole('heading', { name: /fractions/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /addition/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /addition/i }).first()).toBeVisible();
   });
 
   test('should navigate to worksheet page from subcategory', async ({ page }) => {
@@ -81,5 +82,17 @@ test.describe('Homepage & Initial Load', () => {
 
     // Should show problems
     await expect(worksheetPage.problemsList).toBeVisible();
+  });
+
+  test('should display sidebar navigation', async ({ page }) => {
+    const worksheetPage = new WorksheetPage(page);
+    await worksheetPage.goto();
+
+    // Verify sidebar is visible
+    await expect(worksheetPage.sidebar).toBeVisible();
+    await expect(worksheetPage.sidebarLogo).toBeVisible();
+
+    // Verify quick access links in sidebar
+    await expect(page.locator('aside').getByRole('link', { name: /all topics/i })).toBeVisible();
   });
 });
