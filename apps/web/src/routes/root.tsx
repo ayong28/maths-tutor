@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router';
 import { Calculator, BookOpen, Home, ChevronRight } from 'lucide-react';
+import CopyrightFooter from '@/components/CopyrightFooter';
 
 export default function Root() {
   const location = useLocation();
@@ -113,8 +114,12 @@ export default function Root() {
 
       {/* Main Content Area */}
       <main className="flex-1 ml-64 print:ml-0">
-        <div className="min-h-screen">
-          <Outlet />
+        <div className="min-h-screen flex flex-col">
+          <div className="flex-1">
+            <Outlet />
+          </div>
+
+          <CopyrightFooter />
         </div>
       </main>
     </div>
