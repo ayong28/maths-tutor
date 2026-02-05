@@ -164,7 +164,7 @@ export default function Worksheet() {
 
   // Staged filters (not yet applied to URL)
   const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>(
-    appliedFilters.difficulty
+    appliedFilters.difficulty,
   );
   const [stagedTags, setStagedTags] = useState<string[]>(appliedFilters.tags);
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
@@ -221,14 +221,14 @@ export default function Worksheet() {
     setStagedDifficulties((prev) =>
       prev.includes(difficulty)
         ? prev.filter((d) => d !== difficulty)
-        : [...prev, difficulty]
+        : [...prev, difficulty],
     );
   };
 
   // Toggle tag
   const toggleTag = (tag: string): void => {
     setStagedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
 
@@ -332,6 +332,7 @@ export default function Worksheet() {
               {/* Download PDF */}
               {problems.length > 0 && (
                 <button
+                  aria-label="Download PDF"
                   onClick={handleDownloadPDF}
                   disabled={generatingPDF}
                   className="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
@@ -463,7 +464,8 @@ export default function Worksheet() {
           </h2>
           <div className="flex justify-between items-center text-sm mb-4 border-b border-gray-300 pb-2 print:text-black">
             <div>
-              <span className="font-semibold">Name:</span> ___________________________
+              <span className="font-semibold">Name:</span>{" "}
+              ___________________________
             </div>
             <div>
               <span className="font-semibold">Date:</span> _______________
@@ -566,10 +568,7 @@ export default function Worksheet() {
             <p className="text-[var(--color-slate-500)] mb-6">
               Try adjusting your filters to see more problems
             </p>
-            <button
-              onClick={clearFilters}
-              className="btn btn-primary"
-            >
+            <button onClick={clearFilters} className="btn btn-primary">
               Clear Filters
             </button>
           </div>

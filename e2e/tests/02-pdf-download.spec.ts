@@ -88,7 +88,7 @@ test.describe('PDF Download', () => {
     const worksheetPage = new WorksheetPage(page);
 
     // Navigate directly to Algebras → Collecting Terms
-    await worksheetPage.gotoWorksheet('algebras', 'collecting-terms');
+    await worksheetPage.gotoWorksheet('algebra', 'collecting-terms');
     await worksheetPage.waitForPageReady();
 
     // Wait for problems to be visible
@@ -102,7 +102,7 @@ test.describe('PDF Download', () => {
     const filename = download.suggestedFilename();
 
     // Verify algebra worksheet filename
-    expect(filename).toMatch(/algebras-collecting-terms-worksheet\.pdf/i);
+    expect(filename).toMatch(/^algebra-collecting-terms-worksheet.*\.pdf/i);
 
     // Save and verify file
     const downloadsPath = path.join(__dirname, '../../playwright-downloads');

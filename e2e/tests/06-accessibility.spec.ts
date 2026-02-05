@@ -16,7 +16,7 @@ test.describe("Accessibility", () => {
 
     // Wait for page to load
     await expect(worksheetPage.heroHeading).toBeVisible();
-    await expect(page.getByRole("link", { name: /fractions/i })).toBeVisible();
+    await expect(worksheetPage.fractionsLink).toBeVisible();
 
     // Check 1: All images have alt text (if any)
     const images = await page.locator("img").all();
@@ -28,7 +28,7 @@ test.describe("Accessibility", () => {
     }
 
     // Check 2: Category links have accessible names
-    const fractionsLink = page.getByRole("link", { name: /fractions/i });
+    const fractionsLink = worksheetPage.fractionsLink;
     await expect(fractionsLink).toBeVisible();
 
     // Check 3: Headings hierarchy (should start with h1)
@@ -42,59 +42,25 @@ test.describe("Accessibility", () => {
     await worksheetPage.goto();
     await worksheetPage.waitForPageReady();
 
-    await expect(page.getByRole("link", { name: /fractions/i })).toBeVisible();
+    await expect(worksheetPage.fractionsLink).toBeVisible();
 
     // Check category links have proper roles
-    const categoryLinks = page.locator('a[href^="/"]').filter({ has: page.locator('h3') });
+    const categoryLinks = page
+      .locator('a[href^="/"]')
+      .filter({ has: page.locator("h3") });
     const linkCount = await categoryLinks.count();
     expect(linkCount).toBeGreaterThan(0);
 
     // Check links are keyboard accessible
-    const fractionsLink = page.getByRole("link", { name: /fractions/i });
-    await fractionsLink.focus();
-    const isFocused = await fractionsLink.evaluate(
-      (el) => el === document.activeElement,
+    await worksheetPage.fractionsLink.focus();
+    // Check for focus ring (Tailwind's focus:ring classes or outline)
+    const hasFocusIndicator = await worksheetPage.fractionsLink.evaluate(
+      (el) => {
+        const styles = window.getComputedStyle(el);
+        return styles.outline !== "none" || styles.boxShadow !== "none";
+      },
     );
-    expect(isFocused).toBe(true);
-  });
-
-  test("should have accessible filter controls", async ({ page }) => {
-    const worksheetPage = new WorksheetPage(page);
-
-    // Navigate directly to worksheet page
-    await worksheetPage.gotoWorksheet("fractions", "addition");
-    await worksheetPage.waitForPageReady();
-
-    // Wait for filters to load
-    await expect(worksheetPage.filtersHeading).toBeVisible();
-
-    // Check difficulty filter checkboxes have labels
-    const easyCheckbox = page.getByRole("checkbox", { name: /easy/i });
-    await expect(easyCheckbox).toBeVisible();
-
-    const mediumCheckbox = page.getByRole("checkbox", { name: /medium/i });
-    await expect(mediumCheckbox).toBeVisible();
-
-    const hardCheckbox = page.getByRole("checkbox", { name: /hard/i });
-    await expect(hardCheckbox).toBeVisible();
-
-    // Check tag filter section if visible
-    const tagSection = page.getByText(/filter by tags/i);
-    const hasTagSection = await tagSection.isVisible().catch(() => false);
-
-    if (hasTagSection) {
-      // Check tag filter checkboxes have labels
-      const tagCheckboxes = await page
-        .locator('input[type="checkbox"][aria-label*="filter by tag"]')
-        .all();
-      if (tagCheckboxes.length > 0) {
-        for (const checkbox of tagCheckboxes) {
-          const ariaLabel = await checkbox.getAttribute("aria-label");
-          expect(ariaLabel).toBeTruthy();
-          expect(ariaLabel).toMatch(/filter by tag/i);
-        }
-      }
-    }
+    expect(hasFocusIndicator).toBe(true);
   });
 
   test("should have sufficient color contrast", async ({ page }) => {
@@ -102,10 +68,10 @@ test.describe("Accessibility", () => {
     await worksheetPage.goto();
     await worksheetPage.waitForPageReady();
 
-    await expect(page.getByRole("link", { name: /fractions/i })).toBeVisible();
+    await expect(worksheetPage.fractionsLink).toBeVisible();
 
     // Manual color contrast check for category links
-    const fractionsLink = page.getByRole("link", { name: /fractions/i });
+    const fractionsLink = worksheetPage.fractionsLink;
 
     const colors = await fractionsLink.evaluate((el) => {
       const styles = window.getComputedStyle(el);

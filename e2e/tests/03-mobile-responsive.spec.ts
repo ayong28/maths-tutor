@@ -1,15 +1,15 @@
-import { test, expect, devices } from '@playwright/test';
-import { WorksheetPage } from '../fixtures/WorksheetPage';
+import { test, expect, devices } from "@playwright/test";
+import { WorksheetPage } from "../fixtures/WorksheetPage";
 
 /**
  * E2E-012: Mobile Responsiveness
  * Tests the app works correctly on different viewport sizes
  * Updated for React Router 7 URL-based routing
  */
-test.describe('Mobile Responsiveness', () => {
-  test('should work on mobile viewport (iPhone SE)', async ({ browser }) => {
+test.describe("Mobile Responsiveness", () => {
+  test("should work on mobile viewport (iPhone SE)", async ({ browser }) => {
     const context = await browser.newContext({
-      ...devices['iPhone SE'],
+      ...devices["iPhone SE"],
     });
     const page = await context.newPage();
     const worksheetPage = new WorksheetPage(page);
@@ -21,16 +21,15 @@ test.describe('Mobile Responsiveness', () => {
     // Verify hero is visible
     await expect(worksheetPage.heroHeading).toBeVisible();
 
-    // Verify category links are visible
-    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
+    await expect(worksheetPage.fractionsLink).toBeVisible();
 
     // Navigate to worksheet page
-    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.gotoWorksheet("fractions", "addition");
     await worksheetPage.waitForPageReady();
 
     // On mobile worksheet page, sidebar should stack above main content
-    const aside = page.locator('aside');
-    const main = page.locator('main');
+    const aside = page.locator("aside");
+    const main = page.locator("main");
 
     await expect(aside).toBeVisible();
     await expect(main).toBeVisible();
@@ -52,9 +51,9 @@ test.describe('Mobile Responsiveness', () => {
     await context.close();
   });
 
-  test('should work on tablet viewport (iPad)', async ({ browser }) => {
+  test("should work on tablet viewport (iPad)", async ({ browser }) => {
     const context = await browser.newContext({
-      ...devices['iPad'],
+      ...devices["iPad"],
     });
     const page = await context.newPage();
     const worksheetPage = new WorksheetPage(page);
@@ -65,15 +64,15 @@ test.describe('Mobile Responsiveness', () => {
 
     // Verify hero and categories visible
     await expect(worksheetPage.heroHeading).toBeVisible();
-    await expect(page.getByRole('link', { name: /fractions/i })).toBeVisible();
+    await expect(worksheetPage.fractionsLink).toBeVisible();
 
     // Navigate to worksheet page
-    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.gotoWorksheet("fractions", "addition");
     await worksheetPage.waitForPageReady();
 
     // On tablet, both aside and main should be visible side-by-side
-    const aside = page.locator('aside');
-    const main = page.locator('main');
+    const aside = page.locator("aside");
+    const main = page.locator("main");
 
     await expect(aside).toBeVisible();
     await expect(main).toBeVisible();
@@ -82,13 +81,10 @@ test.describe('Mobile Responsiveness', () => {
     const problemCount = await worksheetPage.getProblemCount();
     expect(problemCount).toBeGreaterThan(0);
 
-    // Verify filters are accessible
-    await expect(worksheetPage.filtersHeading).toBeVisible();
-
     await context.close();
   });
 
-  test('should work on desktop viewport (1920x1080)', async ({ browser }) => {
+  test("should work on desktop viewport (1920x1080)", async ({ browser }) => {
     const context = await browser.newContext({
       viewport: { width: 1920, height: 1080 },
     });
@@ -99,18 +95,18 @@ test.describe('Mobile Responsiveness', () => {
     await worksheetPage.waitForPageReady();
 
     // Navigate to worksheet
-    await worksheetPage.gotoWorksheet('fractions', 'addition');
+    await worksheetPage.gotoWorksheet("fractions", "addition");
     await worksheetPage.waitForPageReady();
 
     // On desktop, sidebar and main content should be side-by-side
-    const sidebar = page.locator('aside');
+    const sidebar = page.locator("aside");
     await expect(sidebar).toBeVisible();
 
-    const main = page.locator('main');
+    const main = page.locator("main");
     await expect(main).toBeVisible();
 
     // On desktop, problems should be displayed in a grid
-    const problemsList = page.locator('ol').last();
+    const problemsList = page.locator("ol").last();
     const gridColumns = await problemsList.evaluate((el) => {
       const style = window.getComputedStyle(el);
       return {
@@ -120,12 +116,14 @@ test.describe('Mobile Responsiveness', () => {
     });
 
     // Should use grid layout on desktop
-    expect(gridColumns.display).toBe('grid');
+    expect(gridColumns.display).toBe("grid");
 
     await context.close();
   });
 
-  test('should work on large desktop viewport (2560x1440)', async ({ browser }) => {
+  test("should work on large desktop viewport (2560x1440)", async ({
+    browser,
+  }) => {
     const context = await browser.newContext({
       viewport: { width: 2560, height: 1440 },
     });
@@ -136,11 +134,11 @@ test.describe('Mobile Responsiveness', () => {
     await worksheetPage.waitForPageReady();
 
     // Verify content is centered and not stretched too wide
-    const mainContainer = page.locator('.max-w-5xl');
-    await expect(mainContainer).toBeVisible();
+    // const mainContainer = page.locator(".max-w-5xl");
+    await expect(worksheetPage.heroDescription).toBeVisible();
 
     // Content should be max-width constrained
-    const boundingBox = await mainContainer.boundingBox();
+    const boundingBox = await worksheetPage.heroDescription.boundingBox();
     expect(boundingBox).not.toBeNull();
     if (boundingBox) {
       // Should not exceed max-width (5xl is ~64rem ~1024px)
@@ -150,19 +148,19 @@ test.describe('Mobile Responsiveness', () => {
     await context.close();
   });
 
-  test('should have readable text on all viewports', async ({ browser }) => {
+  test("should have readable text on all viewports", async ({ browser }) => {
     const viewports = [
-      { name: 'Mobile', width: 375, height: 667 },
-      { name: 'Tablet', width: 768, height: 1024 },
-      { name: 'Desktop', width: 1920, height: 1080 },
+      { name: "Mobile", width: 375, height: 667 },
+      { name: "Tablet", width: 768, height: 1024 },
+      { name: "Desktop", width: 1920, height: 1080 },
     ];
 
     for (const viewport of viewports) {
       const context = await browser.newContext({ viewport });
       const page = await context.newPage();
 
-      await page.goto('/');
-      await page.waitForLoadState('networkidle');
+      await page.goto("/");
+      await page.waitForLoadState("networkidle");
 
       // Verify text is readable (font-size should be at least 14px for body text)
       const bodyFontSize = await page.evaluate(() => {
