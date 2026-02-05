@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
+import BetaBadge from "@/components/BetaBadge";
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -124,6 +125,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      <BetaBadge />
+
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[var(--color-slate-900)] via-[var(--color-slate-800)] to-[var(--color-slate-900)]">
         {/* Decorative elements */}
