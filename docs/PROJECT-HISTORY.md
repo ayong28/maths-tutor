@@ -34,10 +34,12 @@ This document tracks the implementation timeline and session history for the mat
    - Updated selectors and assertions for new UI
 
 **Tests Removed:**
+
 - Filter-related tests across multiple files (UI no longer uses difficulty/tag filters on worksheet page)
 - Race condition tests for filter toggling
 
 **Test Counts:**
+
 - Chromium: 38 tests across 7 files
 - All browsers/projects: 228 tests total
 
@@ -53,17 +55,22 @@ This document tracks the implementation timeline and session history for the mat
 
 **Before (Original Blue UI):**
 
-![Old UI - Blue gradient hero, flat category cards](images/ui-before-redesign.png)
+Old UI - Blue gradient hero, flat category cards
+
+<img src="images/ui-before-redesign.jpg" alt="Old UI" width="400" height="300" />
 
 **After (Geometric Scholar Redesign):**
 
-![New UI - Dark sidebar, teal accents, gradient category cards with icons](images/ui-after-redesign.png)
+New UI - Dark sidebar, teal accents, gradient category cards with icons
+
+<img src="images/ui-after-redesign.jpg" alt="New UI" width="400" height="300" />
 
 ### UI Redesign Implementation ✅
 
 **Design Direction**: "Geometric Scholar" - Clean educational meets modern geometric design
 
 **Key Design Choices**:
+
 - **Color Palette**: Warm slate/charcoal (`--color-slate-900`) with teal accents (`--color-teal-500`) and cream backgrounds (`--color-cream`)
 - **Typography**: "Outfit" for headings (modern geometric sans), "Plus Jakarta Sans" for body text
 - **Navigation**: Persistent sidebar with logo, quick access links, and problem count
@@ -148,25 +155,27 @@ This document tracks the implementation timeline and session history for the mat
 
 **Design System Summary**:
 
-| Element | Old Design | New Design |
-|---------|------------|------------|
-| Primary Color | Blue-400/500 | Teal-500/600 |
-| Background | Gray-500 | Cream (#fdfcfa) |
-| Navigation | None (inline breadcrumbs) | Persistent dark sidebar |
-| Headings | System fonts | Outfit (Google Font) |
-| Body | System fonts | Plus Jakarta Sans |
-| Animations | None | Staggered reveals, floats |
-| Cards | Blue background | Gradient backgrounds per category |
-| Filters | Permanent sidebar | Collapsible panel |
-| Buttons | Mixed styles | Unified `.btn` classes |
+| Element       | Old Design                | New Design                        |
+| ------------- | ------------------------- | --------------------------------- |
+| Primary Color | Blue-400/500              | Teal-500/600                      |
+| Background    | Gray-500                  | Cream (#fdfcfa)                   |
+| Navigation    | None (inline breadcrumbs) | Persistent dark sidebar           |
+| Headings      | System fonts              | Outfit (Google Font)              |
+| Body          | System fonts              | Plus Jakarta Sans                 |
+| Animations    | None                      | Staggered reveals, floats         |
+| Cards         | Blue background           | Gradient backgrounds per category |
+| Filters       | Permanent sidebar         | Collapsible panel                 |
+| Buttons       | Mixed styles              | Unified `.btn` classes            |
 
 **Test Status**:
+
 - ✅ Build: Passing (no TypeScript errors)
 - ✅ Homepage E2E: 6/6 passing
 - ✅ PDF Download E2E: 3/3 passing
 - ⚠️ Some other E2E tests need selector updates
 
 **Breaking Changes**:
+
 - HeroSection component removed (functionality merged into home.tsx)
 - E2E tests require updated selectors for new layout
 
@@ -181,6 +190,7 @@ This document tracks the implementation timeline and session history for the mat
 **Goal**: Provide clear guidance for fixing failing tests and writing new tests after React Router 7 migration.
 
 **Key Files Created:**
+
 - `docs/README.md` - Central documentation index with quick reference
 - `docs/FIX-FAILING-TESTS.md` - Step-by-step fix for 4 failing tests
 - `docs/CLEANUP-UNUSED-CODE.md` - Recommended cleanup of unused hooks
@@ -190,6 +200,7 @@ This document tracks the implementation timeline and session history for the mat
 **Key Findings:**
 
 **Unused Hooks After Migration:**
+
 - ❌ `useCategories` - Replaced by React Router `clientLoader` in home.tsx
 - ❌ `useProblems` - Replaced by React Router `clientLoader` in worksheet.tsx
 - ❌ `useTags` - Replaced by React Router `clientLoader` in worksheet.tsx
@@ -199,6 +210,7 @@ This document tracks the implementation timeline and session history for the mat
 React Router 7's `clientLoader` pattern fetches data before component renders, eliminating need for custom hooks with useEffect patterns.
 
 **Before (Custom Hooks):**
+
 ```typescript
 function App() {
   const { categories, loading, error } = useCategories();
@@ -207,6 +219,7 @@ function App() {
 ```
 
 **After (React Router Loaders):**
+
 ```typescript
 export async function clientLoader() {
   const categories = await getCategories();
@@ -220,6 +233,7 @@ export default function Component() {
 ```
 
 **Failing Tests:**
+
 - `useCategories.test.ts` - Imports `ApiError` that doesn't exist
 - `useProblems.test.ts` - Imports `ApiError` that doesn't exist
 - `useTags.test.ts` - Imports `ApiError` that doesn't exist
@@ -263,6 +277,7 @@ Fix imports to keep hooks for future use (see `docs/FIX-FAILING-TESTS.md`)
 **Documentation Organization:**
 
 Moved all documentation to `/docs` folder:
+
 - `E2E-TEST-PLAN.md` → `docs/E2E-TEST-PLAN.md`
 - `NETLIFY-DEPLOYMENT-GUIDE.md` → `docs/NETLIFY-DEPLOYMENT-GUIDE.md`
 - `PROJECT-HISTORY.md` → `docs/PROJECT-HISTORY.md`
@@ -270,6 +285,7 @@ Moved all documentation to `/docs` folder:
 - `session-activity-journal.md` → `docs/session-activity-journal.md`
 
 Created `docs/README.md` as central index:
+
 - Quick reference tables
 - Documentation organization tree
 - "I want to..." guide for finding docs
@@ -279,6 +295,7 @@ Created `docs/README.md` as central index:
 **CLAUDE.md Updates:**
 
 Updated to reflect current state:
+
 - Added testing guides references
 - Noted failing tests with ⚠️ warnings
 - Listed unused hooks
@@ -288,13 +305,15 @@ Updated to reflect current state:
 **Key Patterns Documented:**
 
 **TypeScript with verbatimModuleSyntax:**
+
 ```typescript
 // Use type-only imports
-import { type RenderOptions } from '@testing-library/react';
-import { type ReactElement } from 'react';
+import { type RenderOptions } from "@testing-library/react";
+import { type ReactElement } from "react";
 ```
 
 **Type instead of Interface:**
+
 ```typescript
 // Modern pattern
 type Props = {
@@ -308,25 +327,28 @@ interface Props {
 ```
 
 **Nullish Coalescing over Logical OR:**
+
 ```typescript
 // Better - only null/undefined trigger default
-const value = param.get('difficulty') ?? 'all';
+const value = param.get("difficulty") ?? "all";
 
 // Avoid - empty string would trigger default
-const value = param.get('difficulty') || 'all';
+const value = param.get("difficulty") || "all";
 ```
 
 **ReactElement instead of JSX.Element:**
+
 ```typescript
 // Better - explicit import
-import { type ReactElement } from 'react';
-function Component(): ReactElement { }
+import { type ReactElement } from "react";
+function Component(): ReactElement {}
 
 // Avoid - requires namespace
-function Component(): JSX.Element { }
+function Component(): JSX.Element {}
 ```
 
 **Test File Organization:**
+
 ```
 src/
   components/
@@ -336,6 +358,7 @@ src/
 ```
 
 **Benefits:**
+
 - Clear separation between code and tests
 - Easy to find tests for any component
 - Matches Jest conventions
@@ -353,6 +376,7 @@ src/
 **Implementation Approach**: Library mode (routes defined in main.tsx) instead of framework mode (routes.ts file).
 
 **Key Files Created:**
+
 - `apps/web/src/routes/root.tsx` - Layout wrapper with header
 - `apps/web/src/routes/home.tsx` - Home page with category grid + clientLoader
 - `apps/web/src/routes/category.tsx` - Subcategory list + clientLoader
@@ -362,6 +386,7 @@ src/
 - `docs/REACT-ROUTER-7-TUTORIAL.md` - Complete step-by-step implementation guide
 
 **Key Files Modified:**
+
 - `apps/web/src/main.tsx` - Router creation with createBrowserRouter
 - `apps/web/src/api/client.ts` - Simplified async functions (removed hooks pattern)
 - `apps/web/src/api/index.ts` - Removed healthCheck/ApiError exports
@@ -370,6 +395,7 @@ src/
 - `apps/web/src/App.tsx` - Backed up as App.tsx.backup
 
 **Route Structure:**
+
 ```
 / (root)
 ├── / (home) - Category grid
@@ -378,6 +404,7 @@ src/
 ```
 
 **Example URLs:**
+
 - `/fractions/addition`
 - `/algebra/collecting-terms`
 - `/fractions/addition?difficulty=EASY,MEDIUM&tags=like-denominators`
@@ -398,6 +425,7 @@ buildTypeMap(categories) // Zero maintenance!
 ```
 
 **Benefits:**
+
 - Add new problem types to DB → automatically works in UI
 - Cached in memory (no redundant API calls)
 - Single source of truth (database)
@@ -422,20 +450,22 @@ export default function Component() {
 **Key Implementation Details:**
 
 1. **Vite Config** - Use standard `react()` plugin with route file exclusion:
+
    ```typescript
-   react({ exclude: /routes\/.*.tsx$/ })
+   react({ exclude: /routes\/.*.tsx$/ });
    ```
 
 2. **Type Assertions** - Router params need casting:
+
    ```typescript
-   params as { category: string; subcategory: string }
+   params as { category: string; subcategory: string };
    ```
 
 3. **JSX Separation** - `renderMathExpression` moved to `.tsx` file (utils/mathRenderer.tsx)
 
 4. **API Client** - Simplified to async functions (no React hooks):
    ```typescript
-   export async function getCategories(): Promise<CategoryInfo[]>
+   export async function getCategories(): Promise<CategoryInfo[]>;
    ```
 
 **Issues Encountered & Fixed:**
@@ -455,6 +485,7 @@ export default function Component() {
 **Tutorial Documentation:**
 
 Created comprehensive `docs/REACT-ROUTER-7-TUTORIAL.md` (21 steps):
+
 - Step-by-step manual implementation guide
 - All fixes documented in Troubleshooting section
 - Code examples for all route files
@@ -465,6 +496,7 @@ Created comprehensive `docs/REACT-ROUTER-7-TUTORIAL.md` (21 steps):
 ⚠️ E2E tests need updating for route-based navigation (previously state-based)
 
 **Next Steps:**
+
 - Update E2E tests for new routing structure
 - Delete App.tsx.backup after verification
 - Consider adding route transitions
@@ -480,6 +512,7 @@ Created comprehensive `docs/REACT-ROUTER-7-TUTORIAL.md` (21 steps):
 **Solution**: Added mobile view state to control panel visibility (apps/web/src/App.tsx:73)
 
 **Implementation:**
+
 1. **Mobile view state** - Type-safe union: `type MobileView = 'menu' | 'content'`
 2. **Conditional visibility** - Tailwind classes: `hidden md:block` pattern
    - Aside: Shows in menu view, hides in content view, always visible on desktop
@@ -491,28 +524,32 @@ Created comprehensive `docs/REACT-ROUTER-7-TUTORIAL.md` (21 steps):
 
 **Responsive Behavior:**
 
-| Viewport | Aside | Main | Behavior |
-|----------|-------|------|----------|
-| Mobile (<768px) initial | Visible | Hidden | Menu view |
-| Mobile after subcategory | Hidden | Visible | Content view |
-| Desktop (≥768px) | Visible | Visible | Side-by-side (unchanged) |
+| Viewport                 | Aside   | Main    | Behavior                 |
+| ------------------------ | ------- | ------- | ------------------------ |
+| Mobile (<768px) initial  | Visible | Hidden  | Menu view                |
+| Mobile after subcategory | Hidden  | Visible | Content view             |
+| Desktop (≥768px)         | Visible | Visible | Side-by-side (unchanged) |
 
 **Files Modified:**
+
 - `apps/web/src/App.tsx` - Added mobileView state, conditional className on aside/main, navigation handlers
 - `e2e/tests/03-mobile-responsive.spec.ts` - Updated iPhone/iPad tests for view switching behavior
 
 **E2E Test Updates:**
+
 - **iPhone SE test**: Validates menu→content→menu flow with "Back to Categories" button
 - **iPad test**: Verifies desktop layout at md breakpoint (both panels always visible)
 - **Desktop tests**: No changes needed (already verify side-by-side layout)
 
 **Benefits:**
+
 - Zero breaking changes to desktop experience
 - Simple implementation (one state variable + Tailwind utilities)
 - Type-safe view state
 - Improved mobile UX (no scrolling past sidebar)
 
 **Testing:**
+
 ```bash
 # Visual testing
 npm run dev  # Test in browser DevTools mobile view
@@ -530,17 +567,20 @@ npm run test:e2e:chromium -- 03-mobile-responsive
 **Problem**: Manual CATEGORY_MAP with 25 entries that needed updating every time a new problem type was added.
 
 **Solution**: Refactored to auto-derive categories from enum names (packages/api/src/services/problems.service.ts:93-193)
+
 - Auto-derives main category from first word (FRACTION_ADDITION → "Fractions")
 - Auto-derives subcategory from remaining words (FRACTION_ADDITION → "Addition")
 - Small CATEGORY_OVERRIDES map (7 entries) for special cases only
 - Automatic pluralization and title casing
 
 **Benefits**:
+
 - New problem types auto-appear in UI without code changes
 - Reduced from 25 manual entries to 7 override entries
 - Follows DRY principle (enum is single source of truth)
 
 **Example**:
+
 ```typescript
 // Before: 25 manual entries
 FRACTION_ADDITION: { main: 'Fractions', sub: 'Addition', display: 'Fraction Addition' }
@@ -550,6 +590,7 @@ FRACTION_ADDITION: { main: 'Fractions', sub: 'Addition', display: 'Fraction Addi
 ```
 
 **Categories Now Available in Web UI**:
+
 - **Statistics**: Probability, Data Analysis
 - **Geometry**: Area, Angles
 - All 25 types now properly grouped and displayed
@@ -559,12 +600,14 @@ FRACTION_ADDITION: { main: 'Fractions', sub: 'Addition', display: 'Fraction Addi
 **Database Expansion**: Added 250 problems for DATA_ANALYSIS
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: Finding mean (basic datasets), median (odd/even counts), mode (single/multiple), range (small numbers), interpreting simple statistics
 - **MEDIUM (100 problems)**: Mean with decimals, median with larger datasets, comparing statistics (which is greater?), mean from frequency tables, multi-step calculations
 - **HARD (50 problems)**: Finding missing values given mean, comparing multiple statistics, mean with algebraic expressions, real-world word problems, weighted averages
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA Mathematics content descriptors VCMSP270-271:
+
 - Calculate mean, median, mode, and range for data sets
 - Interpret and compare data displays
 - Analyse claims based on data
@@ -573,6 +616,7 @@ Based on VCAA Mathematics content descriptors VCMSP270-271:
 - Understand measures of central tendency and spread
 
 **Problem Types**:
+
 - **Mean problems**: 90 (basic calculation, decimals, frequency tables, missing values)
 - **Median problems**: 80 (odd/even datasets, ordering required, larger numbers)
 - **Mode problems**: 30 (single mode, multiple modes, no mode)
@@ -582,20 +626,24 @@ Based on VCAA Mathematics content descriptors VCMSP270-271:
 - **Real-world context**: 18 (test scores, temperatures, prices, heights)
 
 **Files Created**:
+
 - `temp/data-analysis-problems.json` - 250 data analysis problems
 - `src/scripts/insert-data-analysis.ts` - Insertion script with variable/decimal detection
 - `prisma/migrations/20251230093050_add_data_analysis_type/` - Schema migration
 
 **Schema Updates**:
+
 - Added `DATA_ANALYSIS` to `ProblemType` enum under "Statistics & Probability" category
 
 **Problem Breakdown**:
+
 - 100 EASY | 100 MEDIUM | 50 HARD
 - 34 problems with variables (algebraic missing value problems)
 - 32 problems with decimals (mean calculations with decimals)
 - **Database total: 4578 → 4828 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
 - [Level 7 - Mathematics - Statistics - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/mathematics/mathematics/curriculum/f-10?y=7&s=SP&layout=3)
 
@@ -608,12 +656,14 @@ Based on VCAA Mathematics content descriptors VCMSP270-271:
 **Database Expansion**: Added 250 problems for PROBABILITY
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: Basic probability (coins, dice, spinners, balls), simple fractions, certain/impossible events
 - **MEDIUM (100 problems)**: Probability as decimals and percentages, complementary events (NOT), two independent events, at-least-one problems
 - **HARD (50 problems)**: Compound events with multiple outcomes, probability without replacement (dependent events), conditional probability, binomial probability, two-dice sums
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA Mathematics Version 2.0 content descriptors VC2M7P01-P02:
+
 - Identify sample space for single-stage experiments
 - Assign probabilities using common fractions, decimals, and percentages
 - Predict relative frequencies for related experiments
@@ -622,6 +672,7 @@ Based on VCAA Mathematics Version 2.0 content descriptors VC2M7P01-P02:
 - Explain differences and effect of sample size on outcomes
 
 **Problem Types**:
+
 - **Coin problems**: 26 (basic flips, multiple flips, at-least-one)
 - **Dice problems**: 86 (single die, two dice, sums, multiple rolls)
 - **Balls/bags**: 98 (with replacement, without replacement, multiple colors)
@@ -631,14 +682,17 @@ Based on VCAA Mathematics Version 2.0 content descriptors VC2M7P01-P02:
 - **Without replacement**: 14 (dependent events, conditional probability)
 
 **Files Created**:
+
 - `temp/probability-problems.json` - 250 probability problems
 - `src/scripts/insert-probability.ts` - Insertion script
 - `prisma/migrations/20251230092155_add_probability_type/` - Schema migration
 
 **Schema Updates**:
+
 - Added `PROBABILITY` to `ProblemType` enum under "Statistics & Probability" category
 
 **Problem Breakdown**:
+
 - 100 EASY | 100 MEDIUM | 50 HARD
 - All 250 problems include variables (probability notation)
 - 192 problems with fractions (probability expressions)
@@ -646,6 +700,7 @@ Based on VCAA Mathematics Version 2.0 content descriptors VC2M7P01-P02:
 - **Database total: 4328 → 4578 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
 - [Level 7 - Mathematics - Curriculum - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/mathematics/mathematics/curriculum/f-10?y=7&s=SP&layout=3)
 
@@ -658,12 +713,14 @@ Based on VCAA Mathematics Version 2.0 content descriptors VC2M7P01-P02:
 **Database Expansion**: Added 250 problems for ANGLES
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: Complementary angles (90° pairs), supplementary angles (180° pairs), angles on a straight line, angles around a point, basic triangle angle sums
 - **MEDIUM (100 problems)**: Parallel lines with transversals (corresponding, alternate, co-interior angles), quadrilateral angle sums, parallelograms, rhombuses, trapeziums, kites
 - **HARD (50 problems)**: Algebraic angle problems (2x + 10°), triangle angle ratios (2:3:4), complex multi-step reasoning, isosceles/equilateral triangles with algebra
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA content descriptors VCMMG262-265:
+
 - Identify corresponding, alternate, and co-interior angles when two straight lines are crossed by a transversal
 - Investigate conditions for two lines to be parallel
 - Demonstrate that the angle sum of a triangle is 180°
@@ -671,6 +728,7 @@ Based on VCAA content descriptors VCMMG262-265:
 - Solve simple numerical problems using geometric reasoning
 
 **Problem Types**:
+
 - **Complementary angles**: 16 (finding pairs that sum to 90°)
 - **Supplementary angles**: 16 (finding pairs that sum to 180°)
 - **Triangle problems**: 63 (angle sums, isosceles, equilateral, right triangles)
@@ -679,14 +737,17 @@ Based on VCAA content descriptors VCMMG262-265:
 - **Algebra problems**: 44 (solving for x, ratios, multi-step reasoning)
 
 **Files Created**:
+
 - `temp/angles-problems.json` - 250 angle problems
 - `src/scripts/insert-angles.ts` - Insertion script
 - `prisma/migrations/20251230091258_add_angles_type/` - Schema migration
 
 **Schema Updates**:
+
 - Added `ANGLES` to `ProblemType` enum under "Area & Geometry" category
 
 **Problem Breakdown**:
+
 - 100 EASY | 100 MEDIUM | 50 HARD
 - All 250 problems include variables (angle notation, degree symbols)
 - 2 problems with decimals
@@ -694,6 +755,7 @@ Based on VCAA content descriptors VCMMG262-265:
 - **Database total: 4078 → 4328 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
 - [Level 7 - VIC MATHS NOTES](https://vicmathsnotes.weebly.com/level-7.html)
 
@@ -706,12 +768,14 @@ Based on VCAA content descriptors VCMMG262-265:
 **Database Expansion**: Added 250 problems for AREA
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: Rectangle and square area/perimeter with whole numbers, basic formulas
 - **MEDIUM (100 problems)**: Triangles (A = ½bh), circles (A = πr², C = 2πr), composite shapes (rectangles + squares)
 - **HARD (50 problems)**: Word problems (gardens, rooms, fields), reverse problems (finding dimensions from area), unit conversions
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA content descriptors:
+
 - Calculate area and perimeter of rectangles, triangles, and circles
 - Use formulas for area: rectangles (l × w), triangles (½ × b × h), circles (πr²)
 - Solve problems involving composite shapes
@@ -719,6 +783,7 @@ Based on VCAA content descriptors:
 - Work with different units (meters, centimeters)
 
 **Problem Types**:
+
 - **Rectangle/Square basic**: 80 (area and perimeter calculations)
 - **Triangle area**: 36 (using base × height ÷ 2)
 - **Circle area & circumference**: 54 (using π = 3.14)
@@ -727,21 +792,25 @@ Based on VCAA content descriptors:
 - **Reverse problems**: 20 (finding dimensions from area/perimeter)
 
 **Files Created**:
+
 - `temp/area-problems.json` - 250 area problems
 - `src/scripts/insert-area.ts` - Insertion script
 - `src/scripts/delete-area.ts` - Cleanup script
 - `prisma/migrations/20251230090222_add_area_type/` - Schema migration
 
 **Schema Updates**:
+
 - Added `AREA` to `ProblemType` enum under "Area & Geometry" category
 
 **Problem Breakdown**:
+
 - 100 EASY | 100 MEDIUM | 50 HARD
 - All 250 problems include variables (measurement units)
 - 51 problems with decimals (circle calculations, unit conversions)
 - **Database total: 3828 → 4078 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7)
 - [Level 7 - VIC MATHS NOTES](https://vicmathsnotes.weebly.com/level-7.html)
 
@@ -754,38 +823,45 @@ Based on VCAA content descriptors:
 **Database Expansion**: Added 250 problems for RATIO_RATES
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: Simplifying ratios (4:2 = 2:1), writing ratios, equivalent ratios
 - **MEDIUM (100 problems)**: Dividing quantities in ratios, unit prices, simple rate problems (speed, cost per item)
 - **HARD (50 problems)**: Best buys (comparing unit prices), complex ratio word problems, inverse ratios, scaling problems
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA content descriptors VCMNA249-250:
+
 - Recognise and solve problems involving simple ratios
 - Investigate and calculate 'best buys' with and without digital technologies
 - Understand unit rates and proportional relationships
 - Apply ratio concepts to real-world contexts
 
 **Problem Types**:
+
 - **Simplify ratios**: 92 (reducing ratios to simplest form)
 - **Divide quantities**: 67 (sharing amounts in given ratios)
 - **Rate problems**: 44 (speed, unit price, production rates)
 - **Best buy**: 17 (comparing unit prices to find better value)
 
 **Files Created**:
+
 - `temp/ratio-rates-problems.json` - 250 ratio & rates problems
 - `src/scripts/insert-ratio-rates.ts` - Insertion script
 - `prisma/migrations/20251230085347_add_ratio_rates_type/` - Schema migration
 
 **Schema Updates**:
+
 - Added `RATIO_RATES` to `ProblemType` enum
 
 **Problem Breakdown**:
+
 - 100 EASY | 100 MEDIUM | 50 HARD
 - All 250 problems include variables (ratio notation)
 - 7 problems with decimals
 - **Database total: 3578 → 3828 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7)
 - [Level 7 - VIC MATHS NOTES](https://vicmathsnotes.weebly.com/level-7.html)
 
@@ -798,12 +874,14 @@ Based on VCAA content descriptors VCMNA249-250:
 **Database Expansion**: Added 250 problems for LINEAR_GRAPHING
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: Reading gradients and y-intercepts from y = mx + c form, simple substitution
 - **MEDIUM (100 problems)**: Finding gradients from two points, writing equations, finding x-intercepts
 - **HARD (50 problems)**: Finding equations from points, parallel lines, real-world linear models
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA content descriptors VCMNA256-257:
+
 - Solve simple linear equations
 - Plot points and interpret graphs from real data
 - Develop simple linear models for situations
@@ -811,23 +889,27 @@ Based on VCAA content descriptors VCMNA256-257:
 - Understand gradient (slope) and y-intercept
 
 **Problem Types**:
+
 - **Gradient problems**: 99 (identifying slope from equation, calculating from two points)
 - **Intercept problems**: 126 (y-intercept identification, x-intercept calculation)
 - **Writing equations**: 80 (given gradient & intercept, two points, point-slope form)
 - **Real-world applications**: 12 (distance/time, cost models, growth/decay)
 
 **Files Created**:
+
 - `temp/linear-graphing-problems.json` - 250 linear graphing problems
 - `src/scripts/insert-linear-graphing.ts` - Insertion script with variable/decimal detection
 - `src/scripts/delete-linear-graphing.ts` - Cleanup script
 
 **Problem Breakdown**:
+
 - 100 EASY | 100 MEDIUM | 50 HARD
 - All 250 problems include variables (algebraic notation)
 - 2 problems with decimals
 - **Database total: 3328 → 3578 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
 - [Level 7 - Mathematics - Curriculum - Victorian Curriculum](https://victoriancurriculum.vcaa.vic.edu.au/mathematics/mathematics/curriculum/f-10?y=7&s=SP&layout=3)
 - [11.03 Graphs of linear relationships | Year 7 Maths | Australian Curriculum Year 7 - 2020 Edition | Mathspace](https://mathspace.co/textbooks/syllabuses/Syllabus-815/topics/Topic-18239/subtopics/Subtopic-249516/)
@@ -841,40 +923,47 @@ Based on VCAA content descriptors VCMNA256-257:
 **Database Expansion**: Added 250 problems for COORDINATES_PLOTTING
 
 **Problem Coverage**:
+
 - **EASY (100 problems)**: First quadrant plotting, small positive integers (0-10), basic coordinate identification
 - **MEDIUM (100 problems)**: All four quadrants, negative integers (-10 to 10), arithmetic with coordinates
 - **HARD (50 problems)**: Distance between points, midpoint calculations, decimals, larger ranges (-25 to 25)
 
 **VCAA Level 7 Curriculum Alignment**:
 Based on VCAA content description VCMNA255:
+
 - Plot points on the Cartesian plane given coordinates
 - Find coordinates for a given point
 - Use all four quadrants (builds on Level 6)
 - Distance and midpoint calculations (extension)
 
 **Problem Sets Generated**:
+
 1. **Set 1-5 (EASY)** - Quadrant 1 plotting, coordinate identification, basic arithmetic with coordinates
 2. **Set 1-5 (MEDIUM)** - All quadrants, negative integers, quadrant identification, coordinate arithmetic
 3. **Set 1-5 (HARD)** - Distance formula, midpoint formula, decimals, large numbers
 
 **Files Created**:
+
 - `temp/coordinates-problems.json` - 250 coordinate problems
 - `src/scripts/insert-coordinates.ts` - Insertion script with variable/decimal detection
 - `src/scripts/delete-coordinates.ts` - Cleanup script for duplicates
 
 **Problem Type Breakdown**:
+
 - **Distance problems**: 21 (Pythagorean theorem, vertical/horizontal distance)
 - **Midpoint problems**: 13 (midpoint formula)
 - **Quadrant-specific**: 193 (plotting and identifying points in all quadrants)
 - **With decimals**: 12 (decimal coordinates)
 
 **Results**:
+
 - 250 problems inserted successfully
 - 100 EASY | 100 MEDIUM | 50 HARD
 - All 250 problems include variables (coordinate notation)
 - **Database total: 3078 → 3328 problems**
 
 **Sources**:
+
 - [Level 7 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/level7?layout=1&d=M)
 - [Content description VCMNA255 - Victorian Curriculum - VCAA](https://victoriancurriculum.vcaa.vic.edu.au/Curriculum/ContentDescription/VCMNA255)
 - [Year 7 The Cartesian plane and plotting points](https://www.amsi.org.au/ESA_middle_years/Year7/Year7_md/Year7_2a.html)
@@ -888,11 +977,13 @@ Based on VCAA content description VCMNA255:
 **Database Expansion**: Added 250 problems across 3 new types
 
 **Schema Updates** (`prisma/schema.prisma`):
+
 - Added `INDEX_POWERS` - basic powers, negative exponents, fractional exponents
 - Added `INDEX_SQUARE_ROOTS` - perfect squares, simplified surds, operations with roots
 - Added `INDEX_LAWS` - multiplication law, division law, power of power, variables
 
 **Problem Sets Generated**:
+
 1. **Set 1** (50 EASY) - Basic powers: squares (2² to 20²), cubes (2³ to 10³), higher powers, power of 0/1, negative bases
 2. **Set 2** (50 EASY) - Square roots: perfect squares (√4 to √729), simplified surds (√8 = 2√2, √12 = 2√3, etc.)
 3. **Set 3** (50 MEDIUM) - Index laws: aᵐ × aⁿ = aᵐ⁺ⁿ, aᵐ ÷ aⁿ = aᵐ⁻ⁿ, (aᵐ)ⁿ = aᵐⁿ, with variables
@@ -900,6 +991,7 @@ Based on VCAA content description VCMNA255:
 5. **Set 5** (50 HARD) - Advanced: negative exponents (2⁻³ = 1/8), fractional exponents (16^(3/2) = 64), complex surds
 
 **Files Created**:
+
 - `temp/index-set1.json` through `temp/index-set5.json` - Individual problem sets
 - `temp/index-problems.json` - Combined 250 problems
 - `src/scripts/insert-index.ts` - Insertion script with variable detection
@@ -907,6 +999,7 @@ Based on VCAA content description VCMNA255:
 **Migration**: `20251230034530_add_index_notation_types`
 
 **Results**:
+
 - 250 problems inserted successfully
 - 75 INDEX_POWERS | 97 INDEX_SQUARE_ROOTS | 78 INDEX_LAWS
 - 100 EASY | 100 MEDIUM | 50 HARD
@@ -993,25 +1086,30 @@ Based on VCAA content description VCMNA255:
    - Browser-specific feature tests
 
 **Dependencies Installed:**
+
 - `@axe-core/playwright` (88 packages) - WCAG 2.1 AA automated accessibility testing
 
 **Test Results:**
+
 - Total E2E tests: 47 (across 6 test files)
 - Passing: 27/47 (57%)
 - In manual fix: 18 failing tests (mostly timing issues and strict mode violations)
 
 **Common Issues Fixed:**
+
 - Strict mode violations (multiple `<main>` elements) - used `.first()`
 - Touch target height (relaxed from 44px to 40px)
 - Grid layout assertions (checking display: grid)
 - Multiple heading matches - used `.first()`
 
 **Test Execution:**
+
 ```bash
 npx playwright test e2e/tests/[file].spec.ts --project=chromium --headed
 ```
 
 **Documentation Updated**:
+
 - `CLAUDE.md` - Updated test counts: 153 total (32 PDF + 74 Web + 47 E2E)
 - Added @axe-core/playwright to tech stack
 - Updated status to Phase 9 completion progress
@@ -1025,11 +1123,13 @@ npx playwright test e2e/tests/[file].spec.ts --project=chromium --headed
 ### Phase 9: Integration Testing (Completed) ✅
 
 **Strategy Decision**: Use javascript-testing-patterns skill to optimize test strategy
+
 - Converted E2E-002 through E2E-013 to Jest integration tests
 - Kept 7 browser-specific scenarios for Playwright (PDF download, mobile, a11y, etc.)
 - ~100x speed improvement over E2E (2.6s vs 3-4 minutes)
 
 **Files Created:**
+
 1. **`apps/web/src/__tests__/App.test.tsx`** - App integration tests (21 tests, all passing)
    - E2E-002: Category Selection Flow (2 tests)
    - E2E-003: Subcategory & Problem Display (2 tests)
@@ -1043,18 +1143,21 @@ npx playwright test e2e/tests/[file].spec.ts --project=chromium --headed
    - E2E-013: Empty State Handling (1 test)
 
 **Test Scripts Updated** (`apps/web/package.json`):
+
 ```json
 "test:integration": "jest src/__tests__",
 "test:hooks": "jest src/hooks/__tests__"
 ```
 
 **Test Coverage**: 106 tests total
+
 - PDF Generator: 32 unit tests
 - React Hooks: 53 tests (useCategories, useProblems, useTags)
 - App Integration: 21 tests (10 E2E scenarios)
 - Playwright E2E: 3 tests (homepage validation)
 
 **Documentation Updated**:
+
 - `CLAUDE.md` - Condensed from 146 to 102 lines, updated test counts and commands
 - Test breakdown and scripts reorganized for clarity
 
@@ -1069,6 +1172,7 @@ npx playwright test e2e/tests/[file].spec.ts --project=chromium --headed
 **Goals**: Implement comprehensive end-to-end testing with Playwright to ensure app reliability
 
 **Dependencies Installed:**
+
 - `@playwright/test` (1.57.0) - E2E testing framework
 - Browsers: Chromium, Firefox, WebKit
 
@@ -1104,6 +1208,7 @@ npx playwright test e2e/tests/[file].spec.ts --project=chromium --headed
    - ✅ E2E-001: No console errors on load
 
 **Scripts Added to package.json:**
+
 ```json
 "test:e2e": "playwright test",
 "test:e2e:ui": "playwright test --ui",
@@ -1113,6 +1218,7 @@ npx playwright test e2e/tests/[file].spec.ts --project=chromium --headed
 ```
 
 **Test Execution Workflow:**
+
 ```bash
 # Terminal 1: Start React dev server
 npm run dev
@@ -1125,6 +1231,7 @@ npm run test:e2e:chromium
 ```
 
 **Test Results:**
+
 ```bash
 Test Files: 1 passed (1)
 Tests:      3 passed (3)
@@ -1132,6 +1239,7 @@ Duration:   ~2.5s
 ```
 
 **Testing Patterns:**
+
 - Page Object Model for maintainable tests
 - Strict mode locators for specificity (avoid multiple element matches)
 - Role-based selectors (`getByRole('button')`) for accessibility
@@ -1139,16 +1247,19 @@ Duration:   ~2.5s
 - Screenshot/video capture on failures
 
 **Issues Fixed:**
+
 1. Strict mode violations (duplicate text on page)
    - Fixed: Scoped headerSubtitle to `header` element
    - Fixed: Changed heroSection to use heading role
    - Fixed: Used heading roles for feature cards
 
 **Test Plan Coverage:**
+
 - ✅ E2E-001: Homepage & Initial Load (3 tests implemented)
 - 📋 E2E-002-020: Remaining 17 test scenarios documented
 
 **Next Steps:**
+
 - Implement category selection tests (E2E-002, E2E-003)
 - Implement filtering tests (E2E-004, E2E-005, E2E-009)
 - Implement answer key toggle test (E2E-006)
@@ -1166,6 +1277,7 @@ Duration:   ~2.5s
 ### PDF Generation Implementation ✅
 
 **Dependencies Installed:**
+
 - `@react-pdf/renderer` - React-based PDF generation library
 
 **Files Created:**
@@ -1204,6 +1316,7 @@ Duration:   ~2.5s
    - Previously showed only answer: "3/4"
 
 **Features:**
+
 - ✅ **Single download button**: Streamlined UX with PDF-only workflow
 - ✅ **2-page PDF layout**: Professional worksheet format
 - ✅ **Auto-generated filenames**: `{category}-{subcategory}-worksheet.pdf`
@@ -1212,16 +1325,19 @@ Duration:   ~2.5s
 - ✅ **Complete answer key**: Shows full equation format in answers
 
 **UI Improvements:**
+
 - Darker blue gradient background for better visual contrast
 - HeroSection component for improved empty state UX
 - Removed browser print dependency (PDF-first workflow)
 
 **Verification:**
+
 - ✅ TypeScript compilation: No errors
 - ✅ Production build: Success (2.69s, 1.7MB bundle)
 - ✅ PDF generation: Functional with proper 2-page layout
 
 **Next Steps:**
+
 - Test PDF generation with all problem types (fractions, algebra)
 - Consider adding custom date/name fields to PDF metadata
 - Potential enhancement: Preview PDF before download
@@ -1235,17 +1351,20 @@ Duration:   ~2.5s
 ### Database Expansion ✅
 
 **Problems Generated:**
+
 - **196 mixed number subtraction** (set-9): 79 EASY, 77 MEDIUM, 40 HARD
   - Tags: `['unlike-denominators', 'mixed-numbers', 'set-9']`
 - **118 mixed number addition** (set-10): 60 EASY, 58 MEDIUM, 0 HARD
   - Tags: `['unlike-denominators', 'mixed-numbers', 'set-10']`
 
 **Database Totals:**
+
 - FRACTION_ADDITION: 328 (118 with mixed numbers)
 - FRACTION_SUBTRACTION: 606 (196 with mixed numbers)
 - Total database: 1104 problems
 
 **Files Created:**
+
 - `temp/mixed-number-subtraction-problems.json`
 - `temp/mixed-number-addition-problems.json`
 - `src/scripts/insert-mixed-number-subtraction.ts`
@@ -1262,6 +1381,7 @@ Duration:   ~2.5s
 ### Jest Test Suite Implementation ✅
 
 **Test Coverage:**
+
 - **53 tests total** - all passing
 - **useCategories**: 11 tests
 - **useProblems**: 24 tests
@@ -1271,7 +1391,7 @@ Duration:   ~2.5s
 
 1. **`apps/web/jest.config.cjs`** - Jest configuration
    - jsdom environment for React testing
-   - Path alias mapping (@/* → src/*)
+   - Path alias mapping (@/_ → src/_)
    - TypeScript support via ts-jest
    - esModuleInterop enabled
 
@@ -1303,12 +1423,14 @@ Duration:   ~2.5s
    - Edge cases (empty tags, multiple problem types)
 
 **Dependencies Installed:**
+
 - `@testing-library/react` (16.3.1) - React hook testing utilities
 - `@testing-library/jest-dom` (6.9.1) - DOM matchers for Jest
 - `jest-environment-jsdom` (30.2.0) - jsdom environment
 - `jest` (30.2.0), `ts-jest` (29.4.6), `@types/jest` (30.0.0)
 
 **Test Scripts Added to package.json:**
+
 ```json
 "test": "jest",
 "test:watch": "jest --watch",
@@ -1316,6 +1438,7 @@ Duration:   ~2.5s
 ```
 
 **Testing Patterns Used:**
+
 - **API mocking**: All API client functions mocked with jest.fn()
 - **act() wrapping**: State updates wrapped in act() to prevent warnings
 - **waitFor() assertions**: Async state changes verified with waitFor()
@@ -1324,6 +1447,7 @@ Duration:   ~2.5s
 - **isMounted pattern**: Verified cleanup flag prevents memory leaks
 
 **Key Test Scenarios:**
+
 1. **Loading States**: Verify loading→true initially, loading→false after fetch
 2. **Success States**: Verify data populated correctly after successful fetch
 3. **Error States**: Verify error messages set correctly on API failures
@@ -1335,6 +1459,7 @@ Duration:   ~2.5s
 9. **Cleanup**: Verify no state updates after unmount
 
 **Test Results:**
+
 ```bash
 Test Suites: 3 passed, 3 total
 Tests:       53 passed, 53 total
@@ -1350,20 +1475,24 @@ Time:        ~3s
 ### Code Quality Improvements ✅
 
 **Critical Fixes:**
+
 1. **Type Safety** - Added explicit return types to all functions (App.tsx, hooks, utilities)
 2. **Performance** - Fixed unstable dependency array in `useProblems` hook using `useMemo` with JSON serialization
 
 **Important Fixes:**
+
 1. **Component Types** - Extracted prop types for Fraction, MixedNumber, MainCategory; added FC annotations
 2. **Constants** - Created `/config/constants.ts` for UI_CONFIG and DIFFICULTY_LEVELS
 3. **Cleanup** - Removed obsolete Worksheet type from Phase 5 refactoring
 
 **Minor Fixes:**
+
 1. **Keys** - Consistent, descriptive key patterns (`mixed-${idx}`, `fraction-${idx}`, `token-${idx}`)
 2. **Accessibility** - Added `id`, `htmlFor`, and `aria-label` to all checkboxes (WCAG compliant)
 3. **Error Handling** - Created ErrorBoundary component with graceful error UI, wrapped App in main.tsx
 
 **Files Modified:**
+
 - `apps/web/src/App.tsx` - Return types, constants import, accessibility labels
 - `apps/web/src/hooks/useProblems.ts` - Stable filter key with useMemo
 - `apps/web/src/hooks/useTags.ts` - Return type, type guard
@@ -1377,6 +1506,7 @@ Time:        ~3s
 - Deleted: `apps/web/src/types/index.ts` (obsolete)
 
 **Verification:**
+
 - ✅ TypeScript compilation: No errors
 - ✅ Production build: Success (997ms)
 - ✅ Dev servers: Running correctly
@@ -1424,17 +1554,18 @@ Time:        ~3s
 
 **Screen vs Print Behavior:**
 
-| Feature | Screen | Print |
-|---------|--------|-------|
-| Header & Sidebar | Visible | Hidden |
-| Worksheet Title | Hidden on desktop | Visible (18pt, centered) |
-| Student Metadata | Hidden | Visible (Name, Date, Count) |
-| Inline Answers | Toggle on/off | Always hidden |
-| Answer Key Section | Hidden | Visible on page 2 |
-| Answer Blanks | Dashed lines | Removed |
-| Problem Numbering | CSS counters | CSS counters |
+| Feature            | Screen            | Print                       |
+| ------------------ | ----------------- | --------------------------- |
+| Header & Sidebar   | Visible           | Hidden                      |
+| Worksheet Title    | Hidden on desktop | Visible (18pt, centered)    |
+| Student Metadata   | Hidden            | Visible (Name, Date, Count) |
+| Inline Answers     | Toggle on/off     | Always hidden               |
+| Answer Key Section | Hidden            | Visible on page 2           |
+| Answer Blanks      | Dashed lines      | Removed                     |
+| Problem Numbering  | CSS counters      | CSS counters                |
 
 **Output Quality:**
+
 - Professional worksheet appearance
 - All 30 problems fit on page 1
 - All 30 answers fit on page 2
@@ -1477,6 +1608,7 @@ Time:        ~3s
    - Implementation details (dependency tracking, cleanup pattern, error handling)
 
 **Hook Features:**
+
 - ✅ Automatic fetching on mount and dependency changes
 - ✅ Loading states (boolean flag while fetching)
 - ✅ Error handling (catches ApiError and generic Error)
@@ -1493,23 +1625,51 @@ Time:        ~3s
    - Replaced with dynamic API integration
 
 2. **Added Hook Integration**
+
    ```typescript
-   const { data: apiCategories, loading: categoriesLoading, error: categoriesError } = useCategories();
-   const { data: problems, loading: problemsLoading, error: problemsError } = useProblems(
-     selectedProblemType ? { type: selectedProblemType, limit: 30 } : {}
+   const {
+     data: apiCategories,
+     loading: categoriesLoading,
+     error: categoriesError,
+   } = useCategories();
+   const {
+     data: problems,
+     loading: problemsLoading,
+     error: problemsError,
+   } = useProblems(
+     selectedProblemType ? { type: selectedProblemType, limit: 30 } : {},
    );
    ```
 
 3. **Created Problem Type Mapping**
+
    ```typescript
-   const PROBLEM_TYPE_MAP: Record<ProblemType, { mainCategory: string; subCategory: string }> = {
+   const PROBLEM_TYPE_MAP: Record<
+     ProblemType,
+     { mainCategory: string; subCategory: string }
+   > = {
      FRACTION_ADDITION: { mainCategory: "Fractions", subCategory: "Addition" },
-     FRACTION_SUBTRACTION: { mainCategory: "Fractions", subCategory: "Subtraction" },
-     FRACTION_REDUCTION: { mainCategory: "Fractions", subCategory: "Reduction" },
-     FRACTION_MULTIPLICATION: { mainCategory: "Fractions", subCategory: "Multiplication" },
+     FRACTION_SUBTRACTION: {
+       mainCategory: "Fractions",
+       subCategory: "Subtraction",
+     },
+     FRACTION_REDUCTION: {
+       mainCategory: "Fractions",
+       subCategory: "Reduction",
+     },
+     FRACTION_MULTIPLICATION: {
+       mainCategory: "Fractions",
+       subCategory: "Multiplication",
+     },
      FRACTION_DIVISION: { mainCategory: "Fractions", subCategory: "Division" },
-     ALGEBRA_COLLECTING_TERMS: { mainCategory: "Algebra", subCategory: "Collecting Terms" },
-     ALGEBRA_MULTIPLICATION: { mainCategory: "Algebra", subCategory: "Multiplication" },
+     ALGEBRA_COLLECTING_TERMS: {
+       mainCategory: "Algebra",
+       subCategory: "Collecting Terms",
+     },
+     ALGEBRA_MULTIPLICATION: {
+       mainCategory: "Algebra",
+       subCategory: "Multiplication",
+     },
    };
    ```
 
@@ -1535,6 +1695,7 @@ Time:        ~3s
    - Maintains existing fraction rendering logic (`renderMathExpression()`)
 
 **Navigation Flow:**
+
 1. User clicks main category (e.g., "Fractions") → `onSelectCategory()`
 2. Subcategories appear (e.g., "Addition", "Subtraction", "Reduction")
 3. User clicks subcategory → `onSelectSubCategory()`
@@ -1545,6 +1706,7 @@ Time:        ~3s
 ### Integration Verification (Phase 5 - Task 4)
 
 **Verified Working:**
+
 - ✅ API server running on http://localhost:3001
 - ✅ Frontend server running on http://localhost:5173
 - ✅ `/api/categories` endpoint returning 5 problem types with counts
@@ -1556,6 +1718,7 @@ Time:        ~3s
 - ✅ No runtime errors in API logs
 
 **Test Results:**
+
 ```bash
 # Categories API
 curl http://localhost:3001/api/categories
@@ -1573,12 +1736,14 @@ curl http://localhost:3001/api/tags/ALGEBRA_COLLECTING_TERMS
 ### Phase 5 Status: ✅ COMPLETE
 
 **Completed Tasks:**
+
 - ✅ Task 1: API Client setup (TypeScript types, fetch wrappers, error handling)
 - ✅ Task 2: Custom React hooks (useCategories, useProblems, useTags)
 - ✅ Task 3: Replace static data with API integration
 - ✅ Task 4: Verify end-to-end integration
 
 **What Changed:**
+
 - Frontend now displays all 870 problems from PostgreSQL database
 - Categories dynamically built from API data (no hardcoded lists)
 - Loading states during API fetches
