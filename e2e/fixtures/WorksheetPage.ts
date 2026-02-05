@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, expect } from "@playwright/test";
 
 /**
  * Page Object Model for the Math Worksheet Application (React Router 7)
@@ -20,6 +20,9 @@ export class WorksheetPage {
   readonly categoryHeading: Locator;
   readonly subcategoryLinks: Locator;
   readonly backToAllTopicsLink: Locator;
+
+  // Fractions element
+  readonly fractionsLink: Locator;
 
   // Worksheet page elements (/:category/:subcategory)
   readonly worksheetHeading: Locator;
@@ -51,59 +54,76 @@ export class WorksheetPage {
     this.page = page;
 
     // Homepage - updated for new design
-    this.heroHeading = page.getByRole('heading', { name: /master maths with/i });
+    this.heroHeading = page.getByRole("heading", {
+      name: /master maths with/i,
+    });
     this.heroDescription = page.getByText(/build confidence through practice/i);
-    this.categoryGrid = page.locator('.grid').filter({ has: page.locator('a[href^="/"]') });
+    this.categoryGrid = page
+      .locator(".grid")
+      .filter({ has: page.locator('a[href^="/"]') });
     this.categoryLinks = page.locator('a[href^="/"]').filter({
-      has: page.locator('h3'),
+      has: page.locator("h3"),
     });
 
     // Category page
-    this.categoryHeading = page.getByRole('heading', { level: 1 });
+    this.categoryHeading = page.getByRole("heading", { level: 1 });
     this.subcategoryLinks = page.locator('a[href*="/"]').filter({
-      has: page.locator('h3'),
+      has: page.locator("h3"),
     });
-    this.backToAllTopicsLink = page.getByRole('link', { name: /back to all topics/i });
+    this.backToAllTopicsLink = page.getByRole("link", {
+      name: /back to all topics/i,
+    });
+
+    // Fractions link (used in multiple tests)
+    this.fractionsLink = page.getByRole("link", { name: /fractions/i }).filter({
+      has: page.locator("h3", { hasText: /fractions/i }),
+    });
 
     // Worksheet page
-    this.worksheetHeading = page.getByRole('heading', { level: 1 });
-    this.problemsList = page.locator('ol').filter({ has: page.locator('li') });
-    this.downloadPdfButton = page.getByRole('button', { name: /download pdf/i });
-    this.showAnswerKeyButton = page.getByRole('button', { name: /answers/i });
-    this.backToCategoryLink = page.getByRole('link', { name: /back to/i });
+    this.worksheetHeading = page.getByRole("heading", { level: 1 });
+    this.problemsList = page.locator("ol").filter({ has: page.locator("li") });
+    this.downloadPdfButton = page.locator('button[aria-label="Download PDF"]'); //page.getByRole("button", { name: /download.*/i });
+    this.showAnswerKeyButton = page.getByRole("button", { name: /answers/i });
+    this.backToCategoryLink = page.getByRole("link", { name: /back to/i });
 
     // Filters (worksheet page - collapsible panel)
-    this.filtersButton = page.getByRole('button', { name: /filters/i });
-    this.filterPanel = page.locator('.bg-white.border-b'); // Filter panel when open
-    this.difficultySection = page.getByRole('heading', { name: /difficulty level/i });
-    this.tagSection = page.getByRole('heading', { name: /filter by tags/i });
-    this.applyFiltersButton = page.getByRole('button', { name: /apply filters/i });
-    this.clearFiltersButton = page.getByRole('button', { name: /clear all/i });
+    this.filtersButton = page.getByRole("button", { name: /filters/i });
+    this.filterPanel = page.locator(".bg-white.border-b"); // Filter panel when open
+    this.difficultySection = page.getByRole("heading", {
+      name: /difficulty level/i,
+    });
+    this.tagSection = page.getByRole("heading", { name: /filter by tags/i });
+    this.applyFiltersButton = page.getByRole("button", {
+      name: /apply filters/i,
+    });
+    this.clearFiltersButton = page.getByRole("button", { name: /clear all/i });
 
     // Breadcrumb
-    this.breadcrumb = page.locator('nav').filter({ hasText: /home/i });
+    this.breadcrumb = page.locator("nav").filter({ hasText: /home/i });
 
     // Sidebar navigation
-    this.sidebar = page.locator('aside').first();
-    this.sidebarLogo = page.getByRole('link', { name: /mathpractice/i });
+    this.sidebar = page.locator("aside").first();
+    this.sidebarLogo = page.getByRole("link", { name: /mathpractice/i });
 
     // States
-    this.loadingSpinner = page.locator('.animate-spin');
-    this.errorMessage = page.locator('[class*="text-red"], [class*="#dc2626"]').filter({ hasText: /error/i });
+    this.loadingSpinner = page.locator(".animate-spin");
+    this.errorMessage = page
+      .locator('[class*="text-red"], [class*="#dc2626"]')
+      .filter({ hasText: /error/i });
   }
 
   /**
    * Navigate to homepage
    */
   async goto() {
-    await this.page.goto('/');
+    await this.page.goto("/");
   }
 
   /**
    * Navigate directly to a category page
    */
   async gotoCategory(category: string) {
-    const slug = category.toLowerCase().replace(/\s+/g, '-');
+    const slug = category.toLowerCase().replace(/\s+/g, "-");
     await this.page.goto(`/${slug}`);
   }
 
@@ -111,8 +131,8 @@ export class WorksheetPage {
    * Navigate directly to a worksheet page
    */
   async gotoWorksheet(category: string, subcategory: string) {
-    const catSlug = category.toLowerCase().replace(/\s+/g, '-');
-    const subSlug = subcategory.toLowerCase().replace(/\s+/g, '-');
+    const catSlug = category.toLowerCase().replace(/\s+/g, "-");
+    const subSlug = subcategory.toLowerCase().replace(/\s+/g, "-");
     await this.page.goto(`/${catSlug}/${subSlug}`);
   }
 
@@ -120,14 +140,20 @@ export class WorksheetPage {
    * Click a category link on the homepage
    */
   async selectCategory(category: string) {
-    await this.page.getByRole('link', { name: new RegExp(category, 'i') }).first().click();
+    await this.page
+      .getByRole("link", { name: new RegExp(category, "i") })
+      .first()
+      .click();
   }
 
   /**
    * Click a subcategory link on the category page
    */
   async selectSubcategory(subcategory: string) {
-    await this.page.getByRole('link', { name: new RegExp(subcategory, 'i') }).first().click();
+    await this.page
+      .getByRole("link", { name: new RegExp(subcategory, "i") })
+      .first()
+      .click();
   }
 
   /**
@@ -136,7 +162,9 @@ export class WorksheetPage {
   async openFilters() {
     const button = this.filtersButton;
     // Check if filters panel is not already open by checking button state
-    const isActive = await button.evaluate((el) => el.classList.contains('bg-[var(--color-teal-500)]'));
+    const isActive = await button.evaluate((el) =>
+      el.classList.contains("bg-[var(--color-teal-500)]"),
+    );
     if (!isActive) {
       await button.click();
     }
@@ -146,9 +174,11 @@ export class WorksheetPage {
    * Toggle a difficulty filter checkbox (worksheet page only)
    * Must call openFilters() first
    */
-  async toggleDifficulty(difficulty: 'EASY' | 'MEDIUM' | 'HARD') {
+  async toggleDifficulty(difficulty: "EASY" | "MEDIUM" | "HARD") {
     await this.openFilters();
-    const checkbox = this.page.getByRole('checkbox', { name: new RegExp(difficulty, 'i') });
+    const checkbox = this.page.getByRole("checkbox", {
+      name: new RegExp(difficulty, "i"),
+    });
     await checkbox.click();
   }
 
@@ -158,7 +188,9 @@ export class WorksheetPage {
    */
   async toggleTag(tag: string) {
     await this.openFilters();
-    await this.page.getByLabel(new RegExp(`filter by tag.*${tag}`, 'i')).click();
+    await this.page
+      .getByLabel(new RegExp(`filter by tag.*${tag}`, "i"))
+      .click();
   }
 
   /**
@@ -187,7 +219,7 @@ export class WorksheetPage {
    * Download PDF
    */
   async downloadPdf() {
-    const downloadPromise = this.page.waitForEvent('download');
+    const downloadPromise = this.page.waitForEvent("download");
     await this.downloadPdfButton.click();
     const download = await downloadPromise;
     return download;
@@ -197,14 +229,14 @@ export class WorksheetPage {
    * Wait for page to be ready (loading complete)
    */
   async waitForPageReady() {
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**
    * Get the count of displayed problems
    */
   async getProblemCount(): Promise<number> {
-    const problems = await this.problemsList.locator('li').all();
+    const problems = await this.problemsList.locator("li").all();
     return problems.length;
   }
 
