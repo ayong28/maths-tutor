@@ -2,9 +2,62 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-02-05 - UI Redesign "Geometric Scholar")
+## Current Session (2026-02-05 - E2E Test Fixes for New UI)
+
+**Session Summary**: Fixed and updated all Playwright E2E tests for the new "Geometric Scholar" UI. Removed obsolete filter tests (UI no longer uses filters), added new category links test, updated page object model with `fractionsLink` property, and fixed selectors across all test files. E2E tests now 38 (Chromium) across 7 files.
+
+### E2E Test Updates ✅
+
+**Key Changes:**
+
+1. **`e2e/fixtures/WorksheetPage.ts`** - Page object model updates
+   - Added `fractionsLink` property (used across most tests)
+   - Updated selectors for new UI layout
+
+2. **`e2e/tests/04-category-links.spec.ts`** - New test file
+   - Replaced `04-race-conditions.spec.ts` (filter-based race conditions no longer applicable)
+   - Tests that each category and subcategory can be accessed via URL routing
+   - Validates category → subcategory navigation flow
+
+3. **`e2e/tests/02-pdf-download.spec.ts`** - Updated selectors
+
+4. **`e2e/tests/03-mobile-responsive.spec.ts`** - Updated for new layout
+   - Adjusted viewport tests for sidebar-based navigation
+
+5. **`e2e/tests/05-keyboard-navigation.spec.ts`** - Simplified
+   - Removed filter-related keyboard tests (filters removed from UI)
+
+6. **`e2e/tests/06-accessibility.spec.ts`** - Simplified
+   - Removed filter accessibility tests
+
+7. **`e2e/tests/07-cross-browser.spec.ts`** - Updated
+   - Updated selectors and assertions for new UI
+
+**Tests Removed:**
+- Filter-related tests across multiple files (UI no longer uses difficulty/tag filters on worksheet page)
+- Race condition tests for filter toggling
+
+**Test Counts:**
+- Chromium: 38 tests across 7 files
+- All browsers/projects: 228 tests total
+
+**Files Changed:** 8 files (1 new, 7 modified), +490 / -368 lines
+
+---
+
+## Previous Session (2026-02-05 - UI Redesign "Geometric Scholar")
 
 **Session Summary**: Complete UI redesign with modern "Geometric Scholar" aesthetic. Replaced generic blue theme with warm slate/teal palette, added persistent sidebar navigation, redesigned all pages with new typography (Outfit + Plus Jakarta Sans), and implemented smooth animations throughout.
+
+### Before & After
+
+**Before (Original Blue UI):**
+
+![Old UI - Blue gradient hero, flat category cards](images/ui-before-redesign.png)
+
+**After (Geometric Scholar Redesign):**
+
+![New UI - Dark sidebar, teal accents, gradient category cards with icons](images/ui-after-redesign.png)
 
 ### UI Redesign Implementation ✅
 

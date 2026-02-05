@@ -11,11 +11,11 @@ Guidance for Claude Code when working with this repository.
 ## Quick Start
 
 ```bash
-# Testing (153 tests: 32 PDF + 74 Web + 47 E2E) ⚠️ 4 failing - see docs/CLEANUP-UNUSED-CODE.md
+# Testing (144 tests: 32 PDF + 74 Web + 38 E2E) ⚠️ 4 failing - see docs/CLEANUP-UNUSED-CODE.md
 npm test                       # All: 32 PDF + 74 Web tests (~3s)
 npm run test:integration       # App integration tests (21)
 npm run test:hooks             # React hooks tests (53) ⚠️ 3 failing
-npm run test:e2e:chromium      # Playwright E2E (47 tests, Chromium only)
+npm run test:e2e:chromium      # Playwright E2E (38 tests, Chromium only)
 npm run test:e2e               # Playwright E2E (all browsers)
 
 # Web App (run both for E2E tests)
@@ -36,7 +36,7 @@ Generate printable PDF worksheets for maths problems (VCAA Level 7).
 - **4,628 problems** in PostgreSQL (29 types - all VCAA Level 7 topics)
 - **Web UI**: React Router 7 + Tailwind + Express API (localhost:5173 + localhost:3001)
 - **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters in URL
-- **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
+- **Tests**: 144 tests (32 PDF + 74 Web + 38 E2E)
 
 ## Testing
 
@@ -48,7 +48,7 @@ npm run test:hooks          # React hooks (53) ⚠️ 3 failing
 
 # Root tests
 npm test                    # PDF generator (32)
-npm run test:e2e:chromium   # E2E (47 tests)
+npm run test:e2e:chromium   # E2E (38 tests)
 ```
 
 **⚠️ Action Required:** Fix or cleanup failing tests after React Router 7 migration.
@@ -104,7 +104,7 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
   - Benefits: ~1.2MB smaller client bundle, faster page loads, better mobile performance
   - Implementation: Move PDF logic from `apps/web/src/hooks/usePDFGenerator.ts` to `packages/api/src/routes/`
 - ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
-- ⚠️ Update remaining E2E tests for new UI selectors
+- ✅ E2E tests updated for new UI selectors (38 Chromium tests across 7 files)
 
 **Future Enhancements:**
 - Try to remove CATEGORY_OVERRIDES (packages/api/src/services/problems.service.ts) by improving auto-derivation logic
@@ -131,7 +131,7 @@ packages/api/      # Express API + Prisma
   src/services/    # Database business logic
   scripts/data/    # One-time import scripts (not tracked - data in PostgreSQL)
 src/               # CLI + PDF generator
-e2e/               # Playwright tests (47 E2E tests)
+e2e/               # Playwright tests (38 E2E tests, Chromium)
 docs/              # Documentation (see docs/README.md for index)
 generated/         # Prisma client output (not tracked - regenerated locally)
 ```

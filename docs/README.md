@@ -23,7 +23,7 @@
 | [`../CLAUDE.md`](../CLAUDE.md) | Project overview, quick start commands | **Start here** - read first |
 | [`PROJECT-SETUP.md`](./PROJECT-SETUP.md) | Complete environment setup, database config | Setting up dev environment |
 | [`PROJECT-HISTORY.md`](./PROJECT-HISTORY.md) | Implementation timeline, migration history | Understanding project evolution |
-| [`E2E-TEST-PLAN.md`](./E2E-TEST-PLAN.md) | End-to-end test coverage (47 tests) | Writing/updating E2E tests |
+| [`E2E-TEST-PLAN.md`](./E2E-TEST-PLAN.md) | End-to-end test coverage (38 Chromium tests) | Writing/updating E2E tests |
 
 ---
 
@@ -40,7 +40,7 @@
 
 ### Current Test Status
 
-**Total: 153 tests** (32 PDF + 74 Web + 47 E2E)
+**Total: 144 tests** (32 PDF + 74 Web + 38 E2E)
 
 ⚠️ **Action Required:** 4 tests failing due to unused hooks after React Router 7 migration.
 
@@ -85,10 +85,10 @@ npm run dev                    # Start React app (localhost:5173)
 npm run api:dev                # Start Express API (localhost:3001)
 
 # Testing
-npm test                       # All tests (153 total)
+npm test                       # All tests (144 total)
 npm run test:integration       # Integration tests (21)
 npm run test:hooks             # Hook tests (53) ⚠️ 3 failing
-npm run test:e2e:chromium      # E2E tests (47)
+npm run test:e2e:chromium      # E2E tests (38)
 
 # Database
 brew services start postgresql@16
@@ -101,7 +101,7 @@ npm run generate -- --type FRACTION_ADDITION
 ### Project Stats
 
 - **4,628 problems** across 29 types (VCAA Level 7)
-- **153 tests** (32 PDF + 74 Web + 47 E2E)
+- **144 tests** (32 PDF + 74 Web + 38 E2E)
 - **React Router 7** for URL-based navigation
 - **PostgreSQL 16** database
 - **Playwright** for E2E testing

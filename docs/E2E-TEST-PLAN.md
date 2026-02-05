@@ -2,7 +2,7 @@
 
 **Phase 9: Polish & Testing**
 **Test Framework:** Playwright
-**Last Updated:** 2025-12-29
+**Last Updated:** 2026-02-05
 
 ## Overview
 
@@ -89,58 +89,31 @@ Comprehensive E2E testing strategy for the Math Tutoring Worksheets application.
 
 ---
 
-### 4. Difficulty Filtering
+### 4. Category & Subcategory Links
 **Test ID:** E2E-004
 **Priority:** High
-**User Story:** As a user, I want to filter problems by difficulty level
+**User Story:** As a user, I want to access each category and subcategory via URL routing
+**Status:** ✅ Implemented (`04-category-links.spec.ts`)
 
 **Test Steps:**
-1. Navigate to "Fractions" → "Addition"
-2. Check "EASY" difficulty checkbox
-3. Verify "Apply Filters" button shows "Pending" badge
-4. Click "Apply Filters"
-5. Wait for API response
-6. Verify problems update
+1. Navigate to homepage
+2. Click each category link
+3. Verify subcategories load
+4. Click each subcategory
+5. Verify problems display
 
 **Assertions:**
-- Difficulty filter section is enabled (not grayed out)
-- EASY checkbox is checked
-- "Apply Filters" button becomes enabled
-- "Pending" badge appears on button
-- API call includes `?difficulty=EASY` parameter
-- Problems reload with loading indicator
-- New problems are displayed (may be fewer than 30)
+- Each category page loads with correct heading
+- Subcategory links are visible
+- Each subcategory page loads with problems
+- URL updates correctly for each route
 
-**Additional Test Cases:**
-- Test multiple difficulty selections (EASY + MEDIUM)
-- Test "Clear Filters" button resets checkboxes and reloads all problems
+**Note:** Replaces old E2E-004 (Difficulty Filtering) and E2E-005 (Tag Filtering) which are no longer applicable after the UI redesign removed filter controls from the worksheet page.
 
 ---
 
-### 5. Tag Filtering
-**Test ID:** E2E-005
-**Priority:** High
-**User Story:** As a user, I want to filter problems by tags
-
-**Test Steps:**
-1. Navigate to "Fractions" → "Addition"
-2. Wait for tags to load
-3. Check a tag checkbox (e.g., "unlike-denominators")
-4. Click "Apply Filters"
-5. Verify problems update
-
-**Assertions:**
-- Tag filter section displays available tags
-- Tags are loaded from API based on problem type
-- Tag checkbox can be selected
-- "Apply Filters" button shows pending state
-- API call includes `?tags=unlike-denominators` parameter
-- Filtered problems are displayed
-
-**Additional Test Cases:**
-- Test multiple tag selections
-- Test combining difficulty + tag filters
-- Verify tag filter is disabled when no subcategory is selected
+### ~~5. Tag Filtering~~ (Removed)
+**Status:** Removed - UI no longer uses tag/difficulty filters on worksheet page.
 
 ---
 
@@ -217,24 +190,8 @@ Comprehensive E2E testing strategy for the Math Tutoring Worksheets application.
 
 ---
 
-### 9. Filter State Management
-**Test ID:** E2E-009
-**Priority:** Medium
-**User Story:** As a user, I expect filters to reset when I change categories
-
-**Test Steps:**
-1. Navigate to "Fractions" → "Addition"
-2. Select EASY difficulty and a tag
-3. Apply filters
-4. Switch to "Fractions" → "Subtraction"
-5. Verify filters are cleared
-
-**Assertions:**
-- Difficulty checkboxes are unchecked
-- Tag checkboxes are unchecked
-- "Apply Filters" button is disabled
-- All problems load (no filters applied)
-- Filter state is independent per subcategory
+### ~~9. Filter State Management~~ (Removed)
+**Status:** Removed - Filters removed from UI in Geometric Scholar redesign.
 
 ---
 
