@@ -116,11 +116,28 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 **Dev:** tsx | jest | @testing-library/react | @playwright/test | @axe-core/playwright
 **Design:** Outfit font (headings) | Plus Jakarta Sans (body) | Lucide React icons
 
+## Theme & Config
+
+Theme defined in CSS using Tailwind v4 `@theme` directive (`apps/web/src/index.css`).
+
+```
+apps/web/src/config/
+├── index.ts       # Barrel export
+├── categories.tsx # Category icons & color themes (getCategoryIcon, getCategoryTheme)
+└── constants.ts   # UI_CONFIG, DIFFICULTY_LEVELS
+```
+
+**Usage:**
+- Tailwind classes: `bg-slate-900`, `text-teal-500`, `shadow-lg` (auto-generated from @theme)
+- CSS variables: `var(--color-slate-900)`, `var(--font-heading)`
+- Category themes: `getCategoryTheme(category)` returns Tailwind class strings
+
 ## Architecture
 
 ```
 apps/web/          # React (Vite + TS + Tailwind)
   src/routes/      # React Router 7 routes (home, category, worksheet)
+  src/config/      # Theme config (categories.tsx, constants.ts)
   src/hooks/       # Custom hooks (usePDFGenerator - others unused after migration)
   src/components/  # UI components
   src/__tests__/   # Integration tests

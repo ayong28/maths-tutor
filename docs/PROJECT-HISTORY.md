@@ -2,7 +2,65 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-02-05 - E2E Test Fixes for New UI)
+## Current Session (2026-02-06 - Tailwind v4 Theme Refactoring)
+
+**Session Summary**: Refactored theme configuration to follow Tailwind v4 best practices. Migrated CSS variables from `:root` to `@theme` directive for auto-generated utility classes. Simplified config structure by removing unused `theme.ts` file - CSS is now the single source of truth.
+
+### Tailwind v4 Theme Migration ✅
+
+**Problem**: Duplicate theme definitions in both CSS (`:root` variables) and TypeScript (`theme.ts`), with `theme.ts` exports being unused.
+
+**Solution**:
+- Migrated to Tailwind v4's `@theme` directive (CSS-first approach)
+- Removed unused `theme.ts` file
+- CSS is now single source of truth for theme values
+
+**Key Changes:**
+
+1. **`apps/web/src/index.css`** - Migrated from `:root` to `@theme`
+   - Theme variables now use `@theme` block
+   - Auto-generates utility classes (`bg-slate-900`, `text-teal-500`, `shadow-lg`)
+   - Added `--font-heading`, `--font-body`, `--font-math` to theme
+   - All font references updated to use theme variables
+
+2. **`apps/web/src/config/theme.ts`** - Deleted (unused)
+   - Exports `colors`, `shadows`, `easing`, `fonts`, `theme` were never imported
+   - Category themes in `categories.tsx` use CSS variables directly
+
+3. **`apps/web/src/config/index.ts`** - Updated barrel export
+   - Removed theme.ts exports
+   - Added documentation comment about `@theme` in index.css
+
+4. **`apps/web/src/routes/home.tsx`** - Fixed pre-existing type error
+   - Added missing `LoaderData` type definition
+
+**Config Structure (After):**
+```
+apps/web/src/config/
+├── index.ts       # Barrel export
+├── categories.tsx # Category icons & themes (uses CSS vars)
+└── constants.ts   # UI_CONFIG, DIFFICULTY_LEVELS
+```
+
+**How to Use Theme Colors:**
+- **In JSX:** Use Tailwind classes directly: `bg-slate-900`, `text-teal-500`, `shadow-lg`
+- **CSS variables:** Available via `var(--color-slate-900)`, etc.
+- **Category-specific:** Use `getCategoryTheme(category)` which returns Tailwind class strings
+
+**Benefits:**
+- Single source of truth (CSS `@theme` block)
+- No duplicate definitions between CSS and TypeScript
+- Tailwind auto-generates utility classes
+- Simpler config structure (1 file removed)
+
+**Verification:**
+- ✅ Build: Passing
+- ✅ TypeScript: No errors
+- ✅ E2E tests: All passing
+
+---
+
+## Previous Session (2026-02-05 - E2E Test Fixes for New UI)
 
 **Session Summary**: Fixed and updated all Playwright E2E tests for the new "Geometric Scholar" UI. Removed obsolete filter tests (UI no longer uses filters), added new category links test, updated page object model with `fractionsLink` property, and fixed selectors across all test files. E2E tests now 38 (Chromium) across 7 files.
 
