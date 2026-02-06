@@ -128,8 +128,8 @@ export function HydrateFallback() {
     <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-center gap-3 py-24">
-          <Loader2 className="w-8 h-8 animate-spin text-[var(--color-teal-500)]" />
-          <p className="text-[var(--color-slate-500)] font-medium">
+          <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
+          <p className="text-slate-500 font-medium">
             Loading problems...
           </p>
         </div>
@@ -149,9 +149,9 @@ const difficultyColors: Record<
     dot: "bg-[#10b981]",
   },
   MEDIUM: {
-    bg: "bg-[var(--color-amber-500)]/10",
+    bg: "bg-amber-500/10",
     text: "text-[#d97706]",
-    dot: "bg-[var(--color-amber-500)]",
+    dot: "bg-amber-500",
   },
   HARD: {
     bg: "bg-[#ef4444]/10",
@@ -263,25 +263,25 @@ export default function Worksheet() {
   return (
     <div className="min-h-screen print:bg-white">
       {/* Header Section */}
-      <div className="bg-gradient-to-b from-[var(--color-slate-100)] to-[var(--color-cream)] border-b border-[var(--color-slate-200)] print:hidden">
+      <div className="bg-gradient-to-b from-slate-100 to-cream border-b border-slate-200 print:hidden">
         <div className="max-w-6xl mx-auto px-8 py-6">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm mb-4 animate-fade-in-up">
             <Link
               to="/"
-              className="flex items-center gap-1.5 text-[var(--color-slate-500)] hover:text-[var(--color-teal-600)] transition-colors"
+              className="flex items-center gap-1.5 text-slate-500 hover:text-teal-600 transition-colors"
             >
               <Home className="w-4 h-4" />
               <span>Home</span>
             </Link>
-            <ChevronRight className="w-4 h-4 text-[var(--color-slate-400)]" />
+            <ChevronRight className="w-4 h-4 text-slate-400" />
             <Link
               to={`/${category}`}
               className={`${theme.textAccent} hover:opacity-80 transition-opacity`}
             >
               {categoryDisplay}
             </Link>
-            <ChevronRight className="w-4 h-4 text-[var(--color-slate-400)]" />
+            <ChevronRight className="w-4 h-4 text-slate-400" />
             <span className={`font-medium ${theme.textAccent}`}>
               {subcategoryDisplay}
             </span>
@@ -290,10 +290,10 @@ export default function Worksheet() {
           {/* Title Row */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 animate-fade-in-up delay-100">
             <div>
-              <h1 className="font-heading text-2xl md:text-3xl font-bold text-[var(--color-slate-800)]">
+              <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-800">
                 {subcategoryDisplay}
               </h1>
-              <p className="text-[var(--color-slate-500)] mt-1">
+              <p className="text-slate-500 mt-1">
                 {problems.length} problems loaded
               </p>
             </div>
@@ -305,8 +305,8 @@ export default function Worksheet() {
                 onClick={() => setFilterPanelOpen(!filterPanelOpen)}
                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
                   filterPanelOpen
-                    ? "bg-[var(--color-teal-500)] text-white"
-                    : "bg-white border border-[var(--color-slate-200)] text-[var(--color-slate-700)] hover:border-[var(--color-slate-300)]"
+                    ? "bg-teal-500 text-white"
+                    : "bg-white border border-slate-200 text-slate-700 hover:border-slate-300"
                 }`}
               >
                 <Filter className="w-4 h-4" />
@@ -316,7 +316,7 @@ export default function Worksheet() {
                     className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                       filterPanelOpen
                         ? "bg-white/20 text-white"
-                        : "bg-[var(--color-teal-500)] text-white"
+                        : "bg-teal-500 text-white"
                     }`}
                   >
                     {activeFilterCount}
@@ -329,8 +329,8 @@ export default function Worksheet() {
                 onClick={() => setAnswerKeyOpen(!answerKeyOpen)}
                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
                   answerKeyOpen
-                    ? "bg-[var(--color-amber-500)] text-white"
-                    : "bg-white border border-[var(--color-slate-200)] text-[var(--color-slate-700)] hover:border-[var(--color-slate-300)]"
+                    ? "bg-amber-500 text-white"
+                    : "bg-white border border-slate-200 text-slate-700 hover:border-slate-300"
                 }`}
               >
                 {answerKeyOpen ? (
@@ -371,12 +371,12 @@ export default function Worksheet() {
 
       {/* Filter Panel (Collapsible) */}
       {filterPanelOpen && (
-        <div className="bg-white border-b border-[var(--color-slate-200)] print:hidden animate-fade-in-up">
+        <div className="bg-white border-b border-slate-200 print:hidden animate-fade-in-up">
           <div className="max-w-6xl mx-auto px-8 py-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Difficulty Filter */}
               <div>
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-[var(--color-slate-700)] mb-3">
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
                   <Zap className="w-4 h-4" />
                   Difficulty Level
                 </h3>
@@ -390,11 +390,11 @@ export default function Worksheet() {
               {/* Tag Filters */}
               {availableTags.length > 0 && (
                 <div>
-                  <h3 className="flex items-center gap-2 text-sm font-semibold text-[var(--color-slate-700)] mb-3">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-3">
                     <Tag className="w-4 h-4" />
                     Filter by Tags
                   </h3>
-                  <div className="space-y-2 max-h-48 overflow-y-auto p-4 bg-[var(--color-slate-50)] rounded-xl border border-[var(--color-slate-200)]">
+                  <div className="space-y-2 max-h-48 overflow-y-auto p-4 bg-slate-50 rounded-xl border border-slate-200">
                     {availableTags.map((tag) => (
                       <label
                         key={tag}
@@ -408,7 +408,7 @@ export default function Worksheet() {
                           onChange={() => toggleTag(tag)}
                           aria-label={`Filter by tag: ${tag}`}
                         />
-                        <span className="text-sm text-[var(--color-slate-700)]">
+                        <span className="text-sm text-slate-700">
                           {tag}
                         </span>
                       </label>
@@ -424,8 +424,8 @@ export default function Worksheet() {
                   disabled={!hasUnappliedChanges}
                   className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all ${
                     hasUnappliedChanges
-                      ? "bg-[var(--color-teal-500)] hover:bg-[var(--color-teal-600)] text-white shadow-md"
-                      : "bg-[var(--color-slate-100)] text-[var(--color-slate-400)] cursor-not-allowed"
+                      ? "bg-teal-500 hover:bg-teal-600 text-white shadow-md"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed"
                   }`}
                 >
                   <Check className="w-4 h-4" />
@@ -443,8 +443,8 @@ export default function Worksheet() {
                   }
                   className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all ${
                     stagedDifficulties.length > 0 || stagedTags.length > 0
-                      ? "bg-[var(--color-slate-100)] hover:bg-[var(--color-slate-200)] text-[var(--color-slate-700)]"
-                      : "bg-[var(--color-slate-50)] text-[var(--color-slate-400)] cursor-not-allowed"
+                      ? "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                      : "bg-slate-50 text-slate-400 cursor-not-allowed"
                   }`}
                 >
                   <X className="w-4 h-4" />
@@ -497,22 +497,22 @@ export default function Worksheet() {
               {problems.map((problem, index) => (
                 <li
                   key={problem.id}
-                  className="group relative p-5 bg-white rounded-2xl border border-[var(--color-slate-200)] hover:border-[var(--color-slate-300)] hover:shadow-sm transition-all print:p-3 print:rounded-none print:border print:border-gray-300"
+                  className="group relative p-5 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all print:p-3 print:rounded-none print:border print:border-gray-300"
                   style={{ animationDelay: `${index * 30}ms` }}
                 >
                   {/* Problem number */}
-                  <span className="absolute top-3 left-3 text-xs font-heading font-bold text-[var(--color-slate-400)] print:static print:text-black print:text-sm print:mr-2">
+                  <span className="absolute top-3 left-3 text-xs font-heading font-bold text-slate-400 print:static print:text-black print:text-sm print:mr-2">
                     {String(index + 1).padStart(2, "0")}
                   </span>
 
                   {/* Problem content */}
                   <div className="pl-8 print:pl-0 print:inline">
-                    <span className="font-math text-lg text-[var(--color-slate-800)] print:text-black">
+                    <span className="font-math text-lg text-slate-800 print:text-black">
                       {categoryDisplay === "Fractions" ? (
                         <>
                           {renderMathExpression(problem.question + " = ")}
                           {answerKeyOpen && (
-                            <span className="text-[var(--color-teal-600)] font-semibold print:hidden">
+                            <span className="text-teal-600 font-semibold print:hidden">
                               {renderMathExpression(problem.answer)}
                             </span>
                           )}
@@ -521,7 +521,7 @@ export default function Worksheet() {
                         <>
                           {problem.question + " = "}
                           {answerKeyOpen && (
-                            <span className="text-[var(--color-teal-600)] font-semibold print:hidden">
+                            <span className="text-teal-600 font-semibold print:hidden">
                               {problem.answer}
                             </span>
                           )}
@@ -557,7 +557,7 @@ export default function Worksheet() {
             <div className="mt-10 flex items-center justify-between print:hidden">
               <Link
                 to={`/${category}`}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-slate-100)] hover:bg-[var(--color-slate-200)] text-[var(--color-slate-700)] font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to {categoryDisplay}</span>
@@ -565,7 +565,7 @@ export default function Worksheet() {
 
               <button
                 onClick={() => navigate(0)}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-slate-100)] hover:bg-[var(--color-slate-200)] text-[var(--color-slate-700)] font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors"
               >
                 <span>Shuffle Problems</span>
               </button>
@@ -573,13 +573,13 @@ export default function Worksheet() {
           </div>
         ) : (
           <div className="text-center py-16 animate-fade-in-up">
-            <div className="w-16 h-16 rounded-2xl bg-[var(--color-slate-100)] flex items-center justify-center mx-auto mb-4">
-              <Filter className="w-8 h-8 text-[var(--color-slate-400)]" />
+            <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
+              <Filter className="w-8 h-8 text-slate-400" />
             </div>
-            <h3 className="font-heading text-xl font-bold text-[var(--color-slate-800)] mb-2">
+            <h3 className="font-heading text-xl font-bold text-slate-800 mb-2">
               No problems found
             </h3>
-            <p className="text-[var(--color-slate-500)] mb-6">
+            <p className="text-slate-500 mb-6">
               Try adjusting your filters to see more problems
             </p>
             <button onClick={clearFilters} className="btn btn-primary">
