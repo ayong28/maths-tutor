@@ -6,7 +6,7 @@ import {
   Link,
   redirect,
 } from "react-router";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { getCategories, getTags } from "@/api/client";
 import { type Difficulty } from "@/api";
 import { queryClient, queryKeys } from "@/lib/queryClient";
@@ -65,7 +65,9 @@ export async function clientLoader({
   });
 
   // Get categories from cache and build TYPE_MAP
-  const categories = queryClient.getQueryData<CategoryInfo[]>(queryKeys.categories);
+  const categories = queryClient.getQueryData<CategoryInfo[]>(
+    queryKeys.categories,
+  );
 
   if (!categories) {
     throw redirect("/");
@@ -83,7 +85,9 @@ export async function clientLoader({
 
   // Find the display names from categories
   const categoryInfo = categories.find(
-    (cat) => toSlug(cat.mainCategory) === category && toSlug(cat.subCategory) === subcategory
+    (cat) =>
+      toSlug(cat.mainCategory) === category &&
+      toSlug(cat.subCategory) === subcategory,
   );
 
   // Parse filters (default to EASY if no difficulty specified)
@@ -99,10 +103,13 @@ export async function clientLoader({
   return {
     category,
     subcategory,
-    categoryDisplay: categoryInfo?.mainCategory ??
+    categoryDisplay:
+      categoryInfo?.mainCategory ??
       category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, " "),
-    subcategoryDisplay: categoryInfo?.subCategory ??
-      subcategory.charAt(0).toUpperCase() + subcategory.slice(1).replace(/-/g, " "),
+    subcategoryDisplay:
+      categoryInfo?.subCategory ??
+      subcategory.charAt(0).toUpperCase() +
+        subcategory.slice(1).replace(/-/g, " "),
     problemType,
     availableTags,
     appliedFilters: {
@@ -119,9 +126,7 @@ export function HydrateFallback() {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-center gap-3 py-24">
           <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
-          <p className="text-slate-500 font-medium">
-            Loading problems...
-          </p>
+          <p className="text-slate-500 font-medium">Loading problems...</p>
         </div>
       </div>
     </div>
@@ -190,14 +195,17 @@ export default function Worksheet() {
     appliedFilters.difficulty,
   );
   const [stagedTags, setStagedTags] = useState<string[]>(appliedFilters.tags);
+  const [prevAppliedFilters, setPrevAppliedFilters] = useState(appliedFilters);
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
 
-  // Sync staged filters when URL filters change
-  useEffect(() => {
+  // Reset staged filters when URL changes (React 18+ pattern: adjust state during render)
+  // This avoids the useEffect cascading re-render anti-pattern
+  if (prevAppliedFilters !== appliedFilters) {
+    setPrevAppliedFilters(appliedFilters);
     setStagedDifficulties(appliedFilters.difficulty);
     setStagedTags(appliedFilters.tags);
-  }, [appliedFilters.difficulty, appliedFilters.tags]);
+  }
 
   // PDF generation
   const {
@@ -231,8 +239,6 @@ export default function Worksheet() {
       params.set("page", page.toString());
     }
     setSearchParams(params);
-    // Scroll to top of problems
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Apply filters by updating URL (resets to page 1)
@@ -331,7 +337,8 @@ export default function Worksheet() {
                 ) : (
                   <>
                     Showing {problems.length} of {total} problems
-                    {totalPages > 1 && ` (page ${currentPage} of ${totalPages})`}
+                    {totalPages > 1 &&
+                      ` (page ${currentPage} of ${totalPages})`}
                   </>
                 )}
               </p>
@@ -447,9 +454,7 @@ export default function Worksheet() {
                           onChange={() => toggleTag(tag)}
                           aria-label={`Filter by tag: ${tag}`}
                         />
-                        <span className="text-sm text-slate-700">
-                          {tag}
-                        </span>
+                        <span className="text-sm text-slate-700">{tag}</span>
                       </label>
                     ))}
                   </div>
@@ -536,7 +541,9 @@ export default function Worksheet() {
             <p className="text-slate-500 font-medium">Loading problems...</p>
           </div>
         ) : problems.length > 0 ? (
-          <div className={`animate-fade-in-up ${isPlaceholderData ? "opacity-60" : ""}`}>
+          <div
+            className={`animate-fade-in-up ${isPlaceholderData ? "opacity-60" : ""}`}
+          >
             <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 print:gap-3">
               {problems.map((problem, index) => (
                 <li
