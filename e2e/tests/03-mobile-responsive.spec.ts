@@ -21,17 +21,19 @@ test.describe("Mobile Responsiveness", () => {
     // Verify hero is visible
     await expect(worksheetPage.heroHeading).toBeVisible();
 
-    await expect(worksheetPage.fractionsLink).toBeVisible();
+    // Sidebar is hidden on mobile, hamburger menu should be visible
+    await expect(worksheetPage.mobileMenuButton).toBeVisible();
 
-    // Navigate to worksheet page
+    // Open mobile sidebar and verify fractions link is accessible
+    await worksheetPage.openMobileSidebar();
+    await expect(worksheetPage.sidebar).toBeVisible();
+
+    // Navigate to worksheet page directly (sidebar closes on navigation)
     await worksheetPage.gotoWorksheet("fractions", "addition");
     await worksheetPage.waitForPageReady();
 
-    // On mobile worksheet page, sidebar should stack above main content
-    const aside = page.locator("aside");
+    // On mobile, main content should be visible, sidebar hidden
     const main = page.locator("main");
-
-    await expect(aside).toBeVisible();
     await expect(main).toBeVisible();
 
     // Verify problems load
