@@ -32,6 +32,7 @@ import {
   buildTypeMap,
   setCachedTypeMap,
 } from "@/utils/routing";
+import { getCategoryTheme } from "@/config";
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -160,6 +161,7 @@ export default function Worksheet() {
   } = useLoaderData<LoaderData>();
 
   const navigate = useNavigate();
+  const theme = getCategoryTheme(categoryDisplay);
   const [, setSearchParams] = useSearchParams();
 
   // Staged filters (not yet applied to URL)
@@ -263,12 +265,12 @@ export default function Worksheet() {
             <ChevronRight className="w-4 h-4 text-[var(--color-slate-400)]" />
             <Link
               to={`/${category}`}
-              className="text-[var(--color-slate-500)] hover:text-[var(--color-teal-600)] transition-colors"
+              className={`${theme.textAccent} hover:opacity-80 transition-opacity`}
             >
               {categoryDisplay}
             </Link>
             <ChevronRight className="w-4 h-4 text-[var(--color-slate-400)]" />
-            <span className="font-medium text-[var(--color-slate-800)]">
+            <span className={`font-medium ${theme.textAccent}`}>
               {subcategoryDisplay}
             </span>
           </nav>
