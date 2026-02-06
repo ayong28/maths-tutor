@@ -2,115 +2,12 @@
 import { useLoaderData, Link } from "react-router";
 import { getCategories } from "@/api/client";
 import { buildTypeMap, setCachedTypeMap, toSlug } from "@/utils/routing";
-import {
-  Loader2,
-  BookOpen,
-  Calculator,
-  Hash,
-  Percent,
-  ArrowRight,
-  Sparkles,
-  Scale,
-  TrendingUp,
-  Superscript,
-  BarChart3,
-  Shapes,
-  Compass,
-  Variable,
-  Plus,
-} from "lucide-react";
+import { Loader2, ArrowRight, Sparkles } from "lucide-react";
 import BetaBadge from "@/components/BetaBadge";
+import { getCategoryIcon, getCategoryTheme } from "@/config";
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
-
-// Category icons mapping
-const categoryIcons: Record<string, React.ReactNode> = {
-  Fractions: <BookOpen className="w-7 h-7" strokeWidth={2.5} />,
-  Algebra: <Variable className="w-7 h-7" strokeWidth={2.5} />,
-  Integers: <Plus className="w-7 h-7" strokeWidth={2.5} />,
-  Decimals: <Hash className="w-7 h-7" strokeWidth={2.5} />,
-  Percentages: <Percent className="w-6 h-6" strokeWidth={2.5} />,
-  "Ratio & Rates": <Scale className="w-6 h-6" strokeWidth={2.5} />,
-  "Linear Graphs": <TrendingUp className="w-6 h-6" strokeWidth={2.5} />,
-  "Index Notation": <Superscript className="w-6 h-6" strokeWidth={2.5} />,
-  Geometry: <Shapes className="w-6 h-6" strokeWidth={2.5} />,
-  Statistics: <BarChart3 className="w-6 h-6" strokeWidth={2.5} />,
-  Coordinates: <Compass className="w-6 h-6" strokeWidth={2.5} />,
-  default: <Calculator className="w-6 h-6" />,
-};
-
-// Category colors
-const categoryColors: Record<
-  string,
-  { bg: string; accent: string; hover: string }
-> = {
-  Fractions: {
-    bg: "from-[#0d9488]/10 to-[#14b8a6]/5",
-    accent: "bg-[var(--color-teal-500)]",
-    hover: "group-hover:bg-[var(--color-teal-600)]",
-  },
-  Algebra: {
-    bg: "from-[#8b5cf6]/10 to-[#a78bfa]/5",
-    accent: "bg-[#8b5cf6]",
-    hover: "group-hover:bg-[#7c3aed]",
-  },
-  Integers: {
-    bg: "from-[#f59e0b]/10 to-[#fbbf24]/5",
-    accent: "bg-[var(--color-amber-500)]",
-    hover: "group-hover:bg-[#d97706]",
-  },
-  Decimals: {
-    bg: "from-[#ec4899]/10 to-[#f472b6]/5",
-    accent: "bg-[#ec4899]",
-    hover: "group-hover:bg-[#db2777]",
-  },
-  Percentages: {
-    bg: "from-[#3b82f6]/10 to-[#60a5fa]/5",
-    accent: "bg-[#3b82f6]",
-    hover: "group-hover:bg-[#2563eb]",
-  },
-  Ratios: {
-    bg: "from-[#10b981]/10 to-[#34d399]/5",
-    accent: "bg-[#10b981]",
-    hover: "group-hover:bg-[#059669]",
-  },
-  "Ratio & Rates": {
-    bg: "from-[#f43f5e]/10 to-[#f87171]/5",
-    accent: "bg-[#f43f5e]",
-    hover: "group-hover:bg-[#e11d48]",
-  },
-  "Linear Graphs": {
-    bg: "from-[#8b5cf6]/10 to-[#a78bfa]/5",
-    accent: "bg-[#8b5cf6]",
-    hover: "group-hover:bg-[#7c3aed]",
-  },
-  "Index Notation": {
-    bg: "from-[#3b82f6]/10 to-[#60a5fa]/5",
-    accent: "bg-[#3b82f6]",
-    hover: "group-hover:bg-[#2563eb]",
-  },
-  Geometry: {
-    bg: "from-[#f59e0b]/10 to-[#fbbf24]/5",
-    accent: "bg-[var(--color-amber-500)]",
-    hover: "group-hover:bg-[#d97706]",
-  },
-  Statistics: {
-    bg: "from-[#10b981]/10 to-[#34d399]/5",
-    accent: "bg-[#10b981]",
-    hover: "group-hover:bg-[#059669]",
-  },
-  Coordinates: {
-    bg: "from-[#ec4899]/10 to-[#f472b6]/5",
-    accent: "bg-[#ec4899]",
-    hover: "group-hover:bg-[#db2777]",
-  },
-  default: {
-    bg: "from-[var(--color-slate-200)]/50 to-[var(--color-slate-100)]/30",
-    accent: "bg-[var(--color-slate-500)]",
-    hover: "group-hover:bg-[var(--color-slate-600)]",
-  },
-};
 
 // Fetch data before rendering
 export async function clientLoader() {
@@ -137,8 +34,6 @@ export async function clientLoader() {
   });
 
   const categoryList = Object.keys(categoryStructure);
-
-  console.log("Loaded categories:", categoryList);
 
   return {
     categoryList,
@@ -296,20 +191,19 @@ export default function Home() {
             {categoryList.map((category, index) => {
               const slug = toSlug(category);
               const info = categoryInfo[category];
-              const icon = categoryIcons[category] || categoryIcons["default"];
-              const colors =
-                categoryColors[category] || categoryColors["default"];
+              const icon = getCategoryIcon(category);
+              const theme = getCategoryTheme(category);
 
               return (
                 <Link
                   key={category}
                   to={`/${slug}`}
-                  className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${colors.bg} border border-[var(--color-slate-200)] p-6 transition-all duration-300 hover:shadow-lg hover:border-[var(--color-slate-300)] hover:-translate-y-1 animate-scale-in`}
+                  className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${theme.bgGradient} border border-[var(--color-slate-200)] p-6 transition-all duration-300 hover:shadow-lg hover:border-[var(--color-slate-300)] hover:-translate-y-1 animate-scale-in`}
                   style={{ animationDelay: `${index * 75}ms` }}
                 >
                   {/* Icon */}
                   <div
-                    className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${colors.accent} ${colors.hover} text-white mb-4 transition-colors shadow-md`}
+                    className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${theme.accent} ${theme.accentHover} text-white mb-4 transition-colors shadow-md`}
                   >
                     {icon}
                   </div>

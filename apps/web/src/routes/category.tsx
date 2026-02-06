@@ -2,7 +2,8 @@
 import { useLoaderData, Link, redirect } from 'react-router';
 import { getCategories } from '@/api/client';
 import { buildTypeMap, getCachedTypeMap, setCachedTypeMap, toSlug } from '@/utils/routing';
-import { Loader2, ChevronRight, Home, FileText, ArrowLeft } from 'lucide-react';
+import { Loader2, ChevronRight, Home, ArrowLeft } from 'lucide-react';
+import { getCategoryIcon, getCategoryTheme } from '@/config';
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -77,6 +78,8 @@ export function HydrateFallback() {
 // Component
 export default function Category() {
   const { category, categoryDisplay, subcategories } = useLoaderData<LoaderData>();
+  const theme = getCategoryTheme(categoryDisplay);
+  const icon = getCategoryIcon(categoryDisplay);
 
   return (
     <div className="min-h-screen">
@@ -93,13 +96,15 @@ export default function Category() {
               <span>Home</span>
             </Link>
             <ChevronRight className="w-4 h-4 text-[var(--color-slate-400)]" />
-            <span className="font-medium text-[var(--color-slate-800)]">{categoryDisplay}</span>
+            <span className={`font-medium ${theme.textAccent}`}>{categoryDisplay}</span>
           </nav>
 
           {/* Title */}
           <div className="flex items-center gap-4 animate-fade-in-up delay-100">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--color-teal-500)] to-[var(--color-teal-600)] flex items-center justify-center shadow-lg">
-              <FileText className="w-7 h-7 text-white" />
+            <div
+              className={`w-14 h-14 rounded-2xl ${theme.accent} flex items-center justify-center shadow-lg text-white`}
+            >
+              {icon}
             </div>
             <div>
               <h1 className="font-heading text-3xl md:text-4xl font-bold text-[var(--color-slate-800)]">
