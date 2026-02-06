@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import {
   useLoaderData,
-  useNavigate,
   useSearchParams,
   Link,
   redirect,
@@ -167,7 +166,6 @@ export default function Worksheet() {
     appliedFilters,
   } = useLoaderData<LoaderData>();
 
-  const navigate = useNavigate();
   const theme = getCategoryTheme(categoryDisplay);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -301,7 +299,7 @@ export default function Worksheet() {
   return (
     <div className="min-h-screen print:bg-white">
       {/* Header Section */}
-      <div className="bg-gradient-to-b from-slate-100 to-cream border-b border-slate-200 print:hidden">
+      <div className="bg-linear-to-b from-slate-100 to-cream border-b border-slate-200 print:hidden">
         <div className="max-w-6xl mx-auto px-8 py-6">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm mb-4 animate-fade-in-up">
@@ -625,13 +623,6 @@ export default function Worksheet() {
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to {categoryDisplay}</span>
               </Link>
-
-              <button
-                onClick={() => navigate(0)}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors"
-              >
-                <span>Shuffle Problems</span>
-              </button>
             </div>
           </div>
         ) : (

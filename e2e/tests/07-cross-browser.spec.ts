@@ -200,9 +200,15 @@ test.describe("Cross-Browser Compatibility", () => {
 
     // Verify page loads on mobile
     await expect(worksheetPage.heroHeading).toBeVisible();
-    await expect(worksheetPage.fractionsLink).toBeVisible();
 
-    // Test navigation on mobile
+    // On mobile, sidebar is hidden, hamburger menu is visible
+    await expect(worksheetPage.mobileMenuButton).toBeVisible();
+
+    // Open mobile sidebar to access navigation
+    await worksheetPage.openMobileSidebar();
+    await expect(worksheetPage.sidebar).toBeVisible();
+
+    // Test navigation on mobile via sidebar link
     await worksheetPage.selectCategory("Fractions");
     await expect(page).toHaveURL(/\/fractions$/);
 

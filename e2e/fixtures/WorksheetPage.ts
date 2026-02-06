@@ -42,9 +42,10 @@ export class WorksheetPage {
   // Breadcrumb
   readonly breadcrumb: Locator;
 
-  // Sidebar navigation (persistent)
+  // Sidebar navigation
   readonly sidebar: Locator;
   readonly sidebarLogo: Locator;
+  readonly mobileMenuButton: Locator;
 
   // Loading/Error states
   readonly loadingSpinner: Locator;
@@ -104,6 +105,7 @@ export class WorksheetPage {
     // Sidebar navigation
     this.sidebar = page.locator("aside").first();
     this.sidebarLogo = page.getByRole("link", { name: /mathpractice/i });
+    this.mobileMenuButton = page.getByRole("button", { name: /open navigation menu/i });
 
     // States
     this.loadingSpinner = page.locator(".animate-spin");
@@ -274,5 +276,18 @@ export class WorksheetPage {
    */
   async isSidebarVisible(): Promise<boolean> {
     return await this.sidebar.isVisible();
+  }
+
+  /**
+   * Open mobile sidebar (only needed on mobile viewports)
+   * On desktop, sidebar is always visible
+   */
+  async openMobileSidebar() {
+    const isMenuVisible = await this.mobileMenuButton.isVisible();
+    if (isMenuVisible) {
+      await this.mobileMenuButton.click();
+      // Wait for sidebar to slide in
+      await this.sidebar.waitFor({ state: "visible" });
+    }
   }
 }
