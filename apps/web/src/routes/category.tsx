@@ -92,7 +92,7 @@ export default function Category() {
   return (
     <div className="min-h-screen">
       {/* Header Section */}
-      <div className="bg-gradient-to-b from-slate-100 to-cream border-b border-slate-200">
+      <div className="bg-linear-to-b from-slate-100 to-cream border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-8 py-8">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm mb-6 animate-fade-in-up">
