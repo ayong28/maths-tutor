@@ -2,7 +2,7 @@
 
 A worksheet generator for maths tutoring, featuring 4,628 problems across 29 topic types aligned with the VCAA Level 7 curriculum.
 
-![New UI](docs/images/ui-after-redesign.png)
+![New UI](docs/images/ui-after-redesign.jpg)
 
 ## Features
 
@@ -56,6 +56,7 @@ maths-tutor/
 The React web interface features the "Geometric Scholar" design with URL-based routing:
 
 **Features:**
+
 - Browse 4,628 problems across 29 topic types
 - Persistent sidebar navigation with quick access links
 - URL-based routing (`/fractions/addition`, `/algebra/collecting-terms`)
@@ -66,6 +67,7 @@ The React web interface features the "Geometric Scholar" design with URL-based r
 - WCAG accessibility compliant
 
 **Running:**
+
 ```bash
 # Terminal 1: Start React frontend
 npm run dev  # http://localhost:5173
@@ -98,19 +100,19 @@ npm run generate:tags -- --type FRACTION_ADDITION
 
 ## Problem Types (29 total)
 
-| Category | Types |
-|----------|-------|
-| Fractions | Addition, Subtraction, Reduction, Multiplication, Division |
-| Algebra | Collecting Terms, Multiplication, Substitution, Expansion |
-| Integers | Addition, Subtraction, Multiplication, Division |
-| Decimals | Addition, Subtraction, Multiplication, Division |
-| Percentages | Of Amount, Increase/Decrease |
-| Ratios | Ratio & Rates |
-| Coordinates | Plotting |
-| Linear Graphs | Graphing |
-| Index Notation | Powers, Square Roots, Laws |
-| Geometry | Area, Angles |
-| Statistics | Probability, Data Analysis |
+| Category       | Types                                                      |
+| -------------- | ---------------------------------------------------------- |
+| Fractions      | Addition, Subtraction, Reduction, Multiplication, Division |
+| Algebra        | Collecting Terms, Multiplication, Substitution, Expansion  |
+| Integers       | Addition, Subtraction, Multiplication, Division            |
+| Decimals       | Addition, Subtraction, Multiplication, Division            |
+| Percentages    | Of Amount, Increase/Decrease                               |
+| Ratios         | Ratio & Rates                                              |
+| Coordinates    | Plotting                                                   |
+| Linear Graphs  | Graphing                                                   |
+| Index Notation | Powers, Square Roots, Laws                                 |
+| Geometry       | Area, Angles                                               |
+| Statistics     | Probability, Data Analysis                                 |
 
 ## Testing
 
@@ -137,6 +139,7 @@ npm run test:e2e               # E2E all browsers (228 tests)
 ## Documentation
 
 See [`docs/README.md`](docs/README.md) for full documentation index including:
+
 - Project setup guide
 - Deployment guides (Railway, Netlify)
 - Testing guides
