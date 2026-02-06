@@ -1,64 +1,36 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useLoaderData, Link, redirect } from 'react-router';
+import { useMemo } from 'react';
+import { Link, redirect, useParams } from 'react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getCategories } from '@/api/client';
-import { buildTypeMap, getCachedTypeMap, setCachedTypeMap, toSlug } from '@/utils/routing';
+import { queryClient, queryKeys } from '@/lib/queryClient';
+import { buildTypeMap, setCachedTypeMap, toSlug } from '@/utils/routing';
 import { Loader2, ChevronRight, Home, ArrowLeft } from 'lucide-react';
 import { getCategoryIcon, getCategoryTheme } from '@/config';
 
-// Type for loader data
-type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
-
-// Fetch data with URL params
+// Prefetch categories into TanStack Query cache
 export async function clientLoader({
   params
 }: {
   params: { category: string }
 }) {
-  const { category } = params;
-
-  // Try to use cached typeMap, otherwise fetch and build
-  let typeMap = getCachedTypeMap();
-  let categories;
-
-  if (!typeMap) {
-    // Cache miss - fetch and build TYPE_MAP
-    categories = await getCategories();
-    typeMap = buildTypeMap(categories);
-    setCachedTypeMap(typeMap);
-  } else {
-    // Cache hit - still need categories for display
-    categories = await getCategories();
-  }
-
-  // Build category structure
-  const categoryMap: Record<string, {
-    display: string;
-    subcategories: string[];
-  }> = {};
-
-  categories.forEach((cat) => {
-    const slug = toSlug(cat.mainCategory);
-
-    if (!categoryMap[slug]) {
-      categoryMap[slug] = {
-        display: cat.mainCategory,
-        subcategories: [],
-      };
-    }
-
-    categoryMap[slug].subcategories.push(cat.subCategory);
+  // Prefetch categories (will use cache if fresh)
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.categories,
+    queryFn: getCategories,
   });
 
-  // Validate category exists, redirect to home if not
-  if (!categoryMap[category]) {
-    throw redirect('/');
+  // Get cached data to validate category exists
+  const categories = queryClient.getQueryData(queryKeys.categories) as Awaited<ReturnType<typeof getCategories>> | undefined;
+
+  if (categories) {
+    const validSlugs = new Set(categories.map(cat => toSlug(cat.mainCategory)));
+    if (!validSlugs.has(params.category)) {
+      throw redirect('/');
+    }
   }
 
-  return {
-    category,
-    categoryDisplay: categoryMap[category].display,
-    subcategories: categoryMap[category].subcategories,
-  };
+  return null;
 }
 
 // Loading fallback
@@ -75,9 +47,45 @@ export function HydrateFallback() {
   );
 }
 
-// Component
+// Component uses TanStack Query (data served from cache)
 export default function Category() {
-  const { category, categoryDisplay, subcategories } = useLoaderData<LoaderData>();
+  const { category } = useParams<{ category: string }>();
+
+  // Get categories from TanStack Query cache (prefetched by loader)
+  const { data: categories } = useSuspenseQuery({
+    queryKey: queryKeys.categories,
+    queryFn: getCategories,
+  });
+
+  // Transform categories into display structure (memoized)
+  const { categoryDisplay, subcategories } = useMemo(() => {
+    // Build and cache the TYPE_MAP
+    const typeMap = buildTypeMap(categories);
+    setCachedTypeMap(typeMap);
+
+    // Build category map
+    const categoryMap: Record<string, {
+      display: string;
+      subcategories: string[];
+    }> = {};
+
+    categories.forEach((cat) => {
+      const slug = toSlug(cat.mainCategory);
+      if (!categoryMap[slug]) {
+        categoryMap[slug] = {
+          display: cat.mainCategory,
+          subcategories: [],
+        };
+      }
+      categoryMap[slug].subcategories.push(cat.subCategory);
+    });
+
+    return {
+      categoryDisplay: categoryMap[category!]?.display ?? '',
+      subcategories: categoryMap[category!]?.subcategories ?? [],
+    };
+  }, [categories, category]);
+
   const theme = getCategoryTheme(categoryDisplay);
   const icon = getCategoryIcon(categoryDisplay);
 
