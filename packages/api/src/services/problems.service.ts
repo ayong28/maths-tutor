@@ -6,7 +6,16 @@ export type ProblemFilters = {
   difficulty?: Difficulty[];
   tags?: string[];
   limit?: number;
+  offset?: number;
   seed?: string;
+};
+
+export type PaginatedProblems = {
+  problems: Awaited<ReturnType<typeof prisma.problem.findMany>>;
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 };
 
 export type CategoryInfo = {
@@ -38,10 +47,10 @@ export async function getCategories(): Promise<CategoryInfo[]> {
 }
 
 /**
- * Get problems with optional filters
+ * Get problems with optional filters (paginated)
  */
-export async function getProblems(filters: ProblemFilters) {
-  const { type, difficulty, tags, limit = 30, seed } = filters;
+export async function getProblems(filters: ProblemFilters): Promise<PaginatedProblems> {
+  const { type, difficulty, tags, limit = 20, offset = 0, seed } = filters;
 
   // Build where clause
   const where: any = {};
@@ -58,19 +67,30 @@ export async function getProblems(filters: ProblemFilters) {
     where.tags = { hasSome: tags };
   }
 
-  // Fetch problems
-  let problems = await prisma.problem.findMany({
-    where,
-    orderBy: { id: 'asc' },
-  });
+  // Use transaction for atomic count + fetch
+  const [total, problems] = await prisma.$transaction([
+    prisma.problem.count({ where }),
+    prisma.problem.findMany({
+      where,
+      orderBy: { id: 'asc' },
+      skip: offset,
+      take: limit,
+    }),
+  ]);
 
-  // Apply seed-based shuffling if provided
-  if (seed) {
-    problems = seedShuffle(problems, seed);
-  }
+  // Apply seed-based shuffling if provided (only shuffles the current page)
+  const finalProblems = seed ? seedShuffle(problems, seed) : problems;
 
-  // Apply limit
-  return problems.slice(0, limit);
+  const page = Math.floor(offset / limit) + 1;
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    problems: finalProblems,
+    total,
+    page,
+    pageSize: limit,
+    totalPages,
+  };
 }
 
 /**
