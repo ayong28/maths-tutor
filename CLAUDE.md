@@ -11,11 +11,11 @@ Guidance for Claude Code when working with this repository.
 ## Quick Start
 
 ```bash
-# Testing (144 tests: 32 PDF + 74 Web + 38 E2E) ⚠️ 4 failing - see docs/CLEANUP-UNUSED-CODE.md
+# Testing (153 tests: 32 PDF + 74 Web + 47 E2E) ⚠️ 4 failing - see docs/CLEANUP-UNUSED-CODE.md
 npm test                       # All: 32 PDF + 74 Web tests (~3s)
 npm run test:integration       # App integration tests (21)
 npm run test:hooks             # React hooks tests (53) ⚠️ 3 failing
-npm run test:e2e:chromium      # Playwright E2E (38 tests, Chromium only)
+npm run test:e2e:chromium      # Playwright E2E (47 tests, Chromium only)
 npm run test:e2e               # Playwright E2E (all browsers)
 
 # Web App (run both for E2E tests)
@@ -36,7 +36,7 @@ Generate printable PDF worksheets for maths problems (VCAA Level 7).
 - **4,628 problems** in PostgreSQL (29 types - all VCAA Level 7 topics)
 - **Web UI**: React Router 7 + Tailwind + Express API (localhost:5173 + localhost:3001)
 - **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters in URL
-- **Tests**: 144 tests (32 PDF + 74 Web + 38 E2E)
+- **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
 
 ## Testing
 
@@ -48,7 +48,7 @@ npm run test:hooks          # React hooks (53) ⚠️ 3 failing
 
 # Root tests
 npm test                    # PDF generator (32)
-npm run test:e2e:chromium   # E2E (38 tests)
+npm run test:e2e:chromium   # E2E (47 tests)
 ```
 
 **⚠️ Action Required:** Fix or cleanup failing tests after React Router 7 migration.
@@ -104,7 +104,9 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
   - Benefits: ~1.2MB smaller client bundle, faster page loads, better mobile performance
   - Implementation: Move PDF logic from `apps/web/src/hooks/usePDFGenerator.ts` to `packages/api/src/routes/`
 - ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
-- ✅ E2E tests updated for new UI selectors (38 Chromium tests across 7 files)
+- ✅ Tailwind v4 migration complete - CSS `@theme` is single source of truth
+- ✅ TanStack Query integration in progress (category.tsx, worksheet.tsx using queryClient)
+- ✅ E2E tests updated for new UI selectors (47 Chromium tests across 7 files)
 
 **Future Enhancements:**
 - Try to remove CATEGORY_OVERRIDES (packages/api/src/services/problems.service.ts) by improving auto-derivation logic
@@ -112,13 +114,13 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 
 ## Tech Stack
 
-**Production:** pdfkit | @react-pdf/renderer | PostgreSQL 16 | Prisma 6.19 | Tailwind CSS 4.1
+**Production:** pdfkit | @react-pdf/renderer | PostgreSQL 16 | Prisma 6.19 | Tailwind CSS 4.1 | TanStack Query
 **Dev:** tsx | jest | @testing-library/react | @playwright/test | @axe-core/playwright
 **Design:** Outfit font (headings) | Plus Jakarta Sans (body) | Lucide React icons
 
 ## Theme & Config
 
-Theme defined in CSS using Tailwind v4 `@theme` directive (`apps/web/src/index.css`).
+Theme defined in CSS using Tailwind v4 `@theme` directive (`apps/web/src/index.css`). **CSS is single source of truth** - no TypeScript theme files.
 
 ```
 apps/web/src/config/
@@ -128,8 +130,8 @@ apps/web/src/config/
 ```
 
 **Usage:**
-- Tailwind classes: `bg-slate-900`, `text-teal-500`, `shadow-lg` (auto-generated from @theme)
-- CSS variables: `var(--color-slate-900)`, `var(--font-heading)`
+- Tailwind classes: `bg-slate-900`, `text-teal-500`, `shadow-lg` (direct usage, no var() wrapper needed)
+- CSS variables: `var(--color-slate-900)` only in inline `style={{ }}` props
 - Category themes: `getCategoryTheme(category)` returns Tailwind class strings
 
 ## Architecture
@@ -138,6 +140,7 @@ apps/web/src/config/
 apps/web/          # React (Vite + TS + Tailwind)
   src/routes/      # React Router 7 routes (home, category, worksheet)
   src/config/      # Theme config (categories.tsx, constants.ts)
+  src/lib/         # TanStack Query client (queryClient.ts)
   src/hooks/       # Custom hooks (usePDFGenerator - others unused after migration)
   src/components/  # UI components
   src/__tests__/   # Integration tests
@@ -148,7 +151,7 @@ packages/api/      # Express API + Prisma
   src/services/    # Database business logic
   scripts/data/    # One-time import scripts (not tracked - data in PostgreSQL)
 src/               # CLI + PDF generator
-e2e/               # Playwright tests (38 E2E tests, Chromium)
+e2e/               # Playwright tests (47 E2E tests, Chromium)
 docs/              # Documentation (see docs/README.md for index)
 generated/         # Prisma client output (not tracked - regenerated locally)
 ```

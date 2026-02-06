@@ -38,5 +38,14 @@ export type ProblemFilters = {
   difficulty?: Difficulty[];
   tags?: string[];
   limit?: number;
+  offset?: number;
   seed?: string;
+};
+
+export type PaginatedProblems = {
+  problems: Problem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 };

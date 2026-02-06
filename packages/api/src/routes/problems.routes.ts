@@ -25,12 +25,13 @@ router.get('/categories', async (_req: Request, res: Response) => {
 
 /**
  * GET /api/problems
- * Query problems with filters
+ * Query problems with filters (paginated)
  * Query params:
  *   - type: ProblemType (e.g., FRACTION_ADDITION)
  *   - difficulty: Difficulty[] (e.g., EASY,MEDIUM)
  *   - tags: string[] (e.g., unlike-denominators)
- *   - limit: number (default 30)
+ *   - limit: number (default 20)
+ *   - offset: number (default 0)
  *   - seed: string (for reproducible results)
  */
 router.get('/problems', async (req: Request, res: Response) => {
@@ -61,13 +62,18 @@ router.get('/problems', async (req: Request, res: Response) => {
       filters.limit = parseInt(req.query.limit as string, 10);
     }
 
+    // Parse offset
+    if (req.query.offset) {
+      filters.offset = parseInt(req.query.offset as string, 10);
+    }
+
     // Parse seed
     if (req.query.seed) {
       filters.seed = req.query.seed as string;
     }
 
-    const problems = await getProblems(filters);
-    res.json(problems);
+    const paginatedResult = await getProblems(filters);
+    res.json(paginatedResult);
   } catch (error) {
     console.error('Error fetching problems:', error);
     res.status(500).json({ error: 'Failed to fetch problems' });
