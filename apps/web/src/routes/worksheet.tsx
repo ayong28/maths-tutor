@@ -9,6 +9,7 @@ import {
 import { useState, useMemo } from "react";
 import { getCategories, getProblems, getTags } from "@/api/client";
 import { type Difficulty } from "@/api";
+import { queryClient, queryKeys } from "@/lib/queryClient";
 import {
   Download,
   Loader2,
@@ -28,18 +29,19 @@ import { renderMathExpression } from "@/utils/mathRenderer";
 import { usePDFGenerator } from "@/hooks";
 import {
   getProblemType,
-  getCachedTypeMap,
   buildTypeMap,
   setCachedTypeMap,
+  toSlug,
 } from "@/utils/routing";
 import { getCategoryTheme } from "@/config";
+import { type CategoryInfo } from "@/api/types";
 
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 
 const MAX_PROBLEMS = 20;
 
-// CLIENT LOADER - Fetch problems and tags
+// CLIENT LOADER - Uses TanStack Query cache for categories, fetches problems/tags
 export async function clientLoader({
   params,
   request,
@@ -55,15 +57,21 @@ export async function clientLoader({
   const tagsParam = url.searchParams.get("tags");
   const limitParam = url.searchParams.get("limit");
 
-  // Try to use cached typeMap, otherwise fetch and build
-  let typeMap = getCachedTypeMap();
+  // Ensure categories are in TanStack Query cache
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.categories,
+    queryFn: getCategories,
+  });
 
-  if (!typeMap) {
-    // Cache miss - fetch and build TYPE_MAP
-    const categories = await getCategories();
-    typeMap = buildTypeMap(categories);
-    setCachedTypeMap(typeMap);
+  // Get categories from cache and build TYPE_MAP
+  const categories = queryClient.getQueryData<CategoryInfo[]>(queryKeys.categories);
+
+  if (!categories) {
+    throw redirect("/");
   }
+
+  const typeMap = buildTypeMap(categories);
+  setCachedTypeMap(typeMap);
 
   // Get problem type using the dynamic map
   const problemType = getProblemType(category, subcategory, typeMap);
@@ -71,6 +79,11 @@ export async function clientLoader({
   if (!problemType) {
     throw redirect("/");
   }
+
+  // Find the display names from categories
+  const categoryInfo = categories.find(
+    (cat) => toSlug(cat.mainCategory) === category && toSlug(cat.subCategory) === subcategory
+  );
 
   // Parse filters
   const difficulty = difficultyParam
@@ -81,7 +94,7 @@ export async function clientLoader({
 
   const limit = limitParam ? parseInt(limitParam, 10) : MAX_PROBLEMS;
 
-  // Fetch data in parallel
+  // Fetch problems and tags in parallel
   const [problems, availableTags] = await Promise.all([
     getProblems({
       type: problemType,
@@ -95,11 +108,10 @@ export async function clientLoader({
   return {
     category,
     subcategory,
-    categoryDisplay:
+    categoryDisplay: categoryInfo?.mainCategory ??
       category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, " "),
-    subcategoryDisplay:
-      subcategory.charAt(0).toUpperCase() +
-      subcategory.slice(1).replace(/-/g, " "),
+    subcategoryDisplay: categoryInfo?.subCategory ??
+      subcategory.charAt(0).toUpperCase() + subcategory.slice(1).replace(/-/g, " "),
     problemType,
     problems,
     availableTags,

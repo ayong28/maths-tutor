@@ -1,45 +1,21 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useLoaderData, Link } from "react-router";
+import { useMemo } from "react";
+import { Link } from "react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getCategories } from "@/api/client";
+import { queryClient, queryKeys } from "@/lib/queryClient";
 import { buildTypeMap, setCachedTypeMap, toSlug } from "@/utils/routing";
 import { Loader2, ArrowRight, Sparkles } from "lucide-react";
 import BetaBadge from "@/components/BetaBadge";
 import { getCategoryIcon, getCategoryTheme } from "@/config";
 
-// Type for loader data
-type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
-
-// Fetch data before rendering
+// Prefetch categories into TanStack Query cache
 export async function clientLoader() {
-  const categories = await getCategories();
-
-  // Build and cache the TYPE_MAP for use in other routes
-  const typeMap = buildTypeMap(categories);
-  setCachedTypeMap(typeMap);
-
-  // Build category structure
-  const categoryStructure: Record<string, Set<string>> = {};
-  const categoryInfo: Record<string, { display: string; count: number }> = {};
-
-  categories.forEach((cat) => {
-    if (!categoryStructure[cat.mainCategory]) {
-      categoryStructure[cat.mainCategory] = new Set();
-      categoryInfo[cat.mainCategory] = {
-        display: cat.mainCategory,
-        count: 0,
-      };
-    }
-    categoryStructure[cat.mainCategory].add(cat.subCategory);
-    categoryInfo[cat.mainCategory].count++;
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.categories,
+    queryFn: getCategories,
   });
-
-  const categoryList = Object.keys(categoryStructure);
-
-  return {
-    categoryList,
-    categoryStructure,
-    categoryInfo,
-  };
+  return null;
 }
 
 // Loading fallback (shown while clientLoader runs)
@@ -58,9 +34,41 @@ export function HydrateFallback() {
   );
 }
 
-// Component uses useLoaderData hook
+// Component uses TanStack Query (data served from cache)
 export default function Home() {
-  const { categoryList, categoryInfo } = useLoaderData<LoaderData>();
+  // Get categories from TanStack Query cache (prefetched by loader)
+  const { data: categories } = useSuspenseQuery({
+    queryKey: queryKeys.categories,
+    queryFn: getCategories,
+  });
+
+  // Transform categories into display structure (memoized)
+  const { categoryList, categoryInfo } = useMemo(() => {
+    // Build and cache the TYPE_MAP for use in other routes
+    const typeMap = buildTypeMap(categories);
+    setCachedTypeMap(typeMap);
+
+    // Build category structure
+    const categoryStructure: Record<string, Set<string>> = {};
+    const info: Record<string, { display: string; count: number }> = {};
+
+    categories.forEach((cat) => {
+      if (!categoryStructure[cat.mainCategory]) {
+        categoryStructure[cat.mainCategory] = new Set();
+        info[cat.mainCategory] = {
+          display: cat.mainCategory,
+          count: 0,
+        };
+      }
+      categoryStructure[cat.mainCategory].add(cat.subCategory);
+      info[cat.mainCategory].count++;
+    });
+
+    return {
+      categoryList: Object.keys(categoryStructure),
+      categoryInfo: info,
+    };
+  }, [categories]);
 
   return (
     <div className="min-h-screen">
