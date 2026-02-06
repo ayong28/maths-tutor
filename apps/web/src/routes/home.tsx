@@ -6,11 +6,18 @@ import {
   Loader2,
   BookOpen,
   Calculator,
-  Sigma,
   Hash,
   Percent,
   ArrowRight,
   Sparkles,
+  Scale,
+  TrendingUp,
+  Superscript,
+  BarChart3,
+  Shapes,
+  Compass,
+  Variable,
+  Plus,
 } from "lucide-react";
 import BetaBadge from "@/components/BetaBadge";
 
@@ -19,12 +26,17 @@ type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 
 // Category icons mapping
 const categoryIcons: Record<string, React.ReactNode> = {
-  Fractions: <BookOpen className="w-7 h-7" />,
-  Algebra: <span className="text-2xl font-heading font-bold">x</span>,
-  Integers: <span className="text-2xl font-heading font-bold">±</span>,
-  Decimals: <Hash className="w-7 h-7" />,
-  Percentages: <Percent className="w-6 h-6" />,
-  Ratios: <Sigma className="w-6 h-6" />,
+  Fractions: <BookOpen className="w-7 h-7" strokeWidth={2.5} />,
+  Algebra: <Variable className="w-7 h-7" strokeWidth={2.5} />,
+  Integers: <Plus className="w-7 h-7" strokeWidth={2.5} />,
+  Decimals: <Hash className="w-7 h-7" strokeWidth={2.5} />,
+  Percentages: <Percent className="w-6 h-6" strokeWidth={2.5} />,
+  "Ratio & Rates": <Scale className="w-6 h-6" strokeWidth={2.5} />,
+  "Linear Graphs": <TrendingUp className="w-6 h-6" strokeWidth={2.5} />,
+  "Index Notation": <Superscript className="w-6 h-6" strokeWidth={2.5} />,
+  Geometry: <Shapes className="w-6 h-6" strokeWidth={2.5} />,
+  Statistics: <BarChart3 className="w-6 h-6" strokeWidth={2.5} />,
+  Coordinates: <Compass className="w-6 h-6" strokeWidth={2.5} />,
   default: <Calculator className="w-6 h-6" />,
 };
 
@@ -63,6 +75,36 @@ const categoryColors: Record<
     accent: "bg-[#10b981]",
     hover: "group-hover:bg-[#059669]",
   },
+  "Ratio & Rates": {
+    bg: "from-[#f43f5e]/10 to-[#f87171]/5",
+    accent: "bg-[#f43f5e]",
+    hover: "group-hover:bg-[#e11d48]",
+  },
+  "Linear Graphs": {
+    bg: "from-[#8b5cf6]/10 to-[#a78bfa]/5",
+    accent: "bg-[#8b5cf6]",
+    hover: "group-hover:bg-[#7c3aed]",
+  },
+  "Index Notation": {
+    bg: "from-[#3b82f6]/10 to-[#60a5fa]/5",
+    accent: "bg-[#3b82f6]",
+    hover: "group-hover:bg-[#2563eb]",
+  },
+  Geometry: {
+    bg: "from-[#f59e0b]/10 to-[#fbbf24]/5",
+    accent: "bg-[var(--color-amber-500)]",
+    hover: "group-hover:bg-[#d97706]",
+  },
+  Statistics: {
+    bg: "from-[#10b981]/10 to-[#34d399]/5",
+    accent: "bg-[#10b981]",
+    hover: "group-hover:bg-[#059669]",
+  },
+  Coordinates: {
+    bg: "from-[#ec4899]/10 to-[#f472b6]/5",
+    accent: "bg-[#ec4899]",
+    hover: "group-hover:bg-[#db2777]",
+  },
   default: {
     bg: "from-[var(--color-slate-200)]/50 to-[var(--color-slate-100)]/30",
     accent: "bg-[var(--color-slate-500)]",
@@ -95,6 +137,8 @@ export async function clientLoader() {
   });
 
   const categoryList = Object.keys(categoryStructure);
+
+  console.log("Loaded categories:", categoryList);
 
   return {
     categoryList,
