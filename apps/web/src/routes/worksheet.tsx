@@ -6,8 +6,8 @@ import {
   Link,
   redirect,
 } from "react-router";
-import { useState, useMemo } from "react";
-import { getCategories, getProblems, getTags } from "@/api/client";
+import { useState, useMemo, useEffect } from "react";
+import { getCategories, getTags } from "@/api/client";
 import { type Difficulty } from "@/api";
 import { queryClient, queryKeys } from "@/lib/queryClient";
 import {
@@ -25,8 +25,9 @@ import {
   Zap,
 } from "lucide-react";
 import DifficultyFilter from "@/components/DifficultyFilter";
+import { Pagination } from "@/components/Pagination";
 import { renderMathExpression } from "@/utils/mathRenderer";
-import { usePDFGenerator } from "@/hooks";
+import { usePDFGenerator, useProblemsQuery } from "@/hooks";
 import {
   getProblemType,
   buildTypeMap,
@@ -39,9 +40,10 @@ import { type CategoryInfo } from "@/api/types";
 // Type for loader data
 type LoaderData = Awaited<ReturnType<typeof clientLoader>>;
 
-const MAX_PROBLEMS = 20;
+const PAGE_SIZE = 20;
 
-// CLIENT LOADER - Uses TanStack Query cache for categories, fetches problems/tags
+// CLIENT LOADER - Fetches categories and tags (static data)
+// Problems are now fetched via useProblemsQuery hook with pagination
 export async function clientLoader({
   params,
   request,
@@ -55,7 +57,6 @@ export async function clientLoader({
   // Get filters from URL search params
   const difficultyParam = url.searchParams.get("difficulty");
   const tagsParam = url.searchParams.get("tags");
-  const limitParam = url.searchParams.get("limit");
 
   // Ensure categories are in TanStack Query cache
   await queryClient.prefetchQuery({
@@ -85,25 +86,15 @@ export async function clientLoader({
     (cat) => toSlug(cat.mainCategory) === category && toSlug(cat.subCategory) === subcategory
   );
 
-  // Parse filters
+  // Parse filters (default to EASY if no difficulty specified)
   const difficulty = difficultyParam
     ? (difficultyParam.split(",") as Difficulty[])
-    : [];
+    : ["EASY" as Difficulty];
 
   const tags = tagsParam ? tagsParam.split(",") : [];
 
-  const limit = limitParam ? parseInt(limitParam, 10) : MAX_PROBLEMS;
-
-  // Fetch problems and tags in parallel
-  const [problems, availableTags] = await Promise.all([
-    getProblems({
-      type: problemType,
-      difficulty: difficulty.length > 0 ? difficulty : undefined,
-      tags: tags.length > 0 ? tags : undefined,
-      limit,
-    }),
-    getTags(problemType),
-  ]);
+  // Fetch tags (static data that doesn't change with pagination)
+  const availableTags = await getTags(problemType);
 
   return {
     category,
@@ -113,7 +104,6 @@ export async function clientLoader({
     subcategoryDisplay: categoryInfo?.subCategory ??
       subcategory.charAt(0).toUpperCase() + subcategory.slice(1).replace(/-/g, " "),
     problemType,
-    problems,
     availableTags,
     appliedFilters: {
       difficulty,
@@ -167,14 +157,33 @@ export default function Worksheet() {
     subcategory,
     categoryDisplay,
     subcategoryDisplay,
-    problems,
+    problemType,
     availableTags,
     appliedFilters,
   } = useLoaderData<LoaderData>();
 
   const navigate = useNavigate();
   const theme = getCategoryTheme(categoryDisplay);
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get current page from URL (default: 1)
+  const currentPage = parseInt(searchParams.get("page") ?? "1", 10);
+
+  // Fetch problems with pagination via TanStack Query
+  const {
+    problems,
+    total,
+    totalPages,
+    isLoading,
+    isFetching,
+    isPlaceholderData,
+  } = useProblemsQuery({
+    type: problemType,
+    difficulty: appliedFilters.difficulty,
+    tags: appliedFilters.tags.length > 0 ? appliedFilters.tags : undefined,
+    page: currentPage,
+    pageSize: PAGE_SIZE,
+  });
 
   // Staged filters (not yet applied to URL)
   const [stagedDifficulties, setStagedDifficulties] = useState<Difficulty[]>(
@@ -183,6 +192,12 @@ export default function Worksheet() {
   const [stagedTags, setStagedTags] = useState<string[]>(appliedFilters.tags);
   const [answerKeyOpen, setAnswerKeyOpen] = useState(false);
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+
+  // Sync staged filters when URL filters change
+  useEffect(() => {
+    setStagedDifficulties(appliedFilters.difficulty);
+    setStagedTags(appliedFilters.tags);
+  }, [appliedFilters.difficulty, appliedFilters.tags]);
 
   // PDF generation
   const {
@@ -207,7 +222,20 @@ export default function Worksheet() {
     appliedFilters.tags,
   ]);
 
-  // Apply filters by updating URL
+  // Handle page change
+  const handlePageChange = (page: number): void => {
+    const params = new URLSearchParams(searchParams);
+    if (page === 1) {
+      params.delete("page");
+    } else {
+      params.set("page", page.toString());
+    }
+    setSearchParams(params);
+    // Scroll to top of problems
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Apply filters by updating URL (resets to page 1)
   const applyFilters = (): void => {
     const params = new URLSearchParams();
 
@@ -219,11 +247,12 @@ export default function Worksheet() {
       params.set("tags", stagedTags.join(","));
     }
 
+    // Reset to page 1 when filters change
     setSearchParams(params);
     setFilterPanelOpen(false);
   };
 
-  // Clear filters
+  // Clear filters (resets to page 1)
   const clearFilters = (): void => {
     setStagedDifficulties([]);
     setStagedTags([]);
@@ -260,6 +289,9 @@ export default function Worksheet() {
   const activeFilterCount =
     appliedFilters.difficulty.length + appliedFilters.tags.length;
 
+  // Calculate problem number offset for current page
+  const problemNumberOffset = (currentPage - 1) * PAGE_SIZE;
+
   return (
     <div className="min-h-screen print:bg-white">
       {/* Header Section */}
@@ -294,7 +326,14 @@ export default function Worksheet() {
                 {subcategoryDisplay}
               </h1>
               <p className="text-slate-500 mt-1">
-                {problems.length} problems loaded
+                {isLoading ? (
+                  "Loading..."
+                ) : (
+                  <>
+                    Showing {problems.length} of {total} problems
+                    {totalPages > 1 && ` (page ${currentPage} of ${totalPages})`}
+                  </>
+                )}
               </p>
             </div>
 
@@ -490,9 +529,14 @@ export default function Worksheet() {
           </div>
         </div>
 
-        {/* Problems Grid */}
-        {problems.length > 0 ? (
-          <div className="animate-fade-in-up">
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="flex items-center justify-center gap-3 py-24">
+            <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
+            <p className="text-slate-500 font-medium">Loading problems...</p>
+          </div>
+        ) : problems.length > 0 ? (
+          <div className={`animate-fade-in-up ${isPlaceholderData ? "opacity-60" : ""}`}>
             <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 print:gap-3">
               {problems.map((problem, index) => (
                 <li
@@ -500,9 +544,9 @@ export default function Worksheet() {
                   className="group relative p-5 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all print:p-3 print:rounded-none print:border print:border-gray-300"
                   style={{ animationDelay: `${index * 30}ms` }}
                 >
-                  {/* Problem number */}
+                  {/* Problem number (with page offset) */}
                   <span className="absolute top-3 left-3 text-xs font-heading font-bold text-slate-400 print:static print:text-black print:text-sm print:mr-2">
-                    {String(index + 1).padStart(2, "0")}
+                    {String(problemNumberOffset + index + 1).padStart(2, "0")}
                   </span>
 
                   {/* Problem content */}
@@ -552,6 +596,18 @@ export default function Worksheet() {
                 </li>
               ))}
             </ol>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8 print:hidden">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                  isLoading={isFetching && isPlaceholderData}
+                />
+              </div>
+            )}
 
             {/* Bottom Actions */}
             <div className="mt-10 flex items-center justify-between print:hidden">
