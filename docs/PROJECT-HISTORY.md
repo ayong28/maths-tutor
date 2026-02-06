@@ -2,7 +2,87 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-02-06 - Tailwind v4 Migration & TanStack Query)
+## Current Session (2026-02-07 - Worksheet Pagination)
+
+**Session Summary**: Implemented pagination for the worksheet view with 20 problems per page, URL-based page state (`?page=2`), prefetching of next page, and a new Pagination component.
+
+### Worksheet Pagination Implementation ✅
+
+**Problem**: Worksheet page loaded all matching problems at once, which could be slow for categories with hundreds of problems and cluttered the UI.
+
+**Solution**: Traditional pagination with 20 problems per page, URL-based state for shareability, and prefetching for instant navigation.
+
+**Backend Changes:**
+
+1. **`packages/api/src/services/problems.service.ts`**
+   - Added `offset` parameter to `ProblemFilters`
+   - Created `PaginatedProblems` return type: `{ problems, total, page, pageSize, totalPages }`
+   - Updated `getProblems()` to use `prisma.$transaction` for atomic count + fetch with `skip/take`
+
+2. **`packages/api/src/routes/problems.routes.ts`**
+   - Added parsing for `offset` query parameter
+
+**Frontend Changes:**
+
+1. **`apps/web/src/api/types.ts`**
+   - Added `offset` to `ProblemFilters`
+   - Added `PaginatedProblems` type
+
+2. **`apps/web/src/api/client.ts`**
+   - Updated `getProblems()` to accept `offset` and return `PaginatedProblems`
+
+3. **`apps/web/src/hooks/useProblemsQuery.ts`** (NEW)
+   - TanStack Query hook with query key including page for independent cache
+   - Prefetches next page in useEffect for instant navigation
+   - Uses `keepPreviousData` for smooth page transitions
+
+4. **`apps/web/src/components/Pagination.tsx`** (NEW)
+   - Previous/Next buttons with disabled states
+   - Page number buttons with ellipsis for large page counts
+   - Loading state indicator
+   - Accessible with aria labels
+
+5. **`apps/web/src/routes/worksheet.tsx`**
+   - Read `page` from URL params (default: 1)
+   - Use `useProblemsQuery` hook instead of loader for problems
+   - Display "Showing X of Y problems (page N of M)"
+   - Reset to page 1 when filters change
+   - Problem numbers offset by page (e.g., page 2 starts at 21)
+
+**API Response Format:**
+```json
+{
+  "problems": [...],
+  "total": 328,
+  "page": 1,
+  "pageSize": 20,
+  "totalPages": 17
+}
+```
+
+**URL Examples:**
+- `/fractions/addition` - Page 1 (default)
+- `/fractions/addition?page=2` - Page 2
+- `/fractions/addition?difficulty=EASY,MEDIUM&page=3` - Page 3 with filters
+
+**Features:**
+- ✅ 20 problems per page (configurable via `PAGE_SIZE`)
+- ✅ URL-based page state for shareability
+- ✅ Page resets to 1 when filters change
+- ✅ Prefetches next page for instant navigation
+- ✅ Problem numbers include page offset (page 2 shows 21-40)
+- ✅ Smooth transitions with placeholder data during fetch
+- ✅ Accessible pagination controls with aria labels
+
+**Verification:**
+- ✅ API tests pass (curl confirms paginated response)
+- ✅ TypeScript compiles without errors (both web and api)
+- ✅ All 36 E2E tests pass (Chromium)
+- ✅ Root tests (32) pass
+
+---
+
+## Previous Session (2026-02-06 - Tailwind v4 Migration & TanStack Query)
 
 **Session Summary**: Completed Tailwind v4 migration by replacing all `var(--color-*)` patterns in JSX with direct Tailwind classes. Fixed database difficulty levels (493 problems). Started TanStack Query integration for better caching.
 

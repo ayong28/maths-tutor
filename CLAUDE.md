@@ -11,11 +11,9 @@ Guidance for Claude Code when working with this repository.
 ## Quick Start
 
 ```bash
-# Testing (153 tests: 32 PDF + 74 Web + 47 E2E) ⚠️ 4 failing - see docs/CLEANUP-UNUSED-CODE.md
-npm test                       # All: 32 PDF + 74 Web tests (~3s)
-npm run test:integration       # App integration tests (21)
-npm run test:hooks             # React hooks tests (53) ⚠️ 3 failing
-npm run test:e2e:chromium      # Playwright E2E (47 tests, Chromium only)
+# Testing (32 PDF + 36 E2E Chromium) - see docs/CLEANUP-UNUSED-CODE.md
+npm test                       # PDF generator tests (32)
+npm run test:e2e:chromium      # Playwright E2E (36 tests, Chromium only)
 npm run test:e2e               # Playwright E2E (all browsers)
 
 # Web App (run both for E2E tests)
@@ -35,23 +33,15 @@ Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
 - **4,628 problems** in PostgreSQL (29 types - all VCAA Level 7 topics)
 - **Web UI**: React Router 7 + Tailwind + Express API (localhost:5173 + localhost:3001)
-- **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters in URL
-- **Tests**: 153 tests (32 PDF + 74 Web + 47 E2E)
+- **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters + pagination in URL
+- **Tests**: 68 tests (32 PDF + 36 E2E Chromium)
 
 ## Testing
 
 ```bash
-# Web tests (apps/web/)
-npm test                    # All web (74 tests) ⚠️ 4 failing
-npm run test:integration    # App integration (21) ⚠️ 1 failing
-npm run test:hooks          # React hooks (53) ⚠️ 3 failing
-
-# Root tests
-npm test                    # PDF generator (32)
-npm run test:e2e:chromium   # E2E (47 tests)
+npm test                    # PDF generator (32 tests)
+npm run test:e2e:chromium   # Playwright E2E (36 tests, Chromium)
 ```
-
-**⚠️ Action Required:** Fix or cleanup failing tests after React Router 7 migration.
 
 **Recommended:** Delete unused hooks → See [`docs/CLEANUP-UNUSED-CODE.md`](docs/CLEANUP-UNUSED-CODE.md)
 
@@ -63,6 +53,7 @@ npm run test:e2e:chromium   # E2E (47 tests)
 
 **Still Used:**
 - ✅ `usePDFGenerator` - Active in worksheet route
+- ✅ `useProblemsQuery` - TanStack Query hook for paginated problems (prefetches next page)
 
 **Testing Guides:**
 - Quick fix: `docs/FIX-FAILING-TESTS.md` (if keeping hooks)
@@ -104,13 +95,14 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
   - Benefits: ~1.2MB smaller client bundle, faster page loads, better mobile performance
   - Implementation: Move PDF logic from `apps/web/src/hooks/usePDFGenerator.ts` to `packages/api/src/routes/`
 - ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
+- ✅ Worksheet pagination complete - 20 problems per page with URL-based page state (`?page=2`)
 - ✅ Tailwind v4 migration complete - CSS `@theme` is single source of truth
-- ✅ TanStack Query integration in progress (category.tsx, worksheet.tsx using queryClient)
-- ✅ E2E tests updated for new UI selectors (47 Chromium tests across 7 files)
+- ✅ TanStack Query integration complete (category.tsx, worksheet.tsx using queryClient)
+- ✅ E2E tests updated for new UI selectors (36 Chromium tests across 7 files)
 
 **Future Enhancements:**
 - Try to remove CATEGORY_OVERRIDES (packages/api/src/services/problems.service.ts) by improving auto-derivation logic
-- Add more advanced filtering options
+- Move PDF generation to backend (see HIGH PRIORITY task above)
 
 ## Tech Stack
 
@@ -141,8 +133,8 @@ apps/web/          # React (Vite + TS + Tailwind)
   src/routes/      # React Router 7 routes (home, category, worksheet)
   src/config/      # Theme config (categories.tsx, constants.ts)
   src/lib/         # TanStack Query client (queryClient.ts)
-  src/hooks/       # Custom hooks (usePDFGenerator - others unused after migration)
-  src/components/  # UI components
+  src/hooks/       # Custom hooks (usePDFGenerator, useProblemsQuery)
+  src/components/  # UI components (Pagination, DifficultyFilter, etc.)
   src/__tests__/   # Integration tests
 packages/api/      # Express API + Prisma
   prisma/          # DB schema + migrations
