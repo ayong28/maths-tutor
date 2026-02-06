@@ -101,7 +101,7 @@ export function Pagination({
               disabled={isLoading}
               aria-label={`Go to page ${pageNum}`}
               aria-current={currentPage === pageNum ? 'page' : undefined}
-              className={`min-w-[40px] px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:cursor-wait ${
+              className={`min-w-10 px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:cursor-wait ${
                 currentPage === pageNum
                   ? 'bg-teal-500 text-white'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
