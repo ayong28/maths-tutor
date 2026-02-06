@@ -2,7 +2,67 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-02-06 - Tailwind v4 Theme Refactoring)
+## Current Session (2026-02-06 - Tailwind v4 Migration & TanStack Query)
+
+**Session Summary**: Completed Tailwind v4 migration by replacing all `var(--color-*)` patterns in JSX with direct Tailwind classes. Fixed database difficulty levels (493 problems). Started TanStack Query integration for better caching.
+
+### Tailwind v4 CSS Variable Cleanup ✅
+
+**Problem**: JSX files were using verbose `text-[var(--color-slate-500)]` syntax instead of Tailwind v4's direct `text-slate-500` classes.
+
+**Solution**: Replaced all CSS variable references with Tailwind equivalents across 8 files.
+
+**Files Updated:**
+- `src/routes/home.tsx` - Already updated (1 inline style kept as-is)
+- `src/routes/category.tsx` - 10 replacements
+- `src/routes/worksheet.tsx` - 24 replacements
+- `src/routes/root.tsx` - 15 replacements
+- `src/config/categories.tsx` - 11 replacements
+- `src/components/CopyrightFooter.tsx` - 2 replacements
+- `src/components/BetaBadge.tsx` - 10 replacements
+- `src/components/DifficultyFilter.tsx` - 5 replacements
+
+**Pattern Changes:**
+```
+Before: text-[var(--color-slate-500)]  →  After: text-slate-500
+Before: bg-[var(--color-teal-500)]/20  →  After: bg-teal-500/20
+Before: border-[var(--color-slate-200)] → After: border-slate-200
+```
+
+**Note**: `var(--color-*)` syntax still required in `style={{ }}` props (inline styles).
+
+### Database Difficulty Fix ✅
+
+**Problem**: 493 problems had incorrect difficulty labels. Easy problems looked medium, medium looked okay, hard looked easy.
+
+**Solution**: Created and ran fix script that analyzed question content:
+- Unlike denominators OR mixed numbers → MEDIUM
+- Unlike denominators AND mixed numbers → HARD
+- Like denominators, no mixed numbers → EASY
+
+**Result**: 493 difficulty levels corrected in FRACTION_ADDITION and FRACTION_SUBTRACTION.
+
+### TanStack Query Integration 🔄
+
+**In Progress**: Integrating TanStack Query for category data caching.
+
+**Files Created/Modified:**
+- `src/lib/queryClient.ts` - QueryClient with 5-minute stale time
+- `src/routes/category.tsx` - Uses `useSuspenseQuery` for cached categories
+- `src/routes/worksheet.tsx` - Uses `queryClient.prefetchQuery` in loader
+
+**Benefits:**
+- Categories cached after first load (no re-fetch on navigation)
+- 5-minute stale time reduces API calls
+- Better UX with instant page transitions
+
+### Default Difficulty Filter
+
+**Change**: Worksheet page now defaults to EASY difficulty instead of showing all difficulties.
+
+---
+
+## Previous Session (2026-02-06 - Tailwind v4 Theme Refactoring)
 
 **Session Summary**: Refactored theme configuration to follow Tailwind v4 best practices. Migrated CSS variables from `:root` to `@theme` directive for auto-generated utility classes. Simplified config structure by removing unused `theme.ts` file - CSS is now the single source of truth.
 
