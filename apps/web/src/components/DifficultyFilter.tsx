@@ -8,7 +8,7 @@ const difficultyStyles: Record<Difficulty, { dot: string; label: string }> = {
     label: "Easy",
   },
   MEDIUM: {
-    dot: "bg-[var(--color-amber-500)]",
+    dot: "bg-amber-500",
     label: "Medium",
   },
   HARD: {
@@ -34,8 +34,8 @@ const DifficultyFilter = ({
     <div
       className={`p-4 rounded-xl border transition-all ${
         isDisabled
-          ? "bg-[var(--color-slate-50)] border-[var(--color-slate-200)] opacity-50 pointer-events-none"
-          : "bg-[var(--color-slate-50)] border-[var(--color-slate-200)]"
+          ? "bg-slate-50 border-slate-200 opacity-50 pointer-events-none"
+          : "bg-slate-50 border-slate-200"
       }`}
     >
       <div className="space-y-2">
@@ -61,7 +61,7 @@ const DifficultyFilter = ({
                 aria-label={`Filter by ${difficulty.toLowerCase()} difficulty`}
               />
               <div className={`w-2 h-2 rounded-full ${style.dot}`} />
-              <span className="text-sm font-medium text-[var(--color-slate-700)]">
+              <span className="text-sm font-medium text-slate-700">
                 {style.label}
               </span>
             </label>
@@ -70,7 +70,7 @@ const DifficultyFilter = ({
       </div>
 
       {stagedDifficulties.length === 0 && (
-        <p className="text-xs text-[var(--color-slate-500)] mt-3 italic">
+        <p className="text-xs text-slate-500 mt-3 italic">
           All difficulties shown
         </p>
       )}

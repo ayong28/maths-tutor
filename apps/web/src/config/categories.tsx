@@ -87,10 +87,10 @@ export const categoryThemes: Record<string, CategoryTheme> = {
   // Teal - Primary app accent
   Fractions: {
     bgGradient: "from-[#0d9488]/10 to-[#14b8a6]/5",
-    accent: "bg-[var(--color-teal-500)]",
-    accentHover: "group-hover:bg-[var(--color-teal-600)]",
-    textAccent: "text-[var(--color-teal-600)]",
-    borderAccent: "border-[var(--color-teal-300)]",
+    accent: "bg-teal-500",
+    accentHover: "group-hover:bg-teal-600",
+    textAccent: "text-teal-600",
+    borderAccent: "border-teal-300",
     hex: { primary: "#14b8a6", dark: "#0d9488" },
   },
 
@@ -107,7 +107,7 @@ export const categoryThemes: Record<string, CategoryTheme> = {
   // Amber - Warmth
   Integers: {
     bgGradient: "from-[#f59e0b]/10 to-[#fbbf24]/5",
-    accent: "bg-[var(--color-amber-500)]",
+    accent: "bg-amber-500",
     accentHover: "group-hover:bg-[#d97706]",
     textAccent: "text-[#d97706]",
     borderAccent: "border-[#fcd34d]",
@@ -167,7 +167,7 @@ export const categoryThemes: Record<string, CategoryTheme> = {
   // Amber - Shapes
   Geometry: {
     bgGradient: "from-[#f59e0b]/10 to-[#fbbf24]/5",
-    accent: "bg-[var(--color-amber-500)]",
+    accent: "bg-amber-500",
     accentHover: "group-hover:bg-[#d97706]",
     textAccent: "text-[#d97706]",
     borderAccent: "border-[#fcd34d]",
@@ -196,11 +196,11 @@ export const categoryThemes: Record<string, CategoryTheme> = {
 
   // Default - Slate (fallback)
   default: {
-    bgGradient: "from-[var(--color-slate-200)]/50 to-[var(--color-slate-100)]/30",
-    accent: "bg-[var(--color-slate-500)]",
-    accentHover: "group-hover:bg-[var(--color-slate-600)]",
-    textAccent: "text-[var(--color-slate-600)]",
-    borderAccent: "border-[var(--color-slate-300)]",
+    bgGradient: "from-slate-200/50 to-slate-100/30",
+    accent: "bg-slate-500",
+    accentHover: "group-hover:bg-slate-600",
+    textAccent: "text-slate-600",
+    borderAccent: "border-slate-300",
     hex: { primary: "#5a6577", dark: "#3d4654" },
   },
 };
