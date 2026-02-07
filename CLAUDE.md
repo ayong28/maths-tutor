@@ -96,6 +96,7 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
   - Implementation: Move PDF logic from `apps/web/src/hooks/usePDFGenerator.ts` to `packages/api/src/routes/`
 - ⚠️ Cleanup unused hooks (`useCategories`, `useProblems`, `useTags`) - See `docs/CLEANUP-UNUSED-CODE.md`
 - ✅ Worksheet pagination complete - 20 problems per page with URL-based page state (`?page=2`)
+- ✅ Responsive sidebar complete - hamburger menu on mobile, slide-out drawer
 - ✅ Tailwind v4 migration complete - CSS `@theme` is single source of truth
 - ✅ TanStack Query integration complete (category.tsx, worksheet.tsx using queryClient)
 - ✅ E2E tests updated for new UI selectors (36 Chromium tests across 7 files)
@@ -134,7 +135,7 @@ apps/web/          # React (Vite + TS + Tailwind)
   src/config/      # Theme config (categories.tsx, constants.ts)
   src/lib/         # TanStack Query client (queryClient.ts)
   src/hooks/       # Custom hooks (usePDFGenerator, useProblemsQuery)
-  src/components/  # UI components (Pagination, DifficultyFilter, etc.)
+  src/components/  # UI components (Sidebar, Pagination, DifficultyFilter, etc.)
   src/__tests__/   # Integration tests
 packages/api/      # Express API + Prisma
   prisma/          # DB schema + migrations
@@ -143,7 +144,7 @@ packages/api/      # Express API + Prisma
   src/services/    # Database business logic
   scripts/data/    # One-time import scripts (not tracked - data in PostgreSQL)
 src/               # CLI + PDF generator
-e2e/               # Playwright tests (47 E2E tests, Chromium)
+e2e/               # Playwright tests (36 E2E tests, Chromium)
 docs/              # Documentation (see docs/README.md for index)
 generated/         # Prisma client output (not tracked - regenerated locally)
 ```

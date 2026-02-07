@@ -2,9 +2,9 @@
 
 This document tracks the implementation timeline and session history for the maths-tutor project.
 
-## Current Session (2026-02-07 - Worksheet Pagination)
+## Current Session (2026-02-07 - Pagination & Responsive Sidebar)
 
-**Session Summary**: Implemented pagination for the worksheet view with 20 problems per page, URL-based page state (`?page=2`), prefetching of next page, and a new Pagination component.
+**Session Summary**: Implemented pagination for the worksheet view and made the sidebar responsive for mobile devices with hamburger menu toggle.
 
 ### Worksheet Pagination Implementation ✅
 
@@ -79,6 +79,53 @@ This document tracks the implementation timeline and session history for the mat
 - ✅ TypeScript compiles without errors (both web and api)
 - ✅ All 36 E2E tests pass (Chromium)
 - ✅ Root tests (32) pass
+
+### Responsive Sidebar Implementation ✅
+
+**Problem**: Sidebar was fixed visible on all screen sizes, taking up valuable space on mobile devices.
+
+**Solution**: Hide sidebar on mobile (< md breakpoint), show hamburger menu to toggle slide-out drawer.
+
+**Files Changed:**
+
+1. **`apps/web/src/components/Sidebar.tsx`** (extracted from root.tsx)
+   - Accepts `isOpen` and `onClose` props
+   - Slide-in/out animation with `transform` and `transition`
+   - Backdrop overlay on mobile (closes sidebar on click)
+   - Close button (X) visible on mobile only
+   - Links call `onClose` to close sidebar after navigation
+
+2. **`apps/web/src/routes/root.tsx`** (simplified)
+   - State management for sidebar open/close
+   - Hamburger menu button (visible on mobile only, 48px touch target)
+   - Main content has `md:ml-64` (margin only on desktop)
+   - Accessibility: `aria-label`, `aria-haspopup` on menu button
+
+3. **`e2e/fixtures/WorksheetPage.ts`**
+   - Added `mobileMenuButton` locator
+   - Added `openMobileSidebar()` method
+
+4. **`e2e/tests/03-mobile-responsive.spec.ts`** & **`07-cross-browser.spec.ts`**
+   - Updated to open mobile sidebar before interacting with nav links
+
+**Responsive Behavior:**
+
+| Viewport | Sidebar | Menu Button | Main Content |
+|----------|---------|-------------|--------------|
+| Mobile (<768px) | Hidden (slide-out drawer) | Visible | Full width |
+| Desktop (≥768px) | Fixed visible | Hidden | ml-64 offset |
+
+**Accessibility:**
+- Hamburger button: `aria-label="Open navigation menu"`, `aria-haspopup="true"`
+- Close button: `aria-label="Close navigation menu"`
+- Escape key closes sidebar (handled in root.tsx)
+- Focus returns to menu button after close
+- 48px touch targets (WCAG AAA)
+
+**Animation:**
+- GPU-accelerated `transform: translateX()`
+- 300ms duration with `ease-out` timing
+- Backdrop fade with `opacity` transition
 
 ---
 
