@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import { useState, useRef } from 'react';
 import { Menu } from 'lucide-react';
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/sidebar';
 import CopyrightFooter from '@/components/CopyrightFooter';
 
 export default function Root() {
