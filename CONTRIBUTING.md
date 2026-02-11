@@ -1,0 +1,1 @@
+Thank you for your interest! This is a personal portfolio project, so I am not accepting outside code at this time.

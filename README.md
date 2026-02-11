@@ -1,5 +1,9 @@
 # MathPractice - Year 7 Worksheets
 
+> This is a personal project. 
+> I am not accepting external contributions to ensure this remains 
+> a true representation of my individual work.
+
 A worksheet generator for maths tutoring, featuring 4,628 problems across 29 topic types aligned with the VCAA Level 7 curriculum.
 
 ![New UI](docs/images/ui-after-redesign.jpg)
@@ -147,7 +151,11 @@ See [`docs/README.md`](docs/README.md) for full documentation index including:
 
 ## License
 
-ISC
+License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Note: While the underlying code is open-source, the visual design, branding, and personal assets (images/logos) are copyright © 2026 Adrian Yong. Please do not clone the specific "look and feel" for your own commercial or portfolio use.
 
 ---
 
