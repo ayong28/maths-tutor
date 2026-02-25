@@ -4,13 +4,13 @@
 > I am not accepting external contributions to ensure this remains 
 > a true representation of my individual work.
 
-A worksheet generator for maths tutoring, featuring 4,628 problems across 29 topic types aligned with the VCAA Level 7 curriculum.
+A worksheet generator for maths tutoring, featuring 4,748 problems across 29 topic types aligned with the VCAA Level 7 curriculum.
 
 ![New UI](docs/images/ui-after-redesign.jpg)
 
 ## Features
 
-- **4,628 problems** in PostgreSQL database across 29 topic types
+- **4,748 problems** in PostgreSQL database across 29 topic types
 - **Full VCAA Level 7 coverage**: Fractions, Algebra, Integers, Decimals, Percentages, Ratios, Coordinates, Linear Graphs, Index Notation, Geometry, Statistics & Probability
 - **React web UI** with "Geometric Scholar" design — dark sidebar navigation, category cards, URL-based routing
 - **PDF worksheet generation** with proper fraction notation (2-page layout: problems + answer key)
@@ -61,7 +61,7 @@ The React web interface features the "Geometric Scholar" design with URL-based r
 
 **Features:**
 
-- Browse 4,628 problems across 29 topic types
+- Browse 4,748 problems across 29 topic types
 - Persistent sidebar navigation with quick access links
 - URL-based routing (`/fractions/addition`, `/algebra/collecting-terms`)
 - Deep linking and browser back/forward support
@@ -101,6 +101,31 @@ npm run generate:list
 # List tags for a type
 npm run generate:tags -- --type FRACTION_ADDITION
 ```
+
+## Adding New Problems
+
+Create a JSON file following the format in `packages/api/math-data/example-data.json`:
+
+```json
+[
+  {
+    "question": "5 × 3",
+    "answer": "15",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "EASY",
+    "tags": ["positive-times-positive"]
+  }
+]
+```
+
+Insert into database:
+
+```bash
+cd packages/api
+npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
+```
+
+See `packages/api/prisma/schema.prisma` for valid `ProblemType` values.
 
 ## Problem Types (29 total)
 
