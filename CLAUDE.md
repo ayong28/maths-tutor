@@ -98,8 +98,15 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 2. Insert into database:
 ```bash
 cd packages/api
+
+# Local database
 npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
+
+# Railway database (production)
+DATABASE_URL="YOUR_RAILWAY_DATABASE_URL" npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
 ```
+
+**Get Railway DATABASE_URL:** `railway variables | grep DATABASE_URL` or Railway Dashboard → Variables
 
 **Valid types:** See `packages/api/prisma/schema.prisma` → `enum ProblemType`
 **Valid difficulties:** `EASY` | `MEDIUM` | `HARD`

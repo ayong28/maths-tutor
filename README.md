@@ -122,8 +122,15 @@ Insert into database:
 
 ```bash
 cd packages/api
+
+# Local database
 npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
+
+# Railway database (production)
+DATABASE_URL="YOUR_RAILWAY_DATABASE_URL" npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
 ```
+
+**Get Railway DATABASE_URL:** Run `railway variables | grep DATABASE_URL` or copy from Railway Dashboard → Variables.
 
 See `packages/api/prisma/schema.prisma` for valid `ProblemType` values.
 

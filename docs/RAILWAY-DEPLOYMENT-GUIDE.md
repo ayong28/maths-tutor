@@ -57,10 +57,28 @@ VITE_API_URL=https://your-backend.up.railway.app  # No /api suffix - client adds
 
 **Note:** Deploy the backend service first (Step 2) - migrations will create the schema automatically.
 
+**Method 1: Using insert-problems.ts (Recommended for new problems)**
+
+```bash
+# Get Railway DATABASE_URL
+railway variables | grep DATABASE_URL
+
+# Insert problems from JSON file
+cd packages/api
+DATABASE_URL="YOUR_RAILWAY_DATABASE_URL" npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
+```
+
+**Benefits:**
+- Automatically generates unique IDs (no conflicts)
+- Skips duplicates
+- Works for any problem type
+- Clean, simple syntax
+
+**Method 2: Using pg_restore (Full database import)**
+
 ```bash
 # Link to Railway project
 railway link
-# Select: Project → Environment → Postgres service
 
 # Get database connection string
 railway variables
@@ -73,7 +91,7 @@ railway run pg_restore --no-owner --no-acl -d $DATABASE_URL database_data.dump
 **Verify data:**
 ```bash
 railway run psql $DATABASE_URL -c 'SELECT COUNT(*) FROM "Problem";'
-# Expected: 4628 problems
+# Expected: 4748 problems
 ```
 
 **Important:** If you get "relation does not exist" errors, ensure the backend service has deployed successfully first. The backend's start command runs migrations that create the database tables.
@@ -210,7 +228,7 @@ psql -d maths_tutor_dev -c "\d+ Problem"
 
 # ✅ 2. Test data integrity
 psql -d maths_tutor_dev -c "SELECT COUNT(*) FROM \"Problem\";"
-# Expected: 4628 problems (or your current count)
+# Expected: 4748 problems (or your current count)
 
 # ✅ 3. Test API with new schema
 npm run api:dev
@@ -385,7 +403,7 @@ railway link
 
 # Check data count
 railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
-# Expected: 4628
+# Expected: 4748
 
 # Verify new schema
 railway run psql $DATABASE_URL -c "\d+ UserPreferences"
@@ -440,7 +458,7 @@ Use this checklist EVERY time before pushing schema changes:
 - [ ] Railway logs show "Server listening on port 3001"
 - [ ] Tested `/health` endpoint: returns 200 status
 - [ ] Tested API endpoints with new schema (all working in production)
-- [ ] Verified data count unchanged: 4628 problems (if not adding/removing data)
+- [ ] Verified data count unchanged: 4748 problems (if not adding/removing data)
 - [ ] Frontend still works with new backend schema
 - [ ] No error alerts from monitoring/logging (if configured)
 
@@ -916,7 +934,7 @@ railway run pg_restore --clean --no-owner --no-acl -d $DATABASE_URL backup_20260
 
 # 3. Verify data restored
 railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
-# Expected: 4628
+# Expected: 4748
 
 # 4. Restart Railway backend service
 # Railway Dashboard → Backend Service → Settings → Restart
@@ -992,7 +1010,7 @@ curl https://your-backend.up.railway.app/api/problems?type=FRACTION_ADDITION
 
 # Verify data integrity
 railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
-# Expected: 4628
+# Expected: 4748
 ```
 
 #### Emergency: Database Corrupted
@@ -1040,7 +1058,7 @@ railway run pg_restore --clean --no-owner --no-acl -d $DATABASE_URL backup_20260
 
 # Verify
 railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM \"Problem\";"
-# Expected: 4628
+# Expected: 4748
 ```
 
 4. **Restart Railway backend**
