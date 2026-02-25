@@ -31,7 +31,7 @@ npm run generate:tags -- --type FRACTION_ADDITION
 
 Generate printable PDF worksheets for maths problems (VCAA Level 7).
 
-- **4,628 problems** in PostgreSQL (29 types - all VCAA Level 7 topics)
+- **4,748 problems** in PostgreSQL (29 types - all VCAA Level 7 topics)
 - **Web UI**: React Router 7 + Tailwind + Express API (localhost:5173 + localhost:3001)
 - **Routing**: URL-based (`/fractions/addition`), deep linking, browser nav, filters + pagination in URL
 - **Tests**: 68 tests (32 PDF + 36 E2E Chromium)
@@ -79,6 +79,30 @@ npx prisma migrate dev --schema=packages/api/prisma/schema.prisma
 **Note:** Data (4,628 problems) is already in PostgreSQL. Import scripts exist locally in `packages/api/scripts/data/` but are not tracked in git.
 
 **Full setup guide:** See `docs/PROJECT-SETUP.md` → Database Setup section
+
+## Adding New Math Problems
+
+1. Create a JSON file following the format in `packages/api/math-data/example-data.json`:
+```json
+[
+  {
+    "question": "5 × 3",
+    "answer": "15",
+    "type": "INTEGERS_MULTIPLICATION",
+    "difficulty": "EASY",
+    "tags": ["positive-times-positive"]
+  }
+]
+```
+
+2. Insert into database:
+```bash
+cd packages/api
+npx tsx scripts/data/insert-problems.ts math-data/your-problems.json
+```
+
+**Valid types:** See `packages/api/prisma/schema.prisma` → `enum ProblemType`
+**Valid difficulties:** `EASY` | `MEDIUM` | `HARD`
 
 ## Status
 
