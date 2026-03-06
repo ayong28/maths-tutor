@@ -172,9 +172,12 @@ function drawExpression(
     return doc.widthOfString(expression);
   }
 
-  // Check for addition/subtraction operations
-  if (expression.includes(' + ') || expression.includes(' - ')) {
-    const operator = expression.includes(' + ') ? ' + ' : ' - ';
+  // Check for arithmetic operations (addition, subtraction, multiplication, division)
+  if (expression.includes(' + ') || expression.includes(' - ') || expression.includes(' × ') || expression.includes(' ÷ ')) {
+    const operator = expression.includes(' + ') ? ' + '
+                   : expression.includes(' - ') ? ' - '
+                   : expression.includes(' × ') ? ' × '
+                   : ' ÷ ';
     const parts = expression.split(operator);
 
     // Simple binary operation (fraction + fraction)
@@ -201,6 +204,14 @@ function drawExpression(
     // Simple number/fraction
     return drawNumber(doc, currentX, y, expression, fontSize);
   }
+}
+
+/**
+ * Normalize Unicode characters for PDF rendering
+ * Converts Unicode minus sign (U+2212) to ASCII hyphen-minus (U+002D)
+ */
+function normalizeForPDF(text: string): string {
+  return text.replace(/−/g, '-');
 }
 
 /**
@@ -242,9 +253,9 @@ function createWorksheetDocument(options: PDFGenerateOptions): PDFKit.PDFDocumen
     doc.text(`${i + 1}.`, x, y, { lineBreak: false });
     const numLabelWidth = doc.widthOfString(`${i + 1}. `);
 
-    // Draw the expression
+    // Draw the expression (normalize Unicode characters)
     const exprX = x + numLabelWidth + CONFIG.LABEL_SPACING;
-    const exprWidth = drawExpression(doc, exprX, y, problem.question, PROBLEM_FONT_SIZE);
+    const exprWidth = drawExpression(doc, exprX, y, normalizeForPDF(problem.question), PROBLEM_FONT_SIZE);
 
     // Draw equals sign and space for answer
     doc.text(' = _______', exprX + exprWidth + CONFIG.LABEL_SPACING, y, { lineBreak: false });
@@ -273,17 +284,17 @@ function createWorksheetDocument(options: PDFGenerateOptions): PDFKit.PDFDocumen
       doc.text(`${i + 1}.`, x, y, { lineBreak: false });
       const numLabelWidth = doc.widthOfString(`${i + 1}. `);
 
-      // Draw original expression
+      // Draw original expression (normalize Unicode characters)
       const exprX = x + numLabelWidth + CONFIG.LABEL_SPACING;
-      const exprWidth = drawExpression(doc, exprX, y, problem.question, PROBLEM_FONT_SIZE);
+      const exprWidth = drawExpression(doc, exprX, y, normalizeForPDF(problem.question), PROBLEM_FONT_SIZE);
 
       // Draw equals sign
       doc.text(' = ', exprX + exprWidth + CONFIG.LABEL_SPACING, y, { lineBreak: false });
       const equalsWidth = doc.widthOfString(' = ');
 
-      // Draw answer
+      // Draw answer (normalize Unicode characters)
       const answerX = exprX + exprWidth + CONFIG.LABEL_SPACING + equalsWidth;
-      drawNumber(doc, answerX, y, problem.answer, PROBLEM_FONT_SIZE);
+      drawNumber(doc, answerX, y, normalizeForPDF(problem.answer), PROBLEM_FONT_SIZE);
     }
   }
 
