@@ -1,5 +1,5 @@
-/* Google Fonts - Outfit & Plus Jakarta Sans */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* Self-Hosted Variable Fonts (Latin subset only - 59KB total) */
+@import "./fonts.css";
 
 @import "tailwindcss";
 
@@ -48,8 +48,8 @@
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 
   /* Typography - Font families */
-  --font-heading: 'Outfit', system-ui, sans-serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-math: 'STIX Two Math', 'Cambria Math', 'Times New Roman', serif;
 }
 
