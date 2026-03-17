@@ -44,22 +44,37 @@ VITE_API_URL=https://your-backend.up.railway.app  # No /api suffix - client adds
 ```
 
 **Backup and restore from local to production**
-step 1:
-pg_dump "postgresql://localhost:5432/maths_tutor_dev" > ~/backups/maths-tutor/local-backup-2026-03-14.sql
 
-Step 2:
-psql "postgresql://postgres:mpmzsMiqjlMrtVHUKZcVcxVDeJHWBCnD@turntable.proxy.rlwy.net:33658/railway" < ~/backups/maths-tutor/local-backup-2026-03-14.sql
+Step 1: Backup local database
+```bash
+pg_dump "postgresql://localhost:5432/maths_tutor_dev" > ~/backups/maths-tutor/local-backup-$(date +%Y-%m-%d).sql
+```
+
+Step 2: Restore to Railway
+```bash
+# Get DATABASE_URL from Railway
+railway variables | grep DATABASE_URL
+
+# Restore backup to Railway database
+railway run psql $DATABASE_URL < ~/backups/maths-tutor/local-backup-2026-03-14.sql
+```
 
 **If production is corrupted - drop the schema and repopulate**
 
-Step 1:
-pg_dump "postgresql://localhost:5432/maths_tutor_dev" > ~/backups/maths-tutor/local-backup-2026-03-14.sql
+Step 1: Backup local database
+```bash
+pg_dump "postgresql://localhost:5432/maths_tutor_dev" > ~/backups/maths-tutor/local-backup-$(date +%Y-%m-%d).sql
+```
 
-Step 2: Drop schema
-psql "postgresql://postgres:mpmzsMiqjlMrtVHUKZcVcxVDeJHWBCnD@turntable.proxy.rlwy.net:33658/railway" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+Step 2: Drop Railway schema
+```bash
+railway run psql $DATABASE_URL -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+```
 
-Step 3:
-psql "postgresql://postgres:mpmzsMiqjlMrtVHUKZcVcxVDeJHWBCnD@turntable.proxy.rlwy.net:33658/railway" < ~/backups/maths-tutor/local-backup-2026-03-14.sql
+Step 3: Restore backup to Railway
+```bash
+railway run psql $DATABASE_URL < ~/backups/maths-tutor/local-backup-2026-03-14.sql
+```
 
 
 ---
