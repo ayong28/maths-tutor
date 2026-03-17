@@ -43,6 +43,25 @@ NODE_ENV=production
 VITE_API_URL=https://your-backend.up.railway.app  # No /api suffix - client adds it
 ```
 
+**Backup and restore from local to production**
+step 1:
+pg_dump "postgresql://localhost:5432/maths_tutor_dev" > ~/backups/maths-tutor/local-backup-2026-03-14.sql
+
+Step 2:
+psql "postgresql://postgres:mpmzsMiqjlMrtVHUKZcVcxVDeJHWBCnD@turntable.proxy.rlwy.net:33658/railway" < ~/backups/maths-tutor/local-backup-2026-03-14.sql
+
+**If production is corrupted - drop the schema and repopulate**
+
+Step 1:
+pg_dump "postgresql://localhost:5432/maths_tutor_dev" > ~/backups/maths-tutor/local-backup-2026-03-14.sql
+
+Step 2: Drop schema
+psql "postgresql://postgres:mpmzsMiqjlMrtVHUKZcVcxVDeJHWBCnD@turntable.proxy.rlwy.net:33658/railway" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+Step 3:
+psql "postgresql://postgres:mpmzsMiqjlMrtVHUKZcVcxVDeJHWBCnD@turntable.proxy.rlwy.net:33658/railway" < ~/backups/maths-tutor/local-backup-2026-03-14.sql
+
+
 ---
 
 ## 1. Database Setup
