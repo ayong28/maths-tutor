@@ -150,9 +150,7 @@ Create a `.env` file at `packages/api/.env`:
 DATABASE_URL="postgresql://adrian:your-password@localhost:5432/maths_tutor_dev?schema=public"
 ```
 
-The API loads this automatically via `dotenv` on startup.
-
-> **Note:** If `DATABASE_URL` is not in a `.env` file, pass it inline when starting the server (see step 6).
+The API loads this automatically via `dotenv` on startup. Without this file, the server will start but every API request will fail with `Environment variable not found: DATABASE_URL`.
 
 ---
 
@@ -180,7 +178,6 @@ Stop-Process -Id $pid -Force
 2. Start the server directly, skipping `prisma generate` (the DLL already exists):
 
 ```powershell
-$env:DATABASE_URL = "postgresql://adrian:your-password@localhost:5432/maths_tutor_dev?schema=public"
 cd packages/api
 npx tsx watch src/index.ts
 ```
