@@ -31,3 +31,8 @@ packages/api/dist/**
 # Math data source files (data already in PostgreSQL)
 /packages/api/math-data/
 .playwright-mcp/
+
+# Playwright
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

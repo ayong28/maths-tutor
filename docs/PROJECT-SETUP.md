@@ -363,7 +363,42 @@ Your database is now in sync with your schema.
 
 #### 3. Populate Database with Problems
 
-The project has **two data sources**:
+##### Option A: Import from SQL Dump (Recommended)
+
+A full database dump is available at `packages/api/scripts/data/new-server-data.sql` (4,748 problems). This is the fastest way to populate a fresh database.
+
+First, truncate any existing data if re-importing:
+
+```bash
+psql -U postgres -d maths_tutor_dev -c 'TRUNCATE public."Problem", public."WorksheetProblem", public."GeneratedWorksheet", public."WorksheetTemplate" CASCADE;'
+```
+
+Then import (must run as `postgres` superuser — the dump uses `COPY` which requires table ownership):
+
+```bash
+psql -U postgres -d maths_tutor_dev -f packages/api/scripts/data/new-server-data.sql
+```
+
+Expected output includes `COPY 4748` for the Problem table. The `_prisma_migrations` duplicate key error at the end is safe to ignore.
+
+After importing, grant your app user access to the tables:
+
+```bash
+psql -U postgres -d maths_tutor_dev -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $(whoami); GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $(whoami);"
+```
+
+Verify:
+
+```bash
+psql -d maths_tutor_dev -c 'SELECT COUNT(*) FROM public."Problem";'
+# Expected: 4748
+```
+
+---
+
+##### Option B: Import from Source Files (local scripts only)
+
+The project has **two original data sources**:
 
 1. **JSON files** (17 files in `packages/api/math-data/`) - 3,758 problems
 2. **Markdown files** (29 files in `worksheets/`) - 870 problems
@@ -372,7 +407,7 @@ The project has **two data sources**:
 
 **Note:** Data is already in PostgreSQL. The following are not tracked in git:
 - `packages/api/math-data/` - Source JSON files
-- `packages/api/scripts/data/` - One-time import scripts
+- `packages/api/scripts/data/` - One-time import scripts (except `new-server-data.sql`)
 
 ##### Import JSON Problems (local scripts only)
 

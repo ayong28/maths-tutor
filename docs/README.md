@@ -21,7 +21,8 @@
 | Document | Purpose | When to Read |
 |----------|---------|--------------|
 | [`../CLAUDE.md`](../CLAUDE.md) | Project overview, quick start commands | **Start here** - read first |
-| [`PROJECT-SETUP.md`](./PROJECT-SETUP.md) | Complete environment setup, database config | Setting up dev environment |
+| [`PROJECT-SETUP.md`](./PROJECT-SETUP.md) | Complete environment setup, database config (macOS) | Setting up dev environment |
+| [`WINDOWS-SETUP.md`](./WINDOWS-SETUP.md) | Full Windows 11 setup guide (PostgreSQL, data import, servers) | Setting up on Windows 11 |
 | [`PROJECT-HISTORY.md`](./PROJECT-HISTORY.md) | Implementation timeline, migration history | Understanding project evolution |
 | [`E2E-TEST-PLAN.md`](./E2E-TEST-PLAN.md) | End-to-end test coverage (38 Chromium tests) | Writing/updating E2E tests |
 
