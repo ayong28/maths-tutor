@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { WorksheetPage } from '../fixtures/WorksheetPage';
+import { WorksheetPage } from '../pages/WorksheetPage';
 
 /**
  * E2E-001: Homepage & Initial Load
@@ -11,45 +11,33 @@ test.describe('Homepage & Initial Load', () => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
 
-    // Verify hero section is displayed (updated text for new design)
     await expect(worksheetPage.heroHeading).toBeVisible();
     await expect(page.getByRole('heading', { name: /master maths with/i })).toBeVisible();
     await expect(page.getByText(/practice worksheets/i)).toBeVisible();
-
-    // Verify description text
     await expect(worksheetPage.heroDescription).toBeVisible();
   });
 
   test('should load categories from API', async ({ page }) => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
-
-    // Wait for categories to load
     await worksheetPage.waitForPageReady();
 
-    // Verify category links are present in the main content grid
-    // Use .first() to handle multiple links (sidebar + main content)
     await expect(page.getByRole('link', { name: /fractions/i }).first()).toBeVisible();
     await expect(page.getByRole('link', { name: /algebra/i }).first()).toBeVisible();
 
-    // Verify no errors
     await worksheetPage.verifyNoErrors();
   });
 
   test('should have no console errors on load', async ({ page }) => {
     const consoleErrors: string[] = [];
     page.on('console', (msg) => {
-      if (msg.type() === 'error') {
-        consoleErrors.push(msg.text());
-      }
+      if (msg.type() === 'error') consoleErrors.push(msg.text());
     });
 
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
-
     await worksheetPage.waitForPageReady();
 
-    // Assert no console errors
     expect(consoleErrors).toHaveLength(0);
   });
 
@@ -58,13 +46,9 @@ test.describe('Homepage & Initial Load', () => {
     await worksheetPage.goto();
     await worksheetPage.waitForPageReady();
 
-    // Click on Fractions category (in main content area)
     await worksheetPage.selectCategory('Fractions');
 
-    // Should navigate to /fractions
     await expect(page).toHaveURL(/\/fractions$/);
-
-    // Should show subcategories
     await expect(page.getByRole('heading', { name: /fractions/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /addition/i }).first()).toBeVisible();
   });
@@ -74,13 +58,9 @@ test.describe('Homepage & Initial Load', () => {
     await worksheetPage.gotoCategory('fractions');
     await worksheetPage.waitForPageReady();
 
-    // Click on Addition subcategory
     await worksheetPage.selectSubcategory('Addition');
 
-    // Should navigate to /fractions/addition
     await expect(page).toHaveURL(/\/fractions\/addition/);
-
-    // Should show problems
     await expect(worksheetPage.problemsList).toBeVisible();
   });
 
@@ -88,11 +68,8 @@ test.describe('Homepage & Initial Load', () => {
     const worksheetPage = new WorksheetPage(page);
     await worksheetPage.goto();
 
-    // Verify sidebar is visible
     await expect(worksheetPage.sidebar).toBeVisible();
     await expect(worksheetPage.sidebarLogo).toBeVisible();
-
-    // Verify quick access links in sidebar
-    await expect(page.locator('aside').getByRole('link', { name: /all topics/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /all topics/i }).first()).toBeVisible();
   });
 });
