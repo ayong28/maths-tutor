@@ -35,7 +35,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "^1.61.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
@@ -48,6 +48,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^6.19.0",
     "@types/pdfkit": "^0.17.3",
