@@ -48,6 +48,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^6.19.0",
     "@types/pdfkit": "^0.17.3",
